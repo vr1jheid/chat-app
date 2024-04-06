@@ -1,57 +1,53 @@
 import {
-  Box,
-  Button,
   Container,
-  IconButton,
-  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import { db } from "../firebase-config";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import GoogleIcon from "@mui/icons-material/Google";
+import { useState } from "react";
+import LogInForm from "../Components/LogInForm";
+import RegisterForm from "../Components/RegisterForm";
 
 const LoginPage = () => {
-  const func = () => {
-    db;
-  };
+  const [action, setAction] = useState("login");
 
-  const googleAuthenticate = async () => {
-    const auth = getAuth();
-    const provider = new GoogleAuthProvider();
-    const res = await signInWithPopup(auth, provider);
-
-    const user = res.user;
-    console.log(user);
+  const handleActionChanger = (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    newValue: string
+  ) => {
+    if (!newValue) return;
+    setAction(newValue);
   };
 
   return (
-    <Container sx={{ pt: 1 }} maxWidth="lg">
-      <Typography variant="h1" component="h2" textAlign="center">
+    <Container
+      sx={{
+        pt: 1,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 4,
+      }}
+      maxWidth="lg"
+    >
+      <Typography variant="h2" textAlign="center">
         Login Page
       </Typography>
-      <Container
-        component="form"
-        maxWidth="lg"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          mt: 5,
-          flexDirection: "column",
-          gap: 5,
-          width: "500px",
-        }}
+      <ToggleButtonGroup
+        size="medium"
+        exclusive
+        value={action}
+        onChange={handleActionChanger}
       >
-        <TextField label="login"></TextField>
-        <TextField label="Password"></TextField>
-        <Box sx={{ display: "flex", justifyContent: "center", gap: 3 }}>
-          <Button sx={{ fontWeight: 600 }} variant="outlined">
-            Log In
-          </Button>
-          <IconButton onClick={googleAuthenticate}>
-            <GoogleIcon />
-          </IconButton>
-        </Box>
-      </Container>
+        <ToggleButton sx={{ width: "100px" }} value={"login"}>
+          Log In
+        </ToggleButton>
+        <ToggleButton sx={{ width: "100px" }} value={"register"}>
+          Register
+        </ToggleButton>
+      </ToggleButtonGroup>
+      {action === "login" ? <LogInForm /> : <RegisterForm />}
     </Container>
   );
 };

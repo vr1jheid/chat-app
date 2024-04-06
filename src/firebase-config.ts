@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "@firebase/firestore";
-console.log("here");
+import { User, getAuth, onAuthStateChanged } from "firebase/auth";
+import { currentUserState } from "./redux/slices/currentUser";
+console.log("Firebase initialized");
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -13,5 +15,29 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
+
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+export const auth = getAuth();
+
+type Dispatcher = (user: currentUserState | null) => void;
+
+export const activateUserObserver = (onChange: Dispatcher) => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const userData: currentUserState = {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        avatarURL: user.photoURL,
+        isLoaded: true,
+      };
+
+      onChange(userData);
+      console.log("user from watcher", user);
+    } else {
+      onChange(null);
+      console.log("Нет юзера");
+    }
+  });
+};
