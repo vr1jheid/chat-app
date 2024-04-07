@@ -8,7 +8,6 @@ const ProtectedRoutes = () => {
   const isAuth = Boolean(useAppSelector(selectUserUID));
   const isLoaded = useAppSelector(selectUserIsLoaded);
 
-  console.log(isAuth);
   const render = () => {
     if (!isLoaded) {
       return <div>PLS WAIT LOADING</div>;

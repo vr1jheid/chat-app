@@ -2,6 +2,8 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "@firebase/firestore";
 import { User, getAuth, onAuthStateChanged } from "firebase/auth";
 import { currentUserState } from "./redux/slices/currentUser";
+import createUserData from "./utils/createUserData";
+import { getDatabase } from "firebase/database";
 console.log("Firebase initialized");
 
 // Your web app's Firebase configuration
@@ -12,12 +14,15 @@ const firebaseConfig = {
   storageBucket: "my-test-project-c16e1.appspot.com",
   messagingSenderId: "1049999159587",
   appId: "1:1049999159587:web:0f9faba39f03411b98dc96",
+  databaseURL:
+    "https://my-test-project-c16e1-default-rtdb.europe-west1.firebasedatabase.app/",
 };
 
 // Initialize Firebase
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+export const realTimeDB = getDatabase(app);
 export const auth = getAuth();
 
 type Dispatcher = (user: currentUserState | null) => void;
@@ -25,15 +30,8 @@ type Dispatcher = (user: currentUserState | null) => void;
 export const activateUserObserver = (onChange: Dispatcher) => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      const userData: currentUserState = {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-        avatarURL: user.photoURL,
-        isLoaded: true,
-      };
-
-      onChange(userData);
+      const userData = createUserData(user);
+      onChange({ ...userData, isLoaded: true });
       console.log("user from watcher", user);
     } else {
       onChange(null);

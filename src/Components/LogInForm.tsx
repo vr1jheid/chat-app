@@ -5,9 +5,12 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { auth } from "../firebase-config";
+import { auth, db } from "../firebase-config";
 import { useState } from "react";
 import PasswordInput from "./PasswordInput";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import createUserData from "../utils/createUserData";
+import createUserInDB from "../utils/createUserInDB";
 
 const LogInForm = () => {
   const [email, setEmail] = useState("");
@@ -17,9 +20,9 @@ const LogInForm = () => {
     const provider = new GoogleAuthProvider();
     try {
       const res = await signInWithPopup(auth, provider);
-      const user = res.user;
-    } catch (error: any) {
-      console.log("Не удалось залогиньться через гуголь(", error.message);
+      createUserInDB(res.user);
+    } catch (error) {
+      console.log("Не удалось залогиньться через гуголь(", error);
     }
   };
 

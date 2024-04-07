@@ -1,28 +1,27 @@
 import { TextField, Box, Button, Container } from "@mui/material";
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  sendEmailVerification,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 import React, { useState } from "react";
 import PasswordInput from "./PasswordInput";
+import { auth } from "../firebase-config";
+import createUserInDB from "../utils/createUserInDB";
 
 const RegisterForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const registerNewUser = async () => {
-    const auth = getAuth();
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    console.log(userCredential);
-    const user = userCredential.user;
-    sendEmailVerification(user);
-    console.log(user);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      createUserInDB(user);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
