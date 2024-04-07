@@ -7,8 +7,11 @@ import {
 import { useState } from "react";
 import LogInForm from "../Components/LogInForm";
 import RegisterForm from "../Components/RegisterForm";
+import { useAppSelector } from "../redux/hooks";
+import { selectUserIsLoaded } from "../redux/slices/currentUser";
 
 const LoginPage = () => {
+  const isLoaded = useAppSelector(selectUserIsLoaded);
   const [action, setAction] = useState("login");
 
   const handleActionChanger = (
@@ -18,6 +21,10 @@ const LoginPage = () => {
     if (!newValue) return;
     setAction(newValue);
   };
+
+  if (!isLoaded) {
+    return <div>Loading pls wait</div>;
+  }
 
   return (
     <Container
@@ -29,7 +36,7 @@ const LoginPage = () => {
         alignItems: "center",
         gap: 4,
       }}
-      maxWidth="lg"
+      maxWidth="xl"
     >
       <Typography variant="h2" textAlign="center">
         Login Page

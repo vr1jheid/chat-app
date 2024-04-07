@@ -37,6 +37,9 @@ const currentUserSlice = createSlice({
     clearUser: () => {
       return { ...initialState, isLoaded: true };
     },
+    setIsLoaded: (state, action) => {
+      state.isLoaded = action.payload;
+    },
   },
 });
 

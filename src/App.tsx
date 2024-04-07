@@ -10,6 +10,7 @@ import {
   setUser,
 } from "./redux/slices/currentUser";
 import ProtectedRoutes from "./Pages/ProtectedRoutes";
+import { useEffect } from "react";
 
 function App() {
   const navigate = useNavigate();
@@ -18,18 +19,19 @@ function App() {
 
   /* Инициализация firebase */
   const changeUserHandler = (user: currentUserState | null) => {
-    if (!user && currentUserId) {
+    if (!user) {
       dispatch(clearUser());
+      navigate("/login");
       return;
     }
-    if (!user) return;
-    if (user.uid === currentUserId) return;
 
     dispatch(setUser(user));
     navigate("/");
   };
 
-  activateUserObserver(changeUserHandler);
+  useEffect(() => {
+    activateUserObserver(changeUserHandler);
+  }, []);
 
   return (
     <Routes>
