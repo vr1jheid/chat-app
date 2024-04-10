@@ -14,15 +14,12 @@ const firebaseConfig = {
   storageBucket: "my-test-project-c16e1.appspot.com",
   messagingSenderId: "1049999159587",
   appId: "1:1049999159587:web:0f9faba39f03411b98dc96",
-  databaseURL:
-    "https://my-test-project-c16e1-default-rtdb.europe-west1.firebasedatabase.app/",
 };
 
 // Initialize Firebase
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
-export const realTimeDB = getDatabase(app);
 export const auth = getAuth();
 
 type Dispatcher = (user: currentUserState | null) => void;

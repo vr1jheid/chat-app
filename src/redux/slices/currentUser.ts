@@ -1,11 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { UserDataDB } from "../../utils/createUserData";
 
-export interface currentUserState {
-  uid: string;
-  email: string | null;
-  displayName: string | null;
-  avatarURL: string | null;
-  emailVerified: boolean;
+export interface currentUserState extends UserDataDB {
   isLoaded: boolean;
 }
 
@@ -28,6 +24,9 @@ const currentUserSlice = createSlice({
   initialState,
   selectors: {
     selectUser: (state) => state,
+    selectUserEmail: (state) => state.email,
+    selectUserName: (state) => state.displayName,
+    selectAvatarURL: (state) => state.avatarURL,
     selectUserUID: (state) => state.uid,
     selectUserIsLoaded: (state) => state.isLoaded,
   },
@@ -44,8 +43,14 @@ const currentUserSlice = createSlice({
   },
 });
 
-export const { selectUser, selectUserUID, selectUserIsLoaded } =
-  currentUserSlice.selectors;
+export const {
+  selectUser,
+  selectUserUID,
+  selectUserIsLoaded,
+  selectUserEmail,
+  selectUserName,
+  selectAvatarURL,
+} = currentUserSlice.selectors;
 export const { setUser, clearUser } = currentUserSlice.actions;
 
 export default currentUserSlice.reducer;
