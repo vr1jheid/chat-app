@@ -11,6 +11,7 @@ import {
 } from "./redux/slices/currentUser";
 import ProtectedRoutes from "./Pages/ProtectedRoutes";
 import { useEffect } from "react";
+import Layout from "./Components/Layout";
 
 function App() {
   const navigate = useNavigate();
@@ -37,7 +38,9 @@ function App() {
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route element={<ProtectedRoutes />}>
-        <Route path="/" element={<MainPage />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<MainPage />} />
+        </Route>
       </Route>
     </Routes>
   );

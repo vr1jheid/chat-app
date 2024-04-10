@@ -1,36 +1,18 @@
-import { Button, TextField } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
 import { useEffect, useState } from "react";
-import { child, push, ref, set, update } from "firebase/database";
-import { v4 as uuidv4 } from "uuid";
-import { useAppSelector } from "../redux/hooks";
-import {
-  selectAvatarURL,
-  selectUser,
-  selectUserEmail,
-  selectUserName,
-} from "../redux/slices/currentUser";
 import {
   DocumentData,
   DocumentSnapshot,
-  FieldValue,
-  addDoc,
-  collection,
   doc,
-  getDocs,
   onSnapshot,
-  query,
-  serverTimestamp,
-  updateDoc,
-  where,
 } from "firebase/firestore";
 import { db } from "../firebase-config";
 import Message from "./Message";
+import MessageInput from "./MessageInput";
 
 export interface MessageAuthor {
-  email: string;
-  name: string;
-  avatarURL: string;
+  email: string | null;
+  displayName: string | null;
+  avatarURL: string | null;
 }
 
 export interface Timestamp {
@@ -47,40 +29,8 @@ interface MessageData {
 }
 
 const Chat = () => {
-  const currentUser = useAppSelector(selectUser);
-  const userEmail = useAppSelector(selectUserEmail);
-  const userName = useAppSelector(selectUserName);
-  const userAvatar = useAppSelector(selectAvatarURL);
-  const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<MessageData[]>([]);
-
-  const sendMessage = async () => {
-    if (!message) return;
-
-    const ref = doc(db, "mainChat", "messages");
-    const messageId = uuidv4();
-    const messageWithInfo = {
-      [messageId]: {
-        id: messageId,
-        message,
-        author: {
-          email: userEmail,
-          name: userName,
-          avatarURL: userAvatar,
-        },
-        serverTime: serverTimestamp(),
-      },
-    };
-
-    try {
-      await updateDoc(ref, {
-        ...messageWithInfo,
-      });
-      setMessage("");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const firebaseRef = doc(db, "mainChat", "messages");
 
   const subOnChanges = () => {
     const displayData = (doc: DocumentSnapshot<DocumentData, DocumentData>) => {
@@ -104,6 +54,7 @@ const Chat = () => {
     const unsub = subOnChanges();
     return unsub;
   }, []);
+
   const sortedMessages = messages.sort(
     (a, b) => b.serverTime.seconds - a.serverTime.seconds
   );
@@ -121,30 +72,7 @@ const Chat = () => {
             />
           ))}
       </div>
-      <form className=" w-full flex gap-2">
-        <TextField
-          onKeyDown={(e) => {
-            if (e.key !== "Enter") return;
-            e.preventDefault();
-            sendMessage();
-          }}
-          sx={{ background: "white" }}
-          multiline
-          fullWidth
-          value={message}
-          onChange={(e) => {
-            setMessage(e.target.value);
-          }}
-        ></TextField>
-        <Button
-          type="button"
-          variant="contained"
-          endIcon={<SendIcon />}
-          onClick={sendMessage}
-        >
-          Send
-        </Button>
-      </form>
+      <MessageInput firebaseRef={firebaseRef} />
     </div>
   );
 };
