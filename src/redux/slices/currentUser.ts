@@ -19,6 +19,11 @@ interface SetUserAction {
   payload: currentUserState;
 }
 
+interface SetIsLoadedAction {
+  type: string;
+  payload: boolean;
+}
+
 const currentUserSlice = createSlice({
   name: "currentUser",
   initialState,
@@ -37,7 +42,7 @@ const currentUserSlice = createSlice({
     clearUser: () => {
       return { ...initialState, isLoaded: true };
     },
-    setIsLoaded: (state, action) => {
+    setIsLoaded: (state, action: SetIsLoadedAction) => {
       state.isLoaded = action.payload;
     },
   },

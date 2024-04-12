@@ -1,7 +1,7 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
 import LoginPage from "./Pages/LoginPage";
 import MainPage from "./Pages/MainPage";
-import { activateUserObserver } from "./firebase-config";
+import { activateUserObserver, db } from "./firebase-config";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import {
   clearUser,
@@ -12,21 +12,34 @@ import {
 import ProtectedRoutes from "./Pages/ProtectedRoutes";
 import { useEffect } from "react";
 import Layout from "./Components/Layout";
+import { doc, getDoc } from "firebase/firestore";
+import { UserDataDB } from "./utils/createUserData";
+import { clearDialogPartner } from "./redux/slices/dialogPartner";
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const currentUserId = useAppSelector(selectUserUID);
 
   /* Инициализация firebase */
-  const changeUserHandler = (user: currentUserState | null) => {
-    if (!user) {
+  const changeUserHandler = async (userFromAuth: currentUserState | null) => {
+    if (!userFromAuth) {
       dispatch(clearUser());
+      dispatch(clearDialogPartner());
       navigate("/login");
       return;
     }
+    /*
+      Новый user берется из auth данных, а существующий из БД
+    */
+    const userRefDB = doc(db, `users/${userFromAuth.email}`);
+    const docSnap = await getDoc(userRefDB);
 
-    dispatch(setUser(user));
+    if (docSnap.exists()) {
+      const userFromDB = docSnap.data().userData as UserDataDB;
+      dispatch(setUser({ ...userFromDB, isLoaded: true }));
+    } else {
+      dispatch(setUser(userFromAuth));
+    }
     navigate("/");
   };
 

@@ -1,7 +1,7 @@
 import { Avatar } from "@mui/material";
 import { useAppSelector } from "../redux/hooks";
 import { selectUserEmail } from "../redux/slices/currentUser";
-import { MessageAuthor, Timestamp } from "./Chat";
+import { MessageAuthor, Timestamp } from "./Chat/Chat";
 import renderAvatar from "../utils/renderAvatar";
 
 interface Props {
@@ -20,7 +20,7 @@ const Message = ({ author, text, timestamp }: Props) => {
 
   const renderAvatarInMessage = () => {
     if (isMyself) return;
-    return renderAvatar(author);
+    return renderAvatar(author.avatarURL, author.displayName ?? author.email);
   };
 
   return (

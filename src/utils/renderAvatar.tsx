@@ -1,16 +1,30 @@
 import { Avatar } from "@mui/material";
-import { MessageAuthor } from "../Components/Chat";
-import { render } from "react-dom";
 
-const renderAvatar = (user: MessageAuthor, size = 50) => {
-  if (user.avatarURL) {
-    return (
-      <Avatar sx={{ width: size, height: size }} src={user.avatarURL}></Avatar>
-    );
+type RenderAvatarFunc = (
+  alt: string | null,
+  src?: string | null,
+  size?: number
+) => JSX.Element;
+
+const getTextForAvatar = (alt: string) => {
+  const words = alt.split(" ");
+
+  if (words.length > 1) {
+    return words.map((w) => w[0]).join("");
   }
+  return alt.slice(0, 2);
+};
+
+const renderAvatar: RenderAvatarFunc = (src, alt, size = 50) => {
+  /*   console.log(src); */
+
+  if (src) {
+    return <Avatar sx={{ width: size, height: size }} src={src}></Avatar>;
+  }
+
   return (
     <Avatar sx={{ width: size, height: size }}>
-      {user.email?.slice(0, 2)}
+      {alt ? getTextForAvatar(alt) : "?"}
     </Avatar>
   );
 };
