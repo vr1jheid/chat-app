@@ -2,13 +2,18 @@ import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import {
   DocumentData,
+  DocumentReference,
   DocumentSnapshot,
+  collection,
   doc,
   getDoc,
+  getDocs,
   onSnapshot,
+  query,
   serverTimestamp,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import Message from "../Message";
@@ -37,23 +42,25 @@ export interface Timestamp {
 
 interface MessageData {
   id: string;
-  message: string;
+  messageText: string;
   author: MessageAuthor;
   serverTime: Timestamp;
   tracked: boolean;
 }
 
 interface Props {
-  documentRef: string;
+  chatDocRef: DocumentReference<DocumentData, DocumentData> | null;
 }
 
-const Chat = ({ documentRef }: Props) => {
+const Chat = ({ chatDocRef }: Props) => {
+  console.log(chatDocRef?.id);
+
   const currentUser = useAppSelector(selectUser);
 
   const dialogPartner = useAppSelector(selectDialogPartner);
 
   const [messages, setMessages] = useState<MessageData[]>([]);
-  const firebaseRef = doc(db, documentRef);
+  /* const firebaseRef = doc(db, documentRef); */
   const scrollable = useRef<HTMLDivElement>(null);
 
   const sendMessage = async (messageText: string) => {
@@ -63,7 +70,7 @@ const Chat = ({ documentRef }: Props) => {
     const messageWithInfo = {
       [messageId]: {
         id: messageId,
-        message: messageText,
+        messageText,
         author: {
           email: currentUser.email,
           displayName: currentUser.displayName,
@@ -73,21 +80,24 @@ const Chat = ({ documentRef }: Props) => {
       },
     };
 
-    const docSnap = await getDoc(firebaseRef);
+    const docSnap = await getDoc(chatDocRef);
 
     /* Создаем документ, если отсутствует */
     if (!docSnap.exists()) {
-      await setDoc(firebaseRef, { messages: { ...messageWithInfo } });
+      await setDoc(chatDocRef, { messages: { ...messageWithInfo } });
       return;
     }
 
     /* Добавляем новые сообщения */
-    await updateDoc(firebaseRef, {
+    await updateDoc(chatDocRef, {
       [`messages.${messageId}`]: Object.values(messageWithInfo)[0],
     });
   };
 
   const test = async () => {
+    /*     await setDoc(doc(db, `chats/${currentUser.email}#${dialogPartner.email}`), {
+      data: 0,
+    }); */
     /*     await updateDoc(doc(db, "Test/randomID"), {
       messages: { field1: "sigma", field2: "sojak" },
       hueta: ["email1", "email2"],
@@ -95,7 +105,13 @@ const Chat = ({ documentRef }: Props) => {
     /* await updateDoc(doc(db, "Test/randomID"), {
       "messages.gjfkjgfk": "Obama",
     }); */
-    console.log(messages[0].serverTime.seconds);
+    const q = query(
+      collection(db, "Test"),
+      where("members", "array-contains", "email1"),
+      where("members", "array-contains", "email2")
+    );
+    const querySnaphot = await getDocs(q);
+    querySnaphot.forEach((doc) => console.log(doc.data()));
   };
 
   const subOnChanges = () => {
@@ -116,6 +132,7 @@ const Chat = ({ documentRef }: Props) => {
       /* На случай пустого документа */
       if (!resp.messages) {
         setMessages([]);
+        return;
       }
 
       const messages = Object.values(resp.messages) as MessageData[];
@@ -124,28 +141,23 @@ const Chat = ({ documentRef }: Props) => {
     };
 
     /* const ref = doc(db, "mainChat", "messages"); */
-    const unsub = onSnapshot(firebaseRef, displayData);
+    const unsub = onSnapshot(chatDocRef, displayData);
     return unsub;
   };
 
   useEffect(() => {
-    console.log("refresh sub");
-
     const unsub = subOnChanges();
     return unsub;
-  }, [documentRef]);
+  }, [chatDocRef]);
 
   const scrollToBottom = () => {
     const node = scrollable.current;
     node?.scrollTo(0, node.scrollHeight);
   };
 
-  const sortedMessages = messages.sort((a, b) => {
-    console.log("Object a", a);
-    console.log("Object b", b);
-
-    return b.serverTime.seconds - a.serverTime.seconds;
-  });
+  const sortedMessages = messages.sort(
+    (a, b) => b.serverTime.seconds - a.serverTime.seconds
+  );
 
   return (
     <div className="pb-5 w-full grow mx-auto bg-slate-100 flex items-center flex-col overflow-y-auto">
@@ -164,7 +176,7 @@ const Chat = ({ documentRef }: Props) => {
             <Message
               key={m.id}
               author={m.author}
-              text={m.message}
+              text={m.messageText}
               timestamp={m.serverTime}
             />
           ))}
@@ -172,7 +184,7 @@ const Chat = ({ documentRef }: Props) => {
       <MessageInput
         scroll={scrollToBottom}
         sendMessage={sendMessage}
-        firebaseRef={firebaseRef}
+        chatDocRef={chatDocRef}
       />
       <Button onClick={test}>Test</Button>
     </div>
