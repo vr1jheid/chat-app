@@ -1,7 +1,6 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
-import LoginPage from "./Pages/LoginPage";
 import MainPage from "./Pages/MainPage";
-import { activateUserObserver, db } from "./firebase-config";
+import { activateUserObserver } from "./firebase-config";
 import { useAppDispatch } from "./redux/hooks";
 import {
   clearUser,
@@ -11,10 +10,10 @@ import {
 import ProtectedRoutes from "./Pages/ProtectedRoutes";
 import { useEffect } from "react";
 import Layout from "./Components/Layout";
-import { doc, getDoc } from "firebase/firestore";
-import { UserDataDB } from "./utils/createUserData";
+
 import { clearDialogPartner } from "./redux/slices/dialogPartner";
 import getUserFromDB from "./utils/getUserFromDB";
+import AuthPage from "./Pages/AuthPage";
 
 function App() {
   const navigate = useNavigate();
@@ -56,7 +55,7 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
+      <Route path="/login" element={<AuthPage />} />
       <Route element={<ProtectedRoutes />}>
         <Route element={<Layout />}>
           <Route path="/" element={<MainPage />} />

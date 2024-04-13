@@ -140,9 +140,6 @@ const Chat = ({ chatDocRef }: Props) => {
     if (!a.serverTime) {
       return -1;
     }
-    if (!b.serverTime) {
-      return 1;
-    }
     return b.serverTime.seconds - a.serverTime.seconds;
   });
 

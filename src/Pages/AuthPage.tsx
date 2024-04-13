@@ -10,7 +10,7 @@ import RegisterForm from "../Components/RegisterForm";
 import { useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUser";
 
-const LoginPage = () => {
+const AuthPage = () => {
   const { isLoaded } = useAppSelector(selectCurrentUser);
   const [action, setAction] = useState("login");
 
@@ -59,4 +59,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default AuthPage;
