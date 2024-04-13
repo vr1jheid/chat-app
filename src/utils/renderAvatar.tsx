@@ -15,7 +15,7 @@ const getTextForAvatar = (alt: string) => {
   return alt.slice(0, 2);
 };
 
-const renderAvatar: RenderAvatarFunc = (src, alt, size = 50) => {
+const renderAvatar: RenderAvatarFunc = (alt, src, size = 50) => {
   /*   console.log(src); */
 
   if (src) {

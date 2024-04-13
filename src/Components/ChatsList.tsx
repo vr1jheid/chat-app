@@ -1,45 +1,33 @@
-import { Autocomplete, TextField } from "@mui/material";
-
-import React, { useEffect, useState } from "react";
-import { UserDataDB } from "../utils/createUserData";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../firebase-config";
-import SearchUser from "./SearchUser";
+import { DialogData } from "../Pages/MainPage";
 import { useAppSelector } from "../redux/hooks";
-import { selectUserEmail } from "../redux/slices/currentUser";
+import { selectCurrentUser } from "../redux/slices/currentUser";
+import ChatPreview from "./ChatPreview";
 
-export interface UserWithLabel {
-  label: string | null;
-  userData: UserDataDB;
+interface Props {
+  dialogs: DialogData[];
 }
 
-const ChatsList = () => {
-  const currentUserEmail = useAppSelector(selectUserEmail);
-  const [allUsersWithLabel, setAllUsersWithLabel] = useState<UserWithLabel[]>(
-    []
-  );
-  useEffect(() => {
-    const getAllUsers = async () => {
-      const querySnaphot = await getDocs(collection(db, "users"));
-      const usersList: UserWithLabel[] = [];
-      querySnaphot.forEach((doc) => {
-        const resp = doc.data();
-        const userData = resp.userData as UserDataDB;
-        if (userData.email === currentUserEmail) return;
+const ChatsList = ({ dialogs }: Props) => {
+  console.log(dialogs);
 
-        usersList.push({ label: userData.email, userData });
-      });
-
-      setAllUsersWithLabel(usersList);
-    };
-    getAllUsers();
-  }, []);
+  const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
 
   return (
-    <div className="w-[35%] p-3">
-      <SearchUser options={allUsersWithLabel} />
-      <section></section>
-    </div>
+    <section className="flex flex-col gap-2">
+      {dialogs &&
+        dialogs.map((d) => {
+          const dialogPartnerEmail = d.members.find(
+            (m) => m !== currentUserEmail
+          );
+          if (!dialogPartnerEmail) return;
+          return (
+            <ChatPreview
+              key={dialogPartnerEmail}
+              userEmail={dialogPartnerEmail}
+            />
+          );
+        })}
+    </section>
   );
 };
 

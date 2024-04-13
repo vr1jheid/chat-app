@@ -2,11 +2,10 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import LoginPage from "./Pages/LoginPage";
 import MainPage from "./Pages/MainPage";
 import { activateUserObserver, db } from "./firebase-config";
-import { useAppDispatch, useAppSelector } from "./redux/hooks";
+import { useAppDispatch } from "./redux/hooks";
 import {
   clearUser,
   currentUserState,
-  selectUserUID,
   setUser,
 } from "./redux/slices/currentUser";
 import ProtectedRoutes from "./Pages/ProtectedRoutes";
@@ -15,6 +14,7 @@ import Layout from "./Components/Layout";
 import { doc, getDoc } from "firebase/firestore";
 import { UserDataDB } from "./utils/createUserData";
 import { clearDialogPartner } from "./redux/slices/dialogPartner";
+import getUserFromDB from "./utils/getUserFromDB";
 
 function App() {
   const navigate = useNavigate();
@@ -31,15 +31,22 @@ function App() {
     /*
       Новый user берется из auth данных, а существующий из БД
     */
-    const userRefDB = doc(db, `users/${userFromAuth.email}`);
-    const docSnap = await getDoc(userRefDB);
+    const userFromDB = await getUserFromDB(userFromAuth.email!);
 
-    if (docSnap.exists()) {
-      const userFromDB = docSnap.data().userData as UserDataDB;
+    /*     const userRefDB = doc(db, `users/${userFromAuth.email}`);
+    const docSnap = await getDoc(userRefDB); */
+
+    if (userFromDB) {
       dispatch(setUser({ ...userFromDB, isLoaded: true }));
     } else {
       dispatch(setUser(userFromAuth));
     }
+    /*     if (docSnap.exists()) {
+      const userFromDB = docSnap.data().userData as UserDataDB;
+      dispatch(setUser({ ...userFromDB, isLoaded: true }));
+    } else {
+      dispatch(setUser(userFromAuth));
+    } */
     navigate("/");
   };
 

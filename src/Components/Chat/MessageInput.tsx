@@ -1,15 +1,13 @@
 import { Button, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { DocumentData, DocumentReference } from "firebase/firestore";
 import { useState } from "react";
 
 interface Props {
-  firebaseRef: DocumentReference<DocumentData, DocumentData>;
   sendMessage: (messageText: string) => Promise<void>;
   scroll: () => void;
 }
 
-const MessageInput = ({ firebaseRef, sendMessage, scroll }: Props) => {
+const MessageInput = ({ sendMessage, scroll }: Props) => {
   const [message, setMessage] = useState("");
 
   const sendMessageToDB = () => {

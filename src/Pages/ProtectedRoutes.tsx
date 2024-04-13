@@ -1,12 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "../redux/hooks";
-import { selectUserIsLoaded, selectUserUID } from "../redux/slices/currentUser";
-import LoginPage from "./LoginPage";
+import { selectCurrentUser } from "../redux/slices/currentUser";
 
 const ProtectedRoutes = () => {
-  const userid = useAppSelector(selectUserUID);
-  const isAuth = Boolean(useAppSelector(selectUserUID));
-  const isLoaded = useAppSelector(selectUserIsLoaded);
+  const { uid, isLoaded } = useAppSelector(selectCurrentUser);
+  const isAuth = Boolean(uid);
 
   const render = () => {
     if (!isLoaded) {

@@ -8,10 +8,10 @@ import { useState } from "react";
 import LogInForm from "../Components/LogInForm";
 import RegisterForm from "../Components/RegisterForm";
 import { useAppSelector } from "../redux/hooks";
-import { selectUserIsLoaded } from "../redux/slices/currentUser";
+import { selectCurrentUser } from "../redux/slices/currentUser";
 
 const LoginPage = () => {
-  const isLoaded = useAppSelector(selectUserIsLoaded);
+  const { isLoaded } = useAppSelector(selectCurrentUser);
   const [action, setAction] = useState("login");
 
   const handleActionChanger = (

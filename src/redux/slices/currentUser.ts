@@ -28,12 +28,7 @@ const currentUserSlice = createSlice({
   name: "currentUser",
   initialState,
   selectors: {
-    selectUser: (state) => state,
-    selectUserEmail: (state) => state.email,
-    selectUserName: (state) => state.displayName,
-    selectAvatarURL: (state) => state.avatarURL,
-    selectUserUID: (state) => state.uid,
-    selectUserIsLoaded: (state) => state.isLoaded,
+    selectCurrentUser: (state) => state,
   },
   reducers: {
     setUser: (state, action: SetUserAction) => {
@@ -48,14 +43,7 @@ const currentUserSlice = createSlice({
   },
 });
 
-export const {
-  selectUser,
-  selectUserUID,
-  selectUserIsLoaded,
-  selectUserEmail,
-  selectUserName,
-  selectAvatarURL,
-} = currentUserSlice.selectors;
+export const { selectCurrentUser } = currentUserSlice.selectors;
 export const { setUser, clearUser } = currentUserSlice.actions;
 
 export default currentUserSlice.reducer;

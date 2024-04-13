@@ -7,14 +7,14 @@ import {
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { selectUser } from "../redux/slices/currentUser";
+import { selectCurrentUser } from "../redux/slices/currentUser";
 import renderAvatar from "../utils/renderAvatar";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase-config";
 import { useAppSelector } from "../redux/hooks";
 
 const Header = () => {
-  const currentUser = useAppSelector(selectUser);
+  const currentUser = useAppSelector(selectCurrentUser);
 
   const signOutUser = async () => {
     await signOut(auth);
@@ -47,8 +47,8 @@ const Header = () => {
           <div className="flex items-center gap-3">
             {currentUser.displayName ?? currentUser.email}{" "}
             {renderAvatar(
-              currentUser.avatarURL,
               currentUser.displayName ?? currentUser.email,
+              currentUser.avatarURL,
               30
             )}
           </div>
