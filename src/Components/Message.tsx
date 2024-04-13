@@ -1,16 +1,20 @@
-import { Avatar } from "@mui/material";
 import { useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUser";
 import { MessageAuthor, Timestamp } from "./Chat/Chat";
 import renderAvatar from "../utils/renderAvatar";
+import { DocumentReference, DocumentData } from "firebase/firestore";
 
 interface Props {
   author: MessageAuthor;
   text: string;
   timestamp: Timestamp;
+  deleteMessage: (
+    chatRef: DocumentReference<DocumentData, DocumentData>,
+    messageId: string
+  ) => Promise<void>;
 }
 
-const Message = ({ author, text, timestamp }: Props) => {
+const Message = ({ author, text, timestamp, deleteMessage }: Props) => {
   const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
   const isMyself = currentUserEmail === author.email;
   const date = timestamp && new Date(timestamp.seconds * 1000);
@@ -27,7 +31,9 @@ const Message = ({ author, text, timestamp }: Props) => {
           renderAvatar(author.displayName ?? author.email, author.avatarURL)}
         <div className="rounded flex flex-col  gap-3 bg-slate-600 p-2 ">
           <div className=" text-green-500 inline-flex gap-3">
-            <span>{author.displayName ?? author.email}</span>
+            <span onClick={deleteMessage}>
+              {author.displayName ?? author.email}
+            </span>
             <span>{time || "loading"}</span>
           </div>
           <div className="flex items-end text-white text-xl">{text}</div>

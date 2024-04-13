@@ -8,8 +8,6 @@ interface Props {
 }
 
 const ChatsList = ({ dialogs }: Props) => {
-  console.log(dialogs);
-
   const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
 
   return (

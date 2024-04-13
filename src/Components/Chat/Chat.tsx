@@ -1,27 +1,27 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import {
   DocumentData,
   DocumentReference,
   DocumentSnapshot,
-  collection,
+  deleteField,
+  doc,
   getDoc,
-  getDocs,
   onSnapshot,
-  query,
   serverTimestamp,
   setDoc,
   updateDoc,
-  where,
 } from "firebase/firestore";
-import { db } from "../../firebase-config";
 import Message from "../Message";
 import MessageInput from "./MessageInput";
 import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUser";
 import ChatHeader from "./ChatHeader";
 import { selectDialogPartner } from "../../redux/slices/dialogPartner";
-import { Button } from "@mui/material";
+import { Button, Divider } from "@mui/material";
+import isNewDate from "../../utils/isNewDate";
+import getDate from "../../utils/getDate";
+import { db } from "../../firebase-config";
 
 export interface MessageAuthor {
   email: string | null;
@@ -48,8 +48,6 @@ interface Props {
 
 const Chat = ({ chatDocRef }: Props) => {
   const currentUser = useAppSelector(selectCurrentUser);
-  const dialogPartner = useAppSelector(selectDialogPartner);
-
   const [messages, setMessages] = useState<MessageData[]>([]);
 
   const scrollable = useRef<HTMLDivElement>(null);
@@ -87,15 +85,22 @@ const Chat = ({ chatDocRef }: Props) => {
 
   const test = async () => {};
 
+  const deleteMessage = async (
+    chatRef: DocumentReference<DocumentData, DocumentData>,
+    messageId: string
+  ) => {
+    await updateDoc(chatRef, {
+      [`messages.${messageId}`]: deleteField(),
+    });
+  };
+
   const subOnChanges = () => {
     const displayData = (doc: DocumentSnapshot<DocumentData, DocumentData>) => {
       if (doc.metadata.hasPendingWrites) {
         /*
-          Данные пока добавлены только локально. Можно как-то их пометить
+          Данные пока добавлены только локально. Можно как-то их пометить. Сделано!
          */
         console.log("local data");
-        console.log(doc.data());
-
         /* return; */
       }
 
@@ -149,14 +154,32 @@ const Chat = ({ chatDocRef }: Props) => {
         className="p-4  grow w-full flex flex-col-reverse gap-4 overflow-y-auto"
       >
         {sortedMessages.length &&
-          sortedMessages.map((m) => (
-            <Message
-              key={m.id}
-              author={m.author}
-              text={m.messageText}
-              timestamp={m.serverTime}
-            />
-          ))}
+          sortedMessages.map((m, i, arr) => {
+            /*
+              Для последнего эл-та i+1 даст ошибку, поэтому добавлена проверка на его существование
+            */
+
+            let newDate =
+              Boolean(arr[i + 1]) &&
+              Boolean(m.serverTime) &&
+              isNewDate(m.serverTime.seconds, arr[i + 1].serverTime.seconds);
+
+            return (
+              <div key={m.id}>
+                {newDate && (
+                  <Divider sx={{ marginBottom: "1rem", fontSize: "1.5rem" }}>
+                    {getDate(m.serverTime.seconds)}
+                  </Divider>
+                )}
+                <Message
+                  author={m.author}
+                  text={m.messageText}
+                  timestamp={m.serverTime}
+                  deleteMessage={() => deleteMessage(chatDocRef, m.id)}
+                />
+              </div>
+            );
+          })}
       </div>
       <MessageInput scroll={scrollToBottom} sendMessage={sendMessage} />
       <Button onClick={test}>Test</Button>
