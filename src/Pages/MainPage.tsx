@@ -1,10 +1,12 @@
 import {
   DocumentData,
   DocumentReference,
+  DocumentSnapshot,
   addDoc,
   collection,
   doc,
   getDocs,
+  onSnapshot,
   query,
   where,
 } from "firebase/firestore";
@@ -20,6 +22,7 @@ import Chat from "../Components/Chat/Chat";
 export interface DialogData {
   chatDocRef: DocumentReference<DocumentData, DocumentData>;
   members: string[];
+  show: boolean;
 }
 
 const MainPage = () => {
@@ -35,8 +38,6 @@ const MainPage = () => {
   useEffect(() => {
     /* Получем все диалоги пользователя */
     const getUserDialogs = async () => {
-      console.log("here");
-
       const q = query(
         collection(db, "chats"),
         where("chatInfo.members", "array-contains", currentUserEmail)
@@ -45,10 +46,18 @@ const MainPage = () => {
       const dialogs: DialogData[] = [];
       querySnaphot.forEach((snapshotDoc) => {
         const docData = snapshotDoc.data();
+        console.log(docData);
 
         const { members } = docData.chatInfo;
         const chatDocRef = doc(db, `chats/${snapshotDoc.id}`);
-        dialogs.push({ chatDocRef, members });
+
+        console.log(docData.messages);
+
+        dialogs.push({
+          chatDocRef,
+          members,
+          show: Boolean(docData.messages),
+        });
       });
       setDialogs(dialogs);
     };
@@ -86,17 +95,47 @@ const MainPage = () => {
         {
           chatDocRef: newChatDocRef,
           members: [currentUserEmail!, dialogPartnerEmail],
+          show: false,
         },
       ]);
     };
     createNewChatDoc();
   }, [dialogPartnerEmail]);
 
+  const observeFirstMessage = () => {
+    const firstMessageObserver = (
+      doc: DocumentSnapshot<DocumentData, DocumentData>
+    ) => {
+      const docData = doc.data();
+      if (!docData?.messages || !dialogPartnerEmail) return;
+      console.log("UHU");
+
+      const dialogsWithoutCurrent = dialogs.filter(
+        (d) => !d.members.includes(dialogPartnerEmail)
+      );
+      setDialogs([
+        ...dialogsWithoutCurrent,
+        {
+          chatDocRef,
+          members: [currentUserEmail!, dialogPartnerEmail],
+          show: true,
+        },
+      ]);
+    };
+    const unsub = onSnapshot(chatDocRef, firstMessageObserver);
+    return unsub;
+  };
+
+  useEffect(() => {
+    const unsub = observeFirstMessage();
+    return unsub;
+  }, [chatDocRef]);
+
   return (
     <div className="grow max-h-screen flex pt-[82px]">
       <div className="w-[35%] p-3 flex flex-col gap-5">
         <SearchUser />
-        <ChatsList dialogs={dialogs} />
+        <ChatsList dialogs={dialogs.filter((d) => d.show)} />
       </div>
 
       <Chat chatDocRef={chatDocRef} />

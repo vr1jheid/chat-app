@@ -30,7 +30,7 @@ export interface Timestamp {
   seconds: number;
 }
 
-interface MessageData {
+export interface MessageData {
   id: string;
   messageText: string;
   author: MessageAuthor;
@@ -66,17 +66,16 @@ const Chat = ({ chatDocRef }: Props) => {
         console.log("local data");
       }
 
-      const resp = doc.data();
+      const docData = doc.data();
       /* Документ отсутсвует или нет поля с сообщениями */
-      if (!doc.exists() || !resp?.messages) {
-        console.log("here");
+      if (!doc.exists() || !docData?.messages) {
         setMessages([]);
         setIsLoading(false);
         return;
       }
 
-      const messages = Object.values(resp.messages) as MessageData[];
-      console.log("Current data: ", resp);
+      const messages = Object.values(docData.messages) as MessageData[];
+      console.log("Current data: ", docData);
       setMessages(messages);
       setIsLoading(false);
     };
