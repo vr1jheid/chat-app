@@ -15,6 +15,7 @@ import { useAppSelector } from "../redux/hooks";
 
 const Header = () => {
   const currentUser = useAppSelector(selectCurrentUser);
+  const userName = currentUser.displayName ?? currentUser.email;
 
   const signOutUser = async () => {
     await signOut(auth);
@@ -45,12 +46,8 @@ const Header = () => {
           expandIcon={<ArrowDropDownIcon />}
         >
           <div className="flex items-center gap-3">
-            {currentUser.displayName ?? currentUser.email}{" "}
-            {renderAvatar(
-              currentUser.displayName ?? currentUser.email,
-              currentUser.avatarURL,
-              30
-            )}
+            {userName}
+            {renderAvatar(userName, currentUser.avatarURL, 30)}
           </div>
         </AccordionSummary>
         <AccordionDetails>

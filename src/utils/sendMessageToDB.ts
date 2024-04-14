@@ -35,7 +35,7 @@ const sendMessageToDB: MessageSender = async (
       serverTime: serverTimestamp(),
     },
   };
-
+  const messageObjToSend = Object.values(messageWithInfo)[0];
   const docSnap = await getDoc(chatDocRef);
 
   /* Создаем документ, если отсутствует */
@@ -46,7 +46,8 @@ const sendMessageToDB: MessageSender = async (
 
   /* Добавляем новые сообщения */
   await updateDoc(chatDocRef, {
-    [`messages.${messageId}`]: Object.values(messageWithInfo)[0],
+    [`chatInfo.lastMessage`]: messageObjToSend,
+    [`messages.${messageId}`]: messageObjToSend,
   });
 };
 

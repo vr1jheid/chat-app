@@ -8,13 +8,13 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import ChatsList from "../Components/ChatsList";
+import ChatsList from "../Components/Chat selection/ChatsList";
 import { db } from "../firebase-config";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../redux/hooks";
 import { selectDialogPartner } from "../redux/slices/dialogPartner";
 import { selectCurrentUser } from "../redux/slices/currentUser";
-import SearchUser from "../Components/SearchUser";
+import SearchUser from "../Components/Chat selection/SearchUser";
 import Chat from "../Components/Chat/Chat";
 
 export interface DialogData {
@@ -35,14 +35,18 @@ const MainPage = () => {
   useEffect(() => {
     /* Получем все диалоги пользователя */
     const getUserDialogs = async () => {
+      console.log("here");
+
       const q = query(
         collection(db, "chats"),
-        where("members", "array-contains", currentUserEmail)
+        where("chatInfo.members", "array-contains", currentUserEmail)
       );
       const querySnaphot = await getDocs(q);
       const dialogs: DialogData[] = [];
       querySnaphot.forEach((snapshotDoc) => {
-        const { members } = snapshotDoc.data();
+        const docData = snapshotDoc.data();
+
+        const { members } = docData.chatInfo;
         const chatDocRef = doc(db, `chats/${snapshotDoc.id}`);
         dialogs.push({ chatDocRef, members });
       });
@@ -72,7 +76,9 @@ const MainPage = () => {
     /* Иначе, создаем новый документ с диалогом */
     const createNewChatDoc = async () => {
       const newChatDocRef = await addDoc(collection(db, "chats"), {
-        members: [currentUserEmail, dialogPartnerEmail],
+        chatInfo: {
+          members: [currentUserEmail, dialogPartnerEmail],
+        },
       });
       setChatDocRef(newChatDocRef);
       setDialogs([

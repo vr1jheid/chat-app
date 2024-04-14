@@ -3,8 +3,8 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 
 import React, { useState } from "react";
 import PasswordInput from "./PasswordInput";
-import { auth } from "../firebase-config";
-import createUserInDB from "../utils/createUserInDB";
+import { auth } from "../../firebase-config";
+import createUserInDB from "../../utils/createUserInDB";
 
 const RegisterForm = () => {
   const [email, setEmail] = useState("");

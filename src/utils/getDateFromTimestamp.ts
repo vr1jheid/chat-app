@@ -1,6 +1,6 @@
 /* Timestamp в с */
 
-const getDate = (timestamp: number) => {
+const getDateFromTimestamp = (timestamp: number) => {
   const dateObj = new Date(timestamp * 1000);
   const date =
     dateObj.getDate() < 10 ? "0" + dateObj.getDate() : dateObj.getDate();
@@ -12,4 +12,4 @@ const getDate = (timestamp: number) => {
   return `${date}.${month}`;
 };
 
-export default getDate;
+export default getDateFromTimestamp;

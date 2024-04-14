@@ -1,15 +1,15 @@
 import { Autocomplete, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   clearDialogPartner,
   setDialogPartner,
-} from "../redux/slices/dialogPartner";
-import { UserDataDB } from "../utils/createUserData";
+} from "../../redux/slices/dialogPartner";
+import { UserDataDB } from "../../utils/createUserData";
 import { getDocs, collection } from "firebase/firestore";
-import { db } from "../firebase-config";
-import { selectCurrentUser } from "../redux/slices/currentUser";
+import { db } from "../../firebase-config";
+import { selectCurrentUser } from "../../redux/slices/currentUser";
 
 export interface UserWithLabel {
   label: string | null;

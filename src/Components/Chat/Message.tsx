@@ -1,9 +1,10 @@
-import { useAppSelector } from "../redux/hooks";
-import { selectCurrentUser } from "../redux/slices/currentUser";
-import { MessageAuthor, Timestamp } from "./Chat/Chat";
-import renderAvatar from "../utils/renderAvatar";
-import { CircularProgress, Paper } from "@mui/material";
-import Loader from "./Loader";
+import { useAppSelector } from "../../redux/hooks";
+import { selectCurrentUser } from "../../redux/slices/currentUser";
+import { MessageAuthor, Timestamp } from "./Chat";
+import renderAvatar from "../../utils/renderAvatar";
+import { Paper } from "@mui/material";
+import Loader from "../Loader";
+import getTimeFromTimestamp from "../../utils/getTimeFromTimestamp";
 
 interface Props {
   author: MessageAuthor;
@@ -15,12 +16,7 @@ interface Props {
 const Message = ({ author, text, timestamp, deleteMessage }: Props) => {
   const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
   const isMyself = currentUserEmail === author.email;
-  const date = timestamp && new Date(timestamp.seconds * 1000);
-  const time =
-    date &&
-    `${date.getHours() < 10 ? "0" + date.getHours() : date.getHours()}:${
-      date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
-    }`;
+  const time = timestamp && getTimeFromTimestamp(timestamp.seconds);
 
   return (
     <div className={`flex ${isMyself ? "justify-end" : "justify-start"} `}>

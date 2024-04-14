@@ -8,14 +8,14 @@ import {
   onSnapshot,
   updateDoc,
 } from "firebase/firestore";
-import Message from "../Message";
+import Message from "./Message";
 import MessageInput from "./MessageInput";
 import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUser";
 import ChatHeader from "./ChatHeader";
 import { Button, Divider } from "@mui/material";
 import isNewDate from "../../utils/isNewDate";
-import getDate from "../../utils/getDate";
+import getDateFromTimestamp from "../../utils/getDateFromTimestamp";
 import Loader from "../Loader";
 import sendMessageToDB from "../../utils/sendMessageToDB";
 
@@ -114,8 +114,6 @@ const Chat = ({ chatDocRef }: Props) => {
           <Loader color="black" />
         ) : (
           sortedMessages.map((m, i, arr) => {
-            console.log(arr[0]);
-
             let newDate =
               Boolean(arr[i + 1]) &&
               Boolean(m.serverTime) &&
@@ -127,7 +125,7 @@ const Chat = ({ chatDocRef }: Props) => {
               <div key={m.id}>
                 {newDate && (
                   <Divider sx={{ marginBottom: "1rem", fontSize: "1.5rem" }}>
-                    {getDate(m.serverTime.seconds)}
+                    {m.serverTime && getDateFromTimestamp(m.serverTime.seconds)}
                   </Divider>
                 )}
                 <Message

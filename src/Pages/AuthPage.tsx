@@ -5,8 +5,8 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import LogInForm from "../Components/LogInForm";
-import RegisterForm from "../Components/RegisterForm";
+import LogInForm from "../Components/Auth/LogInForm";
+import RegisterForm from "../Components/Auth/RegisterForm";
 import { useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUser";
 

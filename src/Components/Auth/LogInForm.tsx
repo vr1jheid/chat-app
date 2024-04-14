@@ -5,11 +5,11 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { auth, db } from "../firebase-config";
+import { auth, db } from "../../firebase-config";
 import { useState } from "react";
 import PasswordInput from "./PasswordInput";
-import createUserInDB from "../utils/createUserInDB";
-import authUser from "../utils/authUser";
+import createUserInDB from "../../utils/createUserInDB";
+import authUser from "../../utils/authUser";
 
 const LogInForm = () => {
   const [email, setEmail] = useState("");

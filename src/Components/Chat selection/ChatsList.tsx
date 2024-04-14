@@ -1,6 +1,6 @@
-import { DialogData } from "../Pages/MainPage";
-import { useAppSelector } from "../redux/hooks";
-import { selectCurrentUser } from "../redux/slices/currentUser";
+import { DialogData } from "../../Pages/MainPage";
+import { useAppSelector } from "../../redux/hooks";
+import { selectCurrentUser } from "../../redux/slices/currentUser";
 import ChatPreview from "./ChatPreview";
 
 interface Props {
