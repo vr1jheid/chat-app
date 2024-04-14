@@ -1,14 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+
 import {
   DocumentData,
   DocumentReference,
   DocumentSnapshot,
   deleteField,
-  getDoc,
   onSnapshot,
-  serverTimestamp,
-  setDoc,
   updateDoc,
 } from "firebase/firestore";
 import Message from "../Message";
@@ -20,6 +17,7 @@ import { Button, Divider } from "@mui/material";
 import isNewDate from "../../utils/isNewDate";
 import getDate from "../../utils/getDate";
 import Loader from "../Loader";
+import sendMessageToDB from "../../utils/sendMessageToDB";
 
 export interface MessageAuthor {
   email: string | null;
@@ -45,42 +43,11 @@ interface Props {
 }
 
 const Chat = ({ chatDocRef }: Props) => {
-  const currentUser = useAppSelector(selectCurrentUser);
   const [messages, setMessages] = useState<MessageData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const currentUser = useAppSelector(selectCurrentUser);
   const scrollable = useRef<HTMLDivElement>(null);
-
-  const sendMessage = async (messageText: string) => {
-    if (!messageText) return;
-
-    const messageId = uuidv4();
-    const messageWithInfo = {
-      [messageId]: {
-        id: messageId,
-        messageText,
-        author: {
-          email: currentUser.email,
-          displayName: currentUser.displayName,
-          avatarURL: currentUser.avatarURL,
-        },
-        serverTime: serverTimestamp(),
-      },
-    };
-
-    const docSnap = await getDoc(chatDocRef);
-
-    /* Создаем документ, если отсутствует */
-    if (!docSnap.exists()) {
-      await setDoc(chatDocRef, { messages: { ...messageWithInfo } });
-      return;
-    }
-
-    /* Добавляем новые сообщения */
-    await updateDoc(chatDocRef, {
-      [`messages.${messageId}`]: Object.values(messageWithInfo)[0],
-    });
-  };
 
   const test = async () => {};
 
@@ -147,11 +114,15 @@ const Chat = ({ chatDocRef }: Props) => {
           <Loader color="black" />
         ) : (
           sortedMessages.map((m, i, arr) => {
+            console.log(arr[0]);
+
             let newDate =
               Boolean(arr[i + 1]) &&
               Boolean(m.serverTime) &&
               isNewDate(m.serverTime.seconds, arr[i + 1].serverTime.seconds);
-
+            if (i === arr.length - 1) {
+              newDate = true;
+            }
             return (
               <div key={m.id}>
                 {newDate && (
@@ -170,7 +141,12 @@ const Chat = ({ chatDocRef }: Props) => {
           })
         )}
       </div>
-      <MessageInput scroll={scrollToBottom} sendMessage={sendMessage} />
+      <MessageInput
+        scroll={scrollToBottom}
+        sendMessage={(messageText) => {
+          sendMessageToDB(messageText, chatDocRef, currentUser);
+        }}
+      />
       <Button onClick={test}>Test</Button>
     </div>
   );

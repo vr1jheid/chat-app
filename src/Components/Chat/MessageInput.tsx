@@ -3,7 +3,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { useState } from "react";
 
 interface Props {
-  sendMessage: (messageText: string) => Promise<void>;
+  sendMessage: (messageText: string) => void;
   scroll: () => void;
 }
 
