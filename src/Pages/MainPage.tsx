@@ -8,7 +8,6 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import Chat from "../Components/Chat/Chat";
 import ChatsList from "../Components/ChatsList";
 import { db } from "../firebase-config";
 import { useEffect, useState } from "react";
@@ -16,6 +15,7 @@ import { useAppSelector } from "../redux/hooks";
 import { selectDialogPartner } from "../redux/slices/dialogPartner";
 import { selectCurrentUser } from "../redux/slices/currentUser";
 import SearchUser from "../Components/SearchUser";
+import Chat from "../Components/Chat/Chat";
 
 export interface DialogData {
   chatDocRef: DocumentReference<DocumentData, DocumentData>;

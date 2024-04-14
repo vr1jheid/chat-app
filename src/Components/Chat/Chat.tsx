@@ -5,7 +5,6 @@ import {
   DocumentReference,
   DocumentSnapshot,
   deleteField,
-  doc,
   getDoc,
   onSnapshot,
   serverTimestamp,
@@ -17,11 +16,10 @@ import MessageInput from "./MessageInput";
 import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUser";
 import ChatHeader from "./ChatHeader";
-import { selectDialogPartner } from "../../redux/slices/dialogPartner";
 import { Button, Divider } from "@mui/material";
 import isNewDate from "../../utils/isNewDate";
 import getDate from "../../utils/getDate";
-import { db } from "../../firebase-config";
+import Loader from "../Loader";
 
 export interface MessageAuthor {
   email: string | null;
@@ -49,6 +47,7 @@ interface Props {
 const Chat = ({ chatDocRef }: Props) => {
   const currentUser = useAppSelector(selectCurrentUser);
   const [messages, setMessages] = useState<MessageData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const scrollable = useRef<HTMLDivElement>(null);
 
@@ -97,38 +96,34 @@ const Chat = ({ chatDocRef }: Props) => {
   const subOnChanges = () => {
     const displayData = (doc: DocumentSnapshot<DocumentData, DocumentData>) => {
       if (doc.metadata.hasPendingWrites) {
-        /*
-          Данные пока добавлены только локально. Можно как-то их пометить. Сделано!
-         */
         console.log("local data");
-        /* return; */
-      }
-
-      if (!doc.exists()) {
-        setMessages([]);
-        return;
       }
 
       const resp = doc.data();
-      /* На случай пустого документа */
-      if (!resp.messages) {
+      /* Документ отсутсвует или нет поля с сообщениями */
+      if (!doc.exists() || !resp?.messages) {
+        console.log("here");
         setMessages([]);
+        setIsLoading(false);
         return;
       }
 
       const messages = Object.values(resp.messages) as MessageData[];
       console.log("Current data: ", resp);
       setMessages(messages);
+      setIsLoading(false);
     };
 
-    /* const ref = doc(db, "mainChat", "messages"); */
     const unsub = onSnapshot(chatDocRef, displayData);
     return unsub;
   };
 
   useEffect(() => {
     const unsub = subOnChanges();
-    return unsub;
+    return () => {
+      setIsLoading(true);
+      unsub();
+    };
   }, [chatDocRef]);
 
   const scrollToBottom = () => {
@@ -137,9 +132,7 @@ const Chat = ({ chatDocRef }: Props) => {
   };
 
   const sortedMessages = messages.sort((a, b) => {
-    if (!a.serverTime) {
-      return -1;
-    }
+    if (!a.serverTime) return -1;
     return b.serverTime.seconds - a.serverTime.seconds;
   });
 
@@ -148,14 +141,12 @@ const Chat = ({ chatDocRef }: Props) => {
       <ChatHeader />
       <div
         ref={scrollable}
-        className="p-4  grow w-full flex flex-col-reverse gap-4 overflow-y-auto"
+        className="p-4  grow w-full flex flex-col-reverse gap-4 overflow-y-auto relative"
       >
-        {sortedMessages.length &&
+        {isLoading ? (
+          <Loader color="black" />
+        ) : (
           sortedMessages.map((m, i, arr) => {
-            /*
-              Для последнего эл-та i+1 даст ошибку, поэтому добавлена проверка на его существование
-            */
-
             let newDate =
               Boolean(arr[i + 1]) &&
               Boolean(m.serverTime) &&
@@ -176,7 +167,8 @@ const Chat = ({ chatDocRef }: Props) => {
                 />
               </div>
             );
-          })}
+          })
+        )}
       </div>
       <MessageInput scroll={scrollToBottom} sendMessage={sendMessage} />
       <Button onClick={test}>Test</Button>

@@ -3,11 +3,6 @@ import renderAvatar from "../../utils/renderAvatar";
 import { useAppSelector } from "../../redux/hooks";
 import { selectDialogPartner } from "../../redux/slices/dialogPartner";
 
-interface Props {
-  chatName: string;
-  chatIcon: string | null;
-}
-
 const ChatHeader = () => {
   console.log("chat header rerender");
   const { email, displayName, avatarURL } = useAppSelector(selectDialogPartner);

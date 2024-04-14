@@ -1,19 +1,18 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "@firebase/firestore";
-import { User, getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { currentUserState } from "./redux/slices/currentUser";
 import createUserData from "./utils/createUserData";
-import { getDatabase } from "firebase/database";
 console.log("Firebase initialized");
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCRJS5o3pH2nEJC5GMZc4Ng-fejgKO1Eik",
-  authDomain: "my-test-project-c16e1.firebaseapp.com",
-  projectId: "my-test-project-c16e1",
-  storageBucket: "my-test-project-c16e1.appspot.com",
-  messagingSenderId: "1049999159587",
-  appId: "1:1049999159587:web:0f9faba39f03411b98dc96",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase
@@ -29,7 +28,7 @@ export const activateUserObserver = (onChange: Dispatcher) => {
     if (user) {
       const userData = createUserData(user);
       onChange({ ...userData, isLoaded: true });
-      console.log("user from watcher", user);
+      /*       console.log("user from watcher", user); */
     } else {
       onChange(null);
       console.log("Нет юзера");

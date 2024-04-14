@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { UserDataDB } from "../utils/createUserData";
 import getUserFromDB from "../utils/getUserFromDB";
 import renderAvatar from "../utils/renderAvatar";
