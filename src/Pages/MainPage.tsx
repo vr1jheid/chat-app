@@ -18,51 +18,26 @@ import { selectDialogPartner } from "../redux/slices/dialogPartner";
 import { selectCurrentUser } from "../redux/slices/currentUser";
 import SearchUser from "../Components/Chat selection/SearchUser";
 import Chat from "../Components/Chat/Chat";
+import { useUserChats } from "../Components/Hooks/useUserChats";
 
-export interface DialogData {
+export interface ChatData {
   chatDocRef: DocumentReference<DocumentData, DocumentData>;
   members: string[];
   show: boolean;
 }
 
+export interface ChatsState {
+  [key: string]: ChatData;
+}
+
 const MainPage = () => {
-  const [dialogs, setDialogs] = useState<DialogData[]>([]);
+  const [chats, setChats] = useUserChats();
   const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
   const { email: dialogPartnerEmail } = useAppSelector(selectDialogPartner);
-  /*   console.log(dialogPartnerEmail); */
 
   const [chatDocRef, setChatDocRef] = useState<
     DocumentReference<DocumentData, DocumentData>
   >(doc(db, "chats/mainChat"));
-
-  useEffect(() => {
-    /* Получем все диалоги пользователя */
-    const getUserDialogs = async () => {
-      const q = query(
-        collection(db, "chats"),
-        where("chatInfo.members", "array-contains", currentUserEmail)
-      );
-      const querySnaphot = await getDocs(q);
-      const dialogs: DialogData[] = [];
-      querySnaphot.forEach((snapshotDoc) => {
-        const docData = snapshotDoc.data();
-        console.log(docData);
-
-        const { members } = docData.chatInfo;
-        const chatDocRef = doc(db, `chats/${snapshotDoc.id}`);
-
-        console.log(docData.messages);
-
-        dialogs.push({
-          chatDocRef,
-          members,
-          show: Boolean(docData.messages),
-        });
-      });
-      setDialogs(dialogs);
-    };
-    getUserDialogs();
-  }, []);
 
   useEffect(() => {
     /*
@@ -72,7 +47,7 @@ const MainPage = () => {
       return;
     }
 
-    const docRefFromDialogs = dialogs.find((d) =>
+    const docRefFromDialogs = Object.values(chats).find((d) =>
       d.members.includes(dialogPartnerEmail)
     );
 
@@ -90,19 +65,18 @@ const MainPage = () => {
         },
       });
       setChatDocRef(newChatDocRef);
-      setDialogs([
-        ...dialogs,
-        {
-          chatDocRef: newChatDocRef,
-          members: [currentUserEmail!, dialogPartnerEmail],
-          show: false,
-        },
-      ]);
+      chats[newChatDocRef.id] = {
+        chatDocRef: newChatDocRef,
+        members: [currentUserEmail!, dialogPartnerEmail],
+        show: false,
+      };
+
+      setChats(chats);
     };
     createNewChatDoc();
   }, [dialogPartnerEmail]);
 
-  const observeFirstMessage = () => {
+  /*   const observeFirstMessage = () => {
     const firstMessageObserver = (
       doc: DocumentSnapshot<DocumentData, DocumentData>
     ) => {
@@ -124,18 +98,18 @@ const MainPage = () => {
     };
     const unsub = onSnapshot(chatDocRef, firstMessageObserver);
     return unsub;
-  };
+  }; */
 
-  useEffect(() => {
+  /*   useEffect(() => {
     const unsub = observeFirstMessage();
     return unsub;
-  }, [chatDocRef]);
+  }, [chatDocRef]); */
 
   return (
     <div className="grow max-h-screen flex pt-[82px]">
       <div className="w-[35%] p-3 flex flex-col gap-5">
         <SearchUser />
-        <ChatsList dialogs={dialogs.filter((d) => d.show)} />
+        <ChatsList dialogs={Object.values(chats).filter((d) => d.show)} />
       </div>
 
       <Chat chatDocRef={chatDocRef} />
