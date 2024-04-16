@@ -35,7 +35,6 @@ export interface MessageData {
   messageText: string;
   author: MessageAuthor;
   serverTime: Timestamp;
-  tracked: boolean;
 }
 
 interface Props {

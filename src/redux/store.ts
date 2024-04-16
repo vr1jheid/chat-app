@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import currenUserReducer from "./slices/currentUser";
 import dialogPartnerReducer from "./slices/dialogPartner";
+import chatsReducer from "./slices/chats";
 
 const store = configureStore({
   reducer: {
     currentUser: currenUserReducer,
     dialogPartner: dialogPartnerReducer,
+    chats: chatsReducer,
   },
 });
 
