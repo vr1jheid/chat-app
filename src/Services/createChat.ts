@@ -1,20 +1,23 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { db } from "../firebase-config";
+import { ChatData, ChatTypes } from "../Components/Types/chatTypes";
 
 export const createChat = createAsyncThunk(
   "chats/createChat",
   async (members: string[]) => {
-    const newChatDoc = await addDoc(collection(db, "chats"), {
-      chatInfo: {
-        members,
-      },
-    });
-    const toState = {
-      [newChatDoc.id]: {
-        members,
-      },
+    console.log("here");
+
+    const newChatDoc = await addDoc(collection(db, "chats"), {});
+
+    const chatInitialData: ChatData = {
+      id: newChatDoc.id,
+      members,
+      type: members.length > 2 ? ChatTypes.group : ChatTypes.dialog,
     };
-    return { ...toState };
+
+    await updateDoc(newChatDoc, { ...chatInitialData });
+
+    return chatInitialData;
   }
 );

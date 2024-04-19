@@ -1,38 +1,59 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { DocumentData, DocumentReference } from "firebase/firestore";
-import { MessageData } from "../../Components/Chat/Chat";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { fetchChats } from "../../Services/fetchChats";
 import { createChat } from "../../Services/createChat";
+import { ChatData } from "../../Components/Types/chatTypes";
 
-export interface ChatData {
-  members: string[];
-  lastMessage?: MessageData;
-}
-
-export interface ChatsState {
+export interface AllUserChats {
   [key: string]: ChatData;
 }
 
-const initialState: ChatsState = {};
+export interface ChatsState {
+  allChats: AllUserChats;
+  activeChat: ChatData;
+}
+
+const initialState: ChatsState = {
+  allChats: {},
+  activeChat: {
+    id: "",
+    members: [],
+    type: null,
+  },
+};
 
 const chatsSlice = createSlice({
   name: "chats",
   initialState,
   selectors: {
-    selectAllChats: (state) => state,
+    selectAllChats: (state) => state.allChats,
+    selectActiveChat: (state) => state.activeChat,
   },
-  reducers: {},
+  reducers: {
+    setActive: (state, action: PayloadAction<string>) => {
+      const newActiveChat = Object.values(state.allChats).find(
+        (c) => c.id === action.payload
+      );
+      if (newActiveChat) {
+        state.activeChat = newActiveChat;
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchChats.fulfilled, (state, action) => {
-        console.log(action.payload);
-        return action.payload;
+        state.allChats = action.payload;
       })
       .addCase(createChat.fulfilled, (state, action) => {
-        return { ...state, ...action.payload };
+        console.log(action.payload);
+        const newChat = action.payload;
+        state.allChats = { ...state.allChats, ...{ [newChat.id]: newChat } };
+        state.activeChat = newChat;
       });
   },
 });
 
-export const { selectAllChats } = chatsSlice.selectors;
+export const { selectAllChats, selectActiveChat } = chatsSlice.selectors;
+
+export const { setActive } = chatsSlice.actions;
+
 export default chatsSlice.reducer;

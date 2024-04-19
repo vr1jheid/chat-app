@@ -30,7 +30,7 @@ function App() {
     /*
       Новый user берется из auth данных, а существующий из БД
     */
-    const userFromDB = await getUserFromDB(userFromAuth.email!);
+    const userFromDB = await getUserFromDB(userFromAuth.email);
 
     /*     const userRefDB = doc(db, `users/${userFromAuth.email}`);
     const docSnap = await getDoc(userRefDB); */

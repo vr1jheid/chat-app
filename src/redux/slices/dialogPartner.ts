@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { UserDataDB } from "../../utils/createUserData";
+import { UserDataDB } from "../../Components/Types/userTypes";
 
 const initialState: UserDataDB = {
   uid: "",
@@ -9,11 +9,6 @@ const initialState: UserDataDB = {
   emailVerified: false,
 };
 
-interface SetDialogPartnerAction {
-  type: string;
-  payload: UserDataDB;
-}
-
 const dialogPartnerSlice = createSlice({
   name: "dialogPartner",
   initialState,
@@ -21,7 +16,7 @@ const dialogPartnerSlice = createSlice({
     selectDialogPartner: (state) => state,
   },
   reducers: {
-    setDialogPartner: (state, action: SetDialogPartnerAction) => {
+    setDialogPartner: (state, action) => {
       return action.payload;
     },
     clearDialogPartner: () => {

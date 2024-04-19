@@ -1,8 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, where, getDocs, doc, query } from "firebase/firestore";
+import { collection, where, getDocs, query } from "firebase/firestore";
 import { db } from "../firebase-config";
-import { ChatData, ChatsState } from "../redux/slices/chats";
+import { AllUserChats } from "../redux/slices/chats";
 import { convertServerTimestamp } from "../utils/convertServerTimestamp";
+import { ChatData } from "../Components/Types/chatTypes";
 
 export const fetchChats = createAsyncThunk(
   "chats/fetchChats",
@@ -11,17 +12,20 @@ export const fetchChats = createAsyncThunk(
 
     const q = query(
       collection(db, "chats"),
-      where("chatInfo.members", "array-contains", userEmail)
+      where("members", "array-contains", userEmail)
     );
 
     const querySnaphot = await getDocs(q);
-    const chatsFromDB: ChatsState = {};
+    const chatsFromDB: AllUserChats = {};
 
     querySnaphot.forEach((snapshotDoc) => {
       const docData = snapshotDoc.data();
-      const { members, lastMessage } = docData.chatInfo;
+      const { members, lastMessage, type } = docData;
+
       const chatData: ChatData = {
+        id: snapshotDoc.id,
         members,
+        type,
       };
 
       if (lastMessage) {

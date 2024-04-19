@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { UserDataDB } from "../../utils/createUserData";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { UserDataDB } from "../../Components/Types/userTypes";
 
 export interface currentUserState extends UserDataDB {
   isLoaded: boolean;
@@ -14,16 +14,6 @@ const initialState: currentUserState = {
   isLoaded: false,
 };
 
-interface SetUserAction {
-  type: string;
-  payload: currentUserState;
-}
-
-interface SetIsLoadedAction {
-  type: string;
-  payload: boolean;
-}
-
 const currentUserSlice = createSlice({
   name: "currentUser",
   initialState,
@@ -31,13 +21,13 @@ const currentUserSlice = createSlice({
     selectCurrentUser: (state) => state,
   },
   reducers: {
-    setUser: (state, action: SetUserAction) => {
+    setUser: (state, action: PayloadAction<currentUserState>) => {
       return action.payload;
     },
     clearUser: () => {
       return { ...initialState, isLoaded: true };
     },
-    setIsLoaded: (state, action: SetIsLoadedAction) => {
+    setIsLoaded: (state, action: PayloadAction<boolean>) => {
       state.isLoaded = action.payload;
     },
   },

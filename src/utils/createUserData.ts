@@ -1,13 +1,5 @@
 import { User } from "firebase/auth";
-import { currentUserState } from "../redux/slices/currentUser";
-
-export interface UserDataDB {
-  uid: string;
-  email: string | null;
-  displayName: string | null;
-  avatarURL: string | null;
-  emailVerified: boolean;
-}
+import { UserDataDB } from "../Components/Types/userTypes";
 
 type UserDataCreator = (user: User) => UserDataDB;
 

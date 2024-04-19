@@ -4,8 +4,13 @@ import {
   DocumentData,
   DocumentReference,
   DocumentSnapshot,
+  collection,
   deleteField,
+  doc,
+  limit,
   onSnapshot,
+  orderBy,
+  query,
   updateDoc,
 } from "firebase/firestore";
 import Message from "./Message";
@@ -18,6 +23,8 @@ import isNewDate from "../../utils/isNewDate";
 import getDateFromTimestamp from "../../utils/getDateFromTimestamp";
 import Loader from "../Loader";
 import sendMessageToDB from "../../utils/sendMessageToDB";
+import { db } from "../../firebase-config";
+import { selectActiveChat } from "../../redux/slices/chats";
 
 export interface MessageAuthor {
   email: string | null;
@@ -37,16 +44,22 @@ export interface MessageData {
   serverTime: Timestamp;
 }
 
-interface Props {
-  chatDocRef: DocumentReference<DocumentData, DocumentData>;
-}
-
-const Chat = ({ chatDocRef }: Props) => {
+const Chat = () => {
+  const [chatDocRef, setChatDocRef] = useState<DocumentReference>(
+    doc(db, "chats/mainChat")
+  );
   const [messages, setMessages] = useState<MessageData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const currentUser = useAppSelector(selectCurrentUser);
+  const { id: activeChatID } = useAppSelector(selectActiveChat);
   const scrollable = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!activeChatID) return;
+    const newChatDocRef = doc(db, `chats/${activeChatID}`);
+    setChatDocRef(newChatDocRef);
+  }, [activeChatID]);
 
   const test = async () => {};
 
@@ -79,6 +92,10 @@ const Chat = ({ chatDocRef }: Props) => {
       setIsLoading(false);
     };
 
+    /*     const q = query(collection(db, "chats"));
+    const unsub = onSnapshot(q, (querySnapshot) => {
+      querySnapshot.forEach((doc) => console.log(doc.id));
+    }); */
     const unsub = onSnapshot(chatDocRef, displayData);
     return unsub;
   };
