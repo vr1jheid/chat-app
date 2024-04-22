@@ -5,7 +5,7 @@ export enum ChatTypes {
   group = "group",
 }
 
-export interface ChatData {
+export interface ChatDataDB {
   id: string;
   members: string[];
   lastMessage?: MessageData;

@@ -3,19 +3,16 @@ import { useEffect, useRef, useState } from "react";
 import {
   DocumentData,
   DocumentReference,
-  DocumentSnapshot,
   collection,
   deleteField,
   doc,
-  limit,
   onSnapshot,
-  orderBy,
   query,
   updateDoc,
 } from "firebase/firestore";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUser";
 import ChatHeader from "./ChatHeader";
 import { Button, Divider } from "@mui/material";
@@ -24,7 +21,12 @@ import getDateFromTimestamp from "../../utils/getDateFromTimestamp";
 import Loader from "../Loader";
 import sendMessageToDB from "../../utils/sendMessageToDB";
 import { db } from "../../firebase-config";
-import { selectActiveChat } from "../../redux/slices/chats";
+import {
+  addMessage,
+  selectActiveChat,
+  setMessages,
+} from "../../redux/slices/chats";
+import { convertServerTimestamp } from "../../utils/convertServerTimestamp";
 
 export interface MessageAuthor {
   email: string | null;
@@ -45,14 +47,17 @@ export interface MessageData {
 }
 
 const Chat = () => {
+  const dispatch = useAppDispatch();
+  const { id: activeChatID } = useAppSelector(selectActiveChat);
+  const { messages } = useAppSelector(selectActiveChat);
   const [chatDocRef, setChatDocRef] = useState<DocumentReference>(
-    doc(db, "chats/mainChat")
+    doc(db, `chats/${activeChatID}`)
   );
-  const [messages, setMessages] = useState<MessageData[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  /*   const [messages, setMessages] = useState<MessageData[]>([]); */
+  /*   const [isLoading, setIsLoading] = useState(true); */
 
   const currentUser = useAppSelector(selectCurrentUser);
-  const { id: activeChatID } = useAppSelector(selectActiveChat);
+
   const scrollable = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -73,50 +78,69 @@ const Chat = () => {
   };
 
   const subOnChanges = () => {
-    const displayData = (doc: DocumentSnapshot<DocumentData, DocumentData>) => {
-      if (doc.metadata.hasPendingWrites) {
-        console.log("local data");
+    const q = query(collection(db, `chats/${activeChatID}/messages`));
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      console.log(messages);
+
+      if (querySnapshot.metadata.hasPendingWrites) return;
+
+      const messagesFromDB: MessageData[] = [];
+      console.log("messages created");
+
+      querySnapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          /*           console.log("new message", change.type, change.doc.data()); */
+          const message = change.doc.data() as MessageData;
+          messagesFromDB.push({
+            ...message,
+            serverTime: convertServerTimestamp(message.serverTime),
+          });
+        }
+        if (change.type === "modified") {
+          console.log("new message", change.type, change.doc.data());
+
+          const message = change.doc.data() as MessageData;
+
+          dispatch(
+            addMessage({
+              ...message,
+              serverTime: convertServerTimestamp(message.serverTime),
+            })
+          );
+        }
+      });
+
+      if (messagesFromDB.length) {
+        dispatch(
+          setMessages(
+            messagesFromDB.sort((a, b) => {
+              if (!a.serverTime) return -1;
+              return b.serverTime.seconds - a.serverTime.seconds;
+            })
+          )
+        );
+        /*         setMessages([...messages, ...messagesFromDB]); */
       }
+    });
 
-      const docData = doc.data();
-      /* Документ отсутсвует или нет поля с сообщениями */
-      if (!doc.exists() || !docData?.messages) {
-        setMessages([]);
-        setIsLoading(false);
-        return;
-      }
-
-      const messages = Object.values(docData.messages) as MessageData[];
-      console.log("Current data: ", docData);
-      setMessages(messages);
-      setIsLoading(false);
-    };
-
-    /*     const q = query(collection(db, "chats"));
-    const unsub = onSnapshot(q, (querySnapshot) => {
-      querySnapshot.forEach((doc) => console.log(doc.id));
-    }); */
-    const unsub = onSnapshot(chatDocRef, displayData);
-    return unsub;
+    return unsubscribe;
   };
 
   useEffect(() => {
     const unsub = subOnChanges();
-    return () => {
-      setIsLoading(true);
-      unsub();
-    };
-  }, [chatDocRef]);
+    return unsub;
+  }, [activeChatID]);
 
   const scrollToBottom = () => {
     const node = scrollable.current;
     node?.scrollTo(0, node.scrollHeight);
   };
 
-  const sortedMessages = messages.sort((a, b) => {
+  const sortedMessages = messages; /* .sort((a, b) => {
     if (!a.serverTime) return -1;
     return b.serverTime.seconds - a.serverTime.seconds;
-  });
+  }) */
 
   return (
     <div className="pb-5 w-full grow mx-auto bg-slate-100 flex items-center flex-col overflow-y-auto">
@@ -125,7 +149,7 @@ const Chat = () => {
         ref={scrollable}
         className="p-4  grow w-full flex flex-col-reverse gap-4 overflow-y-auto relative"
       >
-        {isLoading ? (
+        {false ? (
           <Loader color="black" />
         ) : (
           sortedMessages.map((m, i, arr) => {
@@ -157,7 +181,7 @@ const Chat = () => {
       <MessageInput
         scroll={scrollToBottom}
         sendMessage={(messageText) => {
-          sendMessageToDB(messageText, chatDocRef, currentUser);
+          sendMessageToDB(messageText, activeChatID, currentUser);
         }}
       />
       <Button onClick={test}>Test</Button>

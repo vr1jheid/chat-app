@@ -1,53 +1,46 @@
 import {
-  DocumentReference,
-  DocumentData,
   serverTimestamp,
-  getDoc,
-  setDoc,
   updateDoc,
+  addDoc,
+  collection,
+  doc,
 } from "firebase/firestore";
-import { v4 as uuidv4 } from "uuid";
 import { MessageAuthor } from "../Components/Chat/Chat";
+import { db } from "../firebase-config";
 
-type MessageSender = (
+type SendMessageToDB = (
   messageText: string,
-  chatDocRef: DocumentReference<DocumentData, DocumentData>,
+  chatID: string,
   author: MessageAuthor
 ) => Promise<void>;
 
-const sendMessageToDB: MessageSender = async (
+const sendMessageToDB: SendMessageToDB = async (
   messageText,
-  chatDocRef,
+  chatID,
   author
 ) => {
   if (!messageText) return;
 
-  const messageId = uuidv4();
+  const messageDocRef = await addDoc(
+    collection(db, `chats/${chatID}/messages`),
+    {}
+  );
+  const chatDocRef = doc(db, `chats/${chatID}`);
+
   const messageWithInfo = {
-    [messageId]: {
-      id: messageId,
-      messageText,
-      author: {
-        email: author.email,
-        displayName: author.displayName,
-        avatarURL: author.avatarURL,
-      },
-      serverTime: serverTimestamp(),
+    id: messageDocRef.id,
+    messageText,
+    author: {
+      email: author.email,
+      displayName: author.displayName,
+      avatarURL: author.avatarURL,
     },
+    serverTime: serverTimestamp(),
   };
-  const messageObjToSend = Object.values(messageWithInfo)[0];
-  const docSnap = await getDoc(chatDocRef);
 
-  /* Создаем документ, если отсутствует */
-  if (!docSnap.exists()) {
-    await setDoc(chatDocRef, { messages: { ...messageWithInfo } });
-    return;
-  }
-
-  /* Добавляем новые сообщения */
+  await updateDoc(messageDocRef, { ...messageWithInfo });
   await updateDoc(chatDocRef, {
-    [`chatInfo.lastMessage`]: messageObjToSend,
-    [`messages.${messageId}`]: messageObjToSend,
+    "chatInfo.lastMessage": messageWithInfo,
   });
 };
 

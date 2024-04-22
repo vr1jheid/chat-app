@@ -1,23 +1,29 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { fetchChats } from "../../Services/fetchChats";
 import { createChat } from "../../Services/createChat";
-import { ChatData } from "../../Components/Types/chatTypes";
+import { ChatDataDB, ChatTypes } from "../../Components/Types/chatTypes";
+import { MessageData } from "../../Components/Chat/Chat";
 
 export interface AllUserChats {
-  [key: string]: ChatData;
+  [key: string]: ChatDataDB;
+}
+
+export interface LocalChatData extends ChatDataDB {
+  messages: MessageData[];
 }
 
 export interface ChatsState {
   allChats: AllUserChats;
-  activeChat: ChatData;
+  activeChat: LocalChatData;
 }
 
 const initialState: ChatsState = {
   allChats: {},
   activeChat: {
-    id: "",
+    id: "mainChat",
     members: [],
-    type: null,
+    type: ChatTypes.group,
+    messages: [],
   },
 };
 
@@ -34,8 +40,14 @@ const chatsSlice = createSlice({
         (c) => c.id === action.payload
       );
       if (newActiveChat) {
-        state.activeChat = newActiveChat;
+        state.activeChat = { ...newActiveChat, messages: [] };
       }
+    },
+    setMessages: (state, action: PayloadAction<MessageData[]>) => {
+      state.activeChat.messages = action.payload;
+    },
+    addMessage: (state, action: PayloadAction<MessageData>) => {
+      state.activeChat.messages.unshift(action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -54,6 +66,6 @@ const chatsSlice = createSlice({
 
 export const { selectAllChats, selectActiveChat } = chatsSlice.selectors;
 
-export const { setActive } = chatsSlice.actions;
+export const { setActive, setMessages, addMessage } = chatsSlice.actions;
 
 export default chatsSlice.reducer;
