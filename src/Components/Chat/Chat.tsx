@@ -4,6 +4,7 @@ import {
   DocumentData,
   DocumentReference,
   collection,
+  deleteDoc,
   deleteField,
   doc,
   onSnapshot,
@@ -43,7 +44,7 @@ export interface MessageData {
   id: string;
   messageText: string;
   author: MessageAuthor;
-  serverTime: Timestamp;
+  serverTime: Timestamp | null;
 }
 
 const Chat = () => {
@@ -53,11 +54,8 @@ const Chat = () => {
   const [chatDocRef, setChatDocRef] = useState<DocumentReference>(
     doc(db, `chats/${activeChatID}`)
   );
-  /*   const [messages, setMessages] = useState<MessageData[]>([]); */
-  /*   const [isLoading, setIsLoading] = useState(true); */
 
   const currentUser = useAppSelector(selectCurrentUser);
-
   const scrollable = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -68,59 +66,50 @@ const Chat = () => {
 
   const test = async () => {};
 
-  const deleteMessage = async (
-    chatRef: DocumentReference<DocumentData, DocumentData>,
-    messageId: string
-  ) => {
-    await updateDoc(chatRef, {
-      [`messages.${messageId}`]: deleteField(),
-    });
+  const deleteMessage = async (chatID: string, messageID: string) => {
+    await deleteDoc(doc(db, `chats/${chatID}/messages/${messageID}`));
   };
 
   const subOnChanges = () => {
     const q = query(collection(db, `chats/${activeChatID}/messages`));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      console.log(messages);
-
-      if (querySnapshot.metadata.hasPendingWrites) return;
-
-      const messagesFromDB: MessageData[] = [];
-      console.log("messages created");
+      /*     if (querySnapshot.metadata.hasPendingWrites) return; */
+      const initMessages: MessageData[] = [];
 
       querySnapshot.docChanges().forEach((change) => {
+        const message = change.doc.data() as MessageData;
+        console.log(message);
+
+        if (!message.id) return;
+
+        const validMessage = {
+          ...message,
+          serverTime: convertServerTimestamp(message.serverTime),
+        };
+
         if (change.type === "added") {
+          console.log("added");
+
           /*           console.log("new message", change.type, change.doc.data()); */
-          const message = change.doc.data() as MessageData;
-          messagesFromDB.push({
-            ...message,
-            serverTime: convertServerTimestamp(message.serverTime),
-          });
+          initMessages.push(validMessage);
         }
         if (change.type === "modified") {
-          console.log("new message", change.type, change.doc.data());
+          console.log("modi");
 
-          const message = change.doc.data() as MessageData;
-
-          dispatch(
-            addMessage({
-              ...message,
-              serverTime: convertServerTimestamp(message.serverTime),
-            })
-          );
+          dispatch(addMessage(validMessage));
         }
       });
 
-      if (messagesFromDB.length) {
+      if (initMessages.length) {
         dispatch(
           setMessages(
-            messagesFromDB.sort((a, b) => {
+            initMessages.sort((a, b) => {
               if (!a.serverTime) return -1;
               return b.serverTime.seconds - a.serverTime.seconds;
             })
           )
         );
-        /*         setMessages([...messages, ...messagesFromDB]); */
       }
     });
 
@@ -156,7 +145,7 @@ const Chat = () => {
             let newDate =
               Boolean(arr[i + 1]) &&
               Boolean(m.serverTime) &&
-              isNewDate(m.serverTime.seconds, arr[i + 1].serverTime.seconds);
+              isNewDate(m.serverTime?.seconds, arr[i + 1].serverTime?.seconds);
             if (i === arr.length - 1) {
               newDate = true;
             }
@@ -171,7 +160,7 @@ const Chat = () => {
                   author={m.author}
                   text={m.messageText}
                   timestamp={m.serverTime}
-                  deleteMessage={() => deleteMessage(chatDocRef, m.id)}
+                  deleteMessage={() => deleteMessage(activeChatID, m.id)}
                 />
               </div>
             );

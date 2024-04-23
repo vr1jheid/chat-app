@@ -8,8 +8,6 @@ import { ChatDataDB } from "../Components/Types/chatTypes";
 export const fetchChats = createAsyncThunk(
   "chats/fetchChats",
   async (userEmail: string) => {
-    console.log("fetchChats");
-
     const q = query(
       collection(db, "chats"),
       where("members", "array-contains", userEmail)
@@ -27,7 +25,6 @@ export const fetchChats = createAsyncThunk(
         members,
         type,
       };
-      console.log(docData);
 
       if (lastMessage) {
         chatData.lastMessage = {

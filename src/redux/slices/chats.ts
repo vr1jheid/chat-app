@@ -42,11 +42,11 @@ const chatsSlice = createSlice({
       if (!newActiveChat) return;
       state.activeChat = { ...newActiveChat, messages: [] };
     },
-    setMessages: (state, action: PayloadAction<MessageData[]>) => {
-      state.activeChat.messages = action.payload;
+    setMessages: ({ activeChat }, action: PayloadAction<MessageData[]>) => {
+      activeChat.messages = action.payload;
     },
-    addMessage: (state, action: PayloadAction<MessageData>) => {
-      state.activeChat.messages.unshift(action.payload);
+    addMessage: ({ activeChat }, action: PayloadAction<MessageData>) => {
+      activeChat.messages.unshift(action.payload);
     },
     clearChatsState: () => {
       return initialState;

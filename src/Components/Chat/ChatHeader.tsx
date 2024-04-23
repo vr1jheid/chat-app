@@ -11,13 +11,6 @@ const ChatHeader = () => {
   const activeChat = useAppSelector(selectActiveChat);
   const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
 
-  const chatName =
-    activeChat.type === ChatTypes.dialog
-      ? activeChat.members.find((m) => m !== currentUserEmail)!
-      : activeChat.id;
-
-  /* const avatarURL = activeChat.type === ChatTypes.dialog ? */
-
   useEffect(() => {
     const setHeader = async () => {
       if (activeChat.type === ChatTypes.group) {
@@ -41,7 +34,7 @@ const ChatHeader = () => {
 
   return (
     <header className="flex w-full items-center justify-center gap-4 text-3xl p-2 bg-slate-600 text-white">
-      {chatName}
+      {headerData.chatName}
       {renderAvatar(headerData.chatName, headerData.avatarURL)}{" "}
     </header>
   );
