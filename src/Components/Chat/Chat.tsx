@@ -104,10 +104,9 @@ const Chat = () => {
       if (initMessages.length) {
         dispatch(
           setMessages(
-            initMessages.sort((a, b) => {
-              if (!a.serverTime) return -1;
-              return b.serverTime.seconds - a.serverTime.seconds;
-            })
+            initMessages.sort(
+              (a, b) => b.serverTime!.seconds! - a.serverTime!.seconds
+            )
           )
         );
       }

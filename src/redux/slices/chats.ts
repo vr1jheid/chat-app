@@ -46,6 +46,14 @@ const chatsSlice = createSlice({
       activeChat.messages = action.payload;
     },
     addMessage: ({ activeChat }, action: PayloadAction<MessageData>) => {
+      const existableMsgIndex = activeChat.messages.findIndex(
+        (m) => m.id === action.payload.id
+      );
+      if (existableMsgIndex !== -1) {
+        activeChat.messages[existableMsgIndex] = action.payload;
+        return;
+      }
+
       activeChat.messages.unshift(action.payload);
     },
     clearChatsState: () => {
