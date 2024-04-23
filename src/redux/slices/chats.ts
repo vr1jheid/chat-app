@@ -39,15 +39,17 @@ const chatsSlice = createSlice({
       const newActiveChat = Object.values(state.allChats).find(
         (c) => c.id === action.payload
       );
-      if (newActiveChat) {
-        state.activeChat = { ...newActiveChat, messages: [] };
-      }
+      if (!newActiveChat) return;
+      state.activeChat = { ...newActiveChat, messages: [] };
     },
     setMessages: (state, action: PayloadAction<MessageData[]>) => {
       state.activeChat.messages = action.payload;
     },
     addMessage: (state, action: PayloadAction<MessageData>) => {
       state.activeChat.messages.unshift(action.payload);
+    },
+    clearChatsState: () => {
+      return initialState;
     },
   },
   extraReducers: (builder) => {
@@ -59,13 +61,14 @@ const chatsSlice = createSlice({
         console.log(action.payload);
         const newChat = action.payload;
         state.allChats = { ...state.allChats, ...{ [newChat.id]: newChat } };
-        state.activeChat = newChat;
+        state.activeChat = { ...newChat, messages: [] };
       });
   },
 });
 
 export const { selectAllChats, selectActiveChat } = chatsSlice.selectors;
 
-export const { setActive, setMessages, addMessage } = chatsSlice.actions;
+export const { setActive, setMessages, addMessage, clearChatsState } =
+  chatsSlice.actions;
 
 export default chatsSlice.reducer;

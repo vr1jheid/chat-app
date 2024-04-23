@@ -40,7 +40,7 @@ const sendMessageToDB: SendMessageToDB = async (
 
   await updateDoc(messageDocRef, { ...messageWithInfo });
   await updateDoc(chatDocRef, {
-    "chatInfo.lastMessage": messageWithInfo,
+    lastMessage: messageWithInfo,
   });
 };
 

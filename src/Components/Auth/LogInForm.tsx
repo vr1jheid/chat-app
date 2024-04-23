@@ -8,7 +8,7 @@ import {
 import { auth, db } from "../../firebase-config";
 import { useState } from "react";
 import PasswordInput from "./PasswordInput";
-import createUserInDB from "../../utils/createUserInDB";
+import createUserInDB from "../../Services/createUserInDB";
 import authUser from "../../utils/authUser";
 
 const LogInForm = () => {

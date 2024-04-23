@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase-config";
 import { User } from "firebase/auth";
-import createUserData from "./createUserData";
+import createUserData from "../utils/createUserData";
 
 type UserCreator = (user: User) => void;
 

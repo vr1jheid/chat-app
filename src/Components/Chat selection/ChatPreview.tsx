@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { UserDataDB } from "../../utils/createUserData";
-import getUserFromDB from "../../utils/getUserFromDB";
+import getUserFromDB from "../../Services/getUserFromDB";
 import renderAvatar from "../../utils/renderAvatar";
 
 interface Props {

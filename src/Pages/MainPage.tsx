@@ -15,11 +15,6 @@ const MainPage = () => {
   const dispatch = useAppDispatch();
   const chats = useAppSelector(selectAllChats);
   const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
-  const { email: dialogPartnerEmail } = useAppSelector(selectDialogPartner);
-
-  const [chatDocRef, setChatDocRef] = useState<
-    DocumentReference<DocumentData, DocumentData>
-  >(doc(db, "chats/mainChat"));
 
   useEffect(() => {
     dispatch(fetchChats(currentUserEmail!));
@@ -29,12 +24,10 @@ const MainPage = () => {
     <div className="grow max-h-screen flex pt-[82px]">
       <div className="w-[35%] p-3 flex flex-col gap-5">
         <SearchUser />
-        <ChatsList
-          dialogs={Object.values(chats).filter((d) => d.lastMessage)}
-        />
+        <ChatsList />
       </div>
 
-      <Chat chatDocRef={chatDocRef} />
+      <Chat />
     </div>
   );
 };

@@ -11,9 +11,9 @@ import ProtectedRoutes from "./Pages/ProtectedRoutes";
 import { useEffect } from "react";
 import Layout from "./Components/Layout";
 
-import { clearDialogPartner } from "./redux/slices/dialogPartner";
-import getUserFromDB from "./utils/getUserFromDB";
+import getUserFromDB from "./Services/getUserFromDB";
 import AuthPage from "./Pages/AuthPage";
+import { clearChatsState } from "./redux/slices/chats";
 
 function App() {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ function App() {
   const changeUserHandler = async (userFromAuth: currentUserState | null) => {
     if (!userFromAuth) {
       dispatch(clearUser());
-      dispatch(clearDialogPartner());
+      dispatch(clearChatsState());
       navigate("/login");
       return;
     }

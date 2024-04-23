@@ -3,7 +3,7 @@ import { collection, where, getDocs, query } from "firebase/firestore";
 import { db } from "../firebase-config";
 import { AllUserChats } from "../redux/slices/chats";
 import { convertServerTimestamp } from "../utils/convertServerTimestamp";
-import { ChatData } from "../Components/Types/chatTypes";
+import { ChatDataDB } from "../Components/Types/chatTypes";
 
 export const fetchChats = createAsyncThunk(
   "chats/fetchChats",
@@ -22,11 +22,12 @@ export const fetchChats = createAsyncThunk(
       const docData = snapshotDoc.data();
       const { members, lastMessage, type } = docData;
 
-      const chatData: ChatData = {
+      const chatData: ChatDataDB = {
         id: snapshotDoc.id,
         members,
         type,
       };
+      console.log(docData);
 
       if (lastMessage) {
         chatData.lastMessage = {

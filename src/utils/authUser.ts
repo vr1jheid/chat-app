@@ -1,7 +1,7 @@
 import { User } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase-config";
-import createUserInDB from "./createUserInDB";
+import createUserInDB from "../Services/createUserInDB";
 
 const authUser = async (authUser: User) => {
   let alreadyExist = false;

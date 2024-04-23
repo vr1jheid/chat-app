@@ -19,7 +19,7 @@ import { Button, Divider } from "@mui/material";
 import isNewDate from "../../utils/isNewDate";
 import getDateFromTimestamp from "../../utils/getDateFromTimestamp";
 import Loader from "../Loader";
-import sendMessageToDB from "../../utils/sendMessageToDB";
+import sendMessageToDB from "../../Services/sendMessageToDB";
 import { db } from "../../firebase-config";
 import {
   addMessage,
