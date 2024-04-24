@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { fetchChats } from "../../Services/fetchChats";
 import { createChat } from "../../Services/createChat";
 import { ChatDataDB, ChatTypes } from "../../Components/Types/chatTypes";
-import { MessageData } from "../../Components/Chat/Chat";
+import { MessageData } from "../../Components/Types/messageTypes";
 
 export interface AllUserChats {
   [key: string]: ChatDataDB;
@@ -43,7 +43,9 @@ const chatsSlice = createSlice({
       state.activeChat = { ...newActiveChat, messages: [] };
     },
     setMessages: ({ activeChat }, action: PayloadAction<MessageData[]>) => {
-      activeChat.messages = action.payload;
+      activeChat.messages = action.payload.sort(
+        (a, b) => b.serverTime!.seconds! - a.serverTime!.seconds
+      );
     },
     addMessage: ({ activeChat }, action: PayloadAction<MessageData>) => {
       const existableMsgIndex = activeChat.messages.findIndex(

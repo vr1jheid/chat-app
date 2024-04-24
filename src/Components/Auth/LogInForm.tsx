@@ -9,7 +9,7 @@ import { auth, db } from "../../firebase-config";
 import { useState } from "react";
 import PasswordInput from "./PasswordInput";
 import createUserInDB from "../../Services/createUserInDB";
-import authUser from "../../utils/authUser";
+import authUser from "../../Services/authUser";
 
 const LogInForm = () => {
   const [email, setEmail] = useState("");

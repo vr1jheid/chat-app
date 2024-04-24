@@ -5,8 +5,8 @@ import {
   collection,
   doc,
 } from "firebase/firestore";
-import { MessageAuthor } from "../Components/Chat/Chat";
 import { db } from "../firebase-config";
+import { MessageAuthor } from "../Components/Types/messageTypes";
 
 type SendMessageToDB = (
   messageText: string,
