@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { db } from "../firebase-config";
-import { ChatDataDB, ChatTypes } from "../Components/Types/chatTypes";
+import { ChatDataDB, ChatTypes } from "../Types/chatTypes";
 
 export const createChat = createAsyncThunk(
   "chats/createChat",

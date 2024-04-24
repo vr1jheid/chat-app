@@ -3,7 +3,7 @@ import { collection, where, getDocs, query } from "firebase/firestore";
 import { db } from "../firebase-config";
 import { AllUserChats } from "../redux/slices/chats";
 import { convertServerTimestamp } from "../utils/convertServerTimestamp";
-import { ChatDataDB } from "../Components/Types/chatTypes";
+import { ChatDataDB } from "../Types/chatTypes";
 
 export const fetchChats = createAsyncThunk(
   "chats/fetchChats",

@@ -23,7 +23,7 @@ import {
   setMessages,
 } from "../../redux/slices/chats";
 import { convertServerTimestamp } from "../../utils/convertServerTimestamp";
-import { MessageData } from "../Types/messageTypes";
+import { MessageData } from "../../Types/messageTypes";
 
 const Chat = () => {
   const dispatch = useAppDispatch();

@@ -2,9 +2,9 @@ import { memo, useEffect, useState } from "react";
 import renderAvatar from "../../utils/renderAvatar";
 import { useAppSelector } from "../../redux/hooks";
 import { selectActiveChat } from "../../redux/slices/chats";
-import { ChatTypes } from "../Types/chatTypes";
 import { selectCurrentUser } from "../../redux/slices/currentUser";
 import getUserFromDB from "../../Services/getUserFromDB";
+import { ChatTypes } from "../../Types/chatTypes";
 
 const ChatHeader = () => {
   const [headerData, setHeaderData] = useState({ chatName: "", avatarURL: "" });

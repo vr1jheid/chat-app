@@ -1,10 +1,10 @@
 import { Autocomplete, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUser";
 import getAllUsersEmailsFromDB from "../../Services/getAllUsersEmailsFromDB";
-import { useActiveChat } from "../Hooks/useActiveChat";
+import { useActiveChat } from "../../Hooks/useActiveChat";
 
 export interface UserWithLabel {
   label: string;
@@ -38,7 +38,7 @@ const SearchUser = () => {
       <SearchIcon sx={{ width: 35, height: 35 }} />
       <Autocomplete
         value={selectedUserEmail}
-        onChange={(e, newValue) => {
+        onChange={(_e, newValue) => {
           setSelectedUserEmail(newValue);
           /*  setSelectedUser(null); */
         }}
