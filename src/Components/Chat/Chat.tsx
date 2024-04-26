@@ -1,15 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
-import {
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  query,
-} from "firebase/firestore";
+import { deleteDoc, doc } from "firebase/firestore";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUser";
 import ChatHeader from "./ChatHeader";
 import { Button, Divider } from "@mui/material";
@@ -17,63 +11,23 @@ import biggerDate from "../../utils/biggerDate";
 import getDateFromTimestamp from "../../utils/getDateFromTimestamp";
 import sendMessageToDB from "../../Services/sendMessageToDB";
 import { db } from "../../firebase-config";
-import {
-  addMessage,
-  selectActiveChat,
-  setMessages,
-} from "../../redux/slices/chats";
-import { convertServerTimestamp } from "../../utils/convertServerTimestamp";
-import { MessageData } from "../../Types/messageTypes";
+import { selectActiveChat } from "../../redux/slices/chats";
+import { useSubChat } from "../../Hooks/useSubChat";
 
 const Chat = () => {
-  const dispatch = useAppDispatch();
   const { id: activeChatID } = useAppSelector(selectActiveChat);
   const { messages } = useAppSelector(selectActiveChat);
 
   const currentUser = useAppSelector(selectCurrentUser);
   const scrollable = useRef<HTMLDivElement>(null);
 
+  useSubChat(activeChatID);
+
   const test = async () => {};
 
   const deleteMessage = async (chatID: string, messageID: string) => {
     await deleteDoc(doc(db, `chats/${chatID}/messages/${messageID}`));
   };
-
-  const subOnChanges = () => {
-    const q = query(collection(db, `chats/${activeChatID}/messages`));
-
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const initMessages: MessageData[] = [];
-
-      querySnapshot.docChanges().forEach((change) => {
-        const message = change.doc.data() as MessageData;
-        if (!message.id) return;
-
-        const validMessage = {
-          ...message,
-          serverTime: convertServerTimestamp(message.serverTime),
-        };
-
-        if (change.type === "added") {
-          initMessages.push(validMessage);
-        }
-        if (change.type === "modified") {
-          dispatch(addMessage(validMessage));
-        }
-      });
-
-      if (initMessages.length) {
-        dispatch(setMessages(initMessages));
-      }
-    });
-
-    return unsubscribe;
-  };
-
-  useEffect(() => {
-    const unsub = subOnChanges();
-    return unsub;
-  }, [activeChatID]);
 
   const scrollToBottom = () => {
     const node = scrollable.current;

@@ -36,7 +36,6 @@ const ChatsList = () => {
 
   useEffect(() => {
     const sub = subOnLastMessageChange();
-
     return sub;
   }, [chatsList]);
 
