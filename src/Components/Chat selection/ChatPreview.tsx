@@ -1,33 +1,68 @@
 import { useEffect, useState } from "react";
-import { UserDataDB } from "../../utils/createUserData";
 import getUserFromDB from "../../Services/getUserFromDB";
 import renderAvatar from "../../utils/renderAvatar";
+import { UserDataDB } from "../../Types/userTypes";
+import { ChatDataDB, ChatTypes } from "../../Types/chatTypes";
+import { useAppSelector } from "../../redux/hooks";
+import { selectCurrentUser } from "../../redux/slices/currentUser";
 
 interface Props {
-  userEmail: string;
+  chatData: ChatDataDB;
 }
 
-const ChatPreview = ({ userEmail }: Props) => {
-  const [dialogPartner, setDialogPartner] = useState<UserDataDB | null>(null);
-  const [isActive, setIsActive] = useState(false);
+interface ChatPreviewData {
+  chatName: string;
+  avatarURL: string | null;
+}
+
+const ChatPreview = ({ chatData }: Props) => {
+  const initial = {
+    chatName: chatData.id,
+    avatarURL: null,
+  };
+  const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
+  const [previewData, setPreviewData] = useState<ChatPreviewData>(initial);
+  //const [isActive, setIsActive] = useState(false);
+
   useEffect(() => {
+    if (chatData.type === ChatTypes.group) {
+      return;
+    }
+
     const getDiaLogPartner = async () => {
-      const dialogPartner = await getUserFromDB(userEmail);
+      const dialogPartnerEmail = chatData.members.find(
+        (m) => m !== currentUserEmail
+      );
+
+      const dialogPartner = (await getUserFromDB(
+        dialogPartnerEmail!
+      )) as UserDataDB;
       if (!dialogPartner) return;
-      setDialogPartner(dialogPartner);
+
+      const dialogPartnerName =
+        dialogPartner.displayName ?? dialogPartner.email;
+
+      setPreviewData({
+        avatarURL: dialogPartner.avatarURL,
+        chatName: dialogPartnerName,
+      });
     };
     getDiaLogPartner();
   }, []);
 
-  if (!dialogPartner) return;
-  const dialogPartnerName = dialogPartner.displayName ?? dialogPartner.email;
-
+  const lastMessageText =
+    chatData.lastMessage?.messageText.length! > 30
+      ? chatData.lastMessage?.messageText.slice(0, 30) + "..."
+      : chatData.lastMessage?.messageText;
   return (
     <div
-      className={`w-full text-2xl bg-slate-800 text-white rounded p-3 flex items-center gap-7`}
+      className={`w-full h-24 text-2xl bg-[#202b36] text-white rounded p-3 flex items-center gap-7`}
     >
-      {renderAvatar(dialogPartnerName, dialogPartner.avatarURL)}
-      <div>{dialogPartnerName}</div>
+      {renderAvatar(previewData.chatName, previewData.avatarURL, 65)}
+      <div className="flex flex-col">
+        <span>{previewData.chatName}</span>
+        <span className="text-[#91a3b5]">{lastMessageText}</span>
+      </div>
     </div>
   );
 };

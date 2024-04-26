@@ -1,5 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, where, getDocs, query } from "firebase/firestore";
+import {
+  collection,
+  where,
+  getDocs,
+  query,
+  doc,
+  getDoc,
+  or,
+} from "firebase/firestore";
 import { db } from "../firebase-config";
 import { AllUserChats } from "../redux/slices/chats";
 import { convertServerTimestamp } from "../utils/convertServerTimestamp";
@@ -10,7 +18,10 @@ export const fetchChats = createAsyncThunk(
   async (userEmail: string) => {
     const q = query(
       collection(db, "chats"),
-      where("members", "array-contains", userEmail)
+      or(
+        where("id", "==", "mainChat"),
+        where("members", "array-contains", userEmail)
+      )
     );
 
     const querySnaphot = await getDocs(q);
@@ -34,6 +45,7 @@ export const fetchChats = createAsyncThunk(
       }
       chatsFromDB[snapshotDoc.id] = chatData;
     });
+
     return chatsFromDB;
   }
 );

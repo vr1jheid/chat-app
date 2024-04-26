@@ -58,6 +58,10 @@ const chatsSlice = createSlice({
 
       activeChat.messages.unshift(action.payload);
     },
+    changeLastMessage: (state, { payload }: PayloadAction<ChatDataDB>) => {
+      state.allChats[payload.id].lastMessage = payload.lastMessage;
+    },
+
     clearChatsState: () => {
       return initialState;
     },
@@ -78,7 +82,12 @@ const chatsSlice = createSlice({
 
 export const { selectAllChats, selectActiveChat } = chatsSlice.selectors;
 
-export const { setActive, setMessages, addMessage, clearChatsState } =
-  chatsSlice.actions;
+export const {
+  setActive,
+  setMessages,
+  addMessage,
+  clearChatsState,
+  changeLastMessage,
+} = chatsSlice.actions;
 
 export default chatsSlice.reducer;

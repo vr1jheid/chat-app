@@ -1,4 +1,4 @@
-import { MessageData } from "../Components/Chat/Chat";
+import { MessageData } from "./messageTypes";
 
 export enum ChatTypes {
   dialog = "dialog",
