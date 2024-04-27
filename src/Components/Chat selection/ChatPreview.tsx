@@ -54,22 +54,22 @@ const ChatPreview = ({ chatData }: Props) => {
 
   return (
     <div
-      className={`max-w-full h-24 text-2xl bg-[#202b36] text-white rounded p-3 flex items-center gap-7 relative truncate`}
+      className={`max-w-full h-fit text-xl bg-[#202b36] text-white rounded p-2 flex items-center gap-7 relative truncate`}
     >
       <UserAvatar
         alt={previewData.chatName}
         src={previewData.avatarURL}
-        size={65}
+        size={55}
       />
       <div className="flex flex-col gap-2">
-        <div>{previewData.chatName}</div>
+        <div className=" text-2xl">{previewData.chatName}</div>
         <div className="text-[#91a3b5] truncate">
           {chatData.lastMessage?.messageText}
         </div>
       </div>
-      <span className="text-[#91a3b5] text-xl absolute top-3 right-3">
+      <div className="text-[#91a3b5] text-xl self-start grow text-right">
         {getTimeFromTimestamp(chatData.lastMessage?.serverTime?.seconds!)}
-      </span>
+      </div>
     </div>
   );
 };
