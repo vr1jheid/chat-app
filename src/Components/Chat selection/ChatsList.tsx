@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { changeLastMessage, selectAllChats } from "../../redux/slices/chats";
 import ChatPreview from "./ChatPreview";
@@ -39,12 +39,24 @@ const ChatsList = () => {
     return sub;
   }, [chatsList]);
 
+  const sortedChats = useMemo(
+    () =>
+      Object.values(chatsList)
+        .filter((c) => c.lastMessage)
+        .sort(
+          (a, b) =>
+            b.lastMessage?.serverTime?.seconds! -
+            a.lastMessage?.serverTime?.seconds!
+        ),
+    [chatsList]
+  );
+
   return (
     <section className="flex flex-col gap-2">
-      {chatsList &&
-        Object.values(chatsList)
-          .filter((c) => c.lastMessage)
-          .map((chat) => <ChatPreview key={chat.id} chatData={chat} />)}
+      {sortedChats &&
+        sortedChats.map((chat) => (
+          <ChatPreview key={chat.id} chatData={chat} />
+        ))}
     </section>
   );
 };

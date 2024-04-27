@@ -1,6 +1,6 @@
 import { Button, Menu, MenuItem } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import renderAvatar from "../../utils/renderAvatar";
+import UserAvatar from "../UserAvatar";
 import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUser";
 import { logOut } from "../../Services/logOut";
@@ -40,7 +40,7 @@ const UserMenu = () => {
       >
         <div className="flex gap-5 items-center">
           <div>{userName}</div>
-          {renderAvatar(userName, avatarURL, 30)}
+          <UserAvatar alt={userName} src={avatarURL} size={30} />
         </div>
       </Button>
       <Menu

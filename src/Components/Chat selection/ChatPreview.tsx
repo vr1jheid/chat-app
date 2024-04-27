@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import getUserFromDB from "../../Services/getUserFromDB";
-import renderAvatar from "../../utils/renderAvatar";
 import { UserDataDB } from "../../Types/userTypes";
 import { ChatDataDB, ChatTypes } from "../../Types/chatTypes";
 import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUser";
+import getTimeFromTimestamp from "../../utils/getTimeFromTimestamp";
+import UserAvatar from "../UserAvatar";
 
 interface Props {
   chatData: ChatDataDB;
@@ -21,8 +22,9 @@ const ChatPreview = ({ chatData }: Props) => {
     avatarURL: null,
   };
   const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
+
   const [previewData, setPreviewData] = useState<ChatPreviewData>(initial);
-  //const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
     if (chatData.type === ChatTypes.group) {
@@ -50,19 +52,24 @@ const ChatPreview = ({ chatData }: Props) => {
     getDiaLogPartner();
   }, []);
 
-  const lastMessageText =
-    chatData.lastMessage?.messageText.length! > 30
-      ? chatData.lastMessage?.messageText.slice(0, 30) + "..."
-      : chatData.lastMessage?.messageText;
   return (
     <div
-      className={`w-full h-24 text-2xl bg-[#202b36] text-white rounded p-3 flex items-center gap-7`}
+      className={`max-w-full h-24 text-2xl bg-[#202b36] text-white rounded p-3 flex items-center gap-7 relative truncate`}
     >
-      {renderAvatar(previewData.chatName, previewData.avatarURL, 65)}
-      <div className="flex flex-col">
-        <span>{previewData.chatName}</span>
-        <span className="text-[#91a3b5]">{lastMessageText}</span>
+      <UserAvatar
+        alt={previewData.chatName}
+        src={previewData.avatarURL}
+        size={65}
+      />
+      <div className="flex flex-col gap-2">
+        <div>{previewData.chatName}</div>
+        <div className="text-[#91a3b5] truncate">
+          {chatData.lastMessage?.messageText}
+        </div>
       </div>
+      <span className="text-[#91a3b5] text-xl absolute top-3 right-3">
+        {getTimeFromTimestamp(chatData.lastMessage?.serverTime?.seconds!)}
+      </span>
     </div>
   );
 };

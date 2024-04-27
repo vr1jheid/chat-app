@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from "react";
-import renderAvatar from "../../utils/renderAvatar";
+import UserAvatar from "../UserAvatar";
 import { useAppSelector } from "../../redux/hooks";
 import { selectActiveChat } from "../../redux/slices/chats";
 import { selectCurrentUser } from "../../redux/slices/currentUser";
@@ -35,7 +35,7 @@ const ChatHeader = () => {
   return (
     <header className="flex w-full items-center justify-center gap-4 text-3xl p-2 bg-slate-600 text-white">
       {headerData.chatName}
-      {renderAvatar(headerData.chatName, headerData.avatarURL)}{" "}
+      <UserAvatar alt={headerData.chatName} src={headerData.avatarURL} />
     </header>
   );
 };

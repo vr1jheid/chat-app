@@ -1,10 +1,10 @@
 import { Avatar } from "@mui/material";
 
-type RenderAvatarFunc = (
-  alt: string | null,
-  src?: string | null,
-  size?: number
-) => JSX.Element;
+interface Props {
+  alt: string | null;
+  src?: string | null;
+  size?: number;
+}
 
 const getTextForAvatar = (alt: string) => {
   const words = alt.split(" ");
@@ -15,7 +15,7 @@ const getTextForAvatar = (alt: string) => {
   return alt.slice(0, 2);
 };
 
-const renderAvatar: RenderAvatarFunc = (alt, src, size = 50) => {
+const UserAvatar = ({ alt, src, size = 50 }: Props) => {
   /*   console.log(src); */
 
   if (src) {
@@ -29,4 +29,4 @@ const renderAvatar: RenderAvatarFunc = (alt, src, size = 50) => {
   );
 };
 
-export default renderAvatar;
+export default UserAvatar;

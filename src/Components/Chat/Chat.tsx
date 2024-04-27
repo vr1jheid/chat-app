@@ -1,5 +1,4 @@
 import { useRef } from "react";
-
 import { deleteDoc, doc } from "firebase/firestore";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
@@ -39,7 +38,7 @@ const Chat = () => {
       <ChatHeader />
       <div
         ref={scrollable}
-        className="p-4  grow w-full flex flex-col-reverse gap-4 overflow-y-auto relative"
+        className="p-4  grow max-w-full flex flex-col-reverse gap-4 overflow-y-auto relative"
       >
         {
           /* Рендер начинается с самого свежего сообщения */
