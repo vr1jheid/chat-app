@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import getUserFromDB from "../../Services/getUserFromDB";
 import { UserDataDB } from "../../Types/userTypes";
 import { ChatDataDB, ChatTypes } from "../../Types/chatTypes";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUser";
 import getTimeFromTimestamp from "../../utils/getTimeFromTimestamp";
 import UserAvatar from "../UserAvatar";
+import { selectActiveChat, setActive } from "../../redux/slices/chats";
 
 interface Props {
   chatData: ChatDataDB;
@@ -22,9 +23,11 @@ const ChatPreview = ({ chatData }: Props) => {
     avatarURL: null,
   };
   const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
+  const { id: activeChatID } = useAppSelector(selectActiveChat);
 
+  const dispatch = useAppDispatch();
   const [previewData, setPreviewData] = useState<ChatPreviewData>(initial);
-  const [isActive, setIsActive] = useState(false);
+  const isActive = chatData.id === activeChatID;
 
   useEffect(() => {
     if (chatData.type === ChatTypes.group) {
@@ -52,23 +55,33 @@ const ChatPreview = ({ chatData }: Props) => {
     getDiaLogPartner();
   }, []);
 
+  const setActiveChat = () => {
+    dispatch(setActive(chatData.id));
+  };
+
   return (
     <div
-      className={`max-w-full h-fit text-xl bg-[#202b36] text-white rounded p-2 flex items-center gap-7 relative truncate`}
+      className={`max-w-full h-fit text-xl text-white rounded p-2 flex items-center gap-7 truncate ${
+        isActive && "bg-[#766ac8]"
+      } hover:${!isActive && "bg-[#2f2f2f]"} `}
+      onClick={setActiveChat}
     >
       <UserAvatar
         alt={previewData.chatName}
         src={previewData.avatarURL}
         size={55}
       />
-      <div className="flex flex-col gap-2">
-        <div className=" text-2xl">{previewData.chatName}</div>
-        <div className="text-[#91a3b5] truncate">
+      <div className="flex flex-col gap-2 grow">
+        <div className="flex justify-between">
+          <div className="text-2xl">{previewData.chatName}</div>
+          <div className="text-xl text-[#a0a0a0]">
+            {getTimeFromTimestamp(chatData.lastMessage?.serverTime?.seconds!)}
+          </div>
+        </div>
+
+        <div className="text-[#a0a0a0] truncate">
           {chatData.lastMessage?.messageText}
         </div>
-      </div>
-      <div className="text-[#91a3b5] text-xl self-start grow text-right">
-        {getTimeFromTimestamp(chatData.lastMessage?.serverTime?.seconds!)}
       </div>
     </div>
   );

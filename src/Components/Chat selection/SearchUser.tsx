@@ -1,4 +1,4 @@
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, InputBase, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../redux/hooks";
@@ -34,18 +34,28 @@ const SearchUser = () => {
   }, [selectedUserEmail]);
 
   return (
-    <div className="flex items-center gap-3">
-      <SearchIcon sx={{ width: 35, height: 35 }} />
+    <div className="flex items-center gap-3 bg-[#2c2c2c] h-fit rounded py-2 focus-within:outline outline-[#766ac8] outline-2">
       <Autocomplete
         value={selectedUserEmail}
         onChange={(_e, newValue) => {
           setSelectedUserEmail(newValue);
-          /*  setSelectedUser(null); */
         }}
-        disablePortal
+        onBlur={() => setSelectedUserEmail(null)}
         options={usersList}
-        sx={{ flexGrow: "1" }}
-        renderInput={(params) => <TextField {...params} label="Enter email" />}
+        renderInput={(params) => (
+          <div
+            ref={params.InputProps.ref}
+            className="h-10 w-full flex px-3 items-center gap-3  "
+          >
+            <SearchIcon sx={{ width: 35, height: 35, color: "#a0a0a0" }} />
+            <input
+              placeholder="Search"
+              type="text"
+              {...params.inputProps}
+              className=" h-full block w-full bg-inherit focus-visible:outline-none text-xl text-white"
+            />
+          </div>
+        )}
       ></Autocomplete>
     </div>
   );
