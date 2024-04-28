@@ -15,7 +15,7 @@ const AuthPage = () => {
   const [action, setAction] = useState("login");
 
   const handleActionChanger = (
-    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    _e: React.MouseEvent<HTMLElement, MouseEvent>,
     newValue: string
   ) => {
     if (!newValue) return;

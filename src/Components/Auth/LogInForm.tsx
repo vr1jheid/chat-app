@@ -5,10 +5,9 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { auth, db } from "../../firebase-config";
+import { auth } from "../../firebase-config";
 import { useState } from "react";
 import PasswordInput from "./PasswordInput";
-import createUserInDB from "../../Services/createUserInDB";
 import authUser from "../../Services/authUser";
 
 const LogInForm = () => {
@@ -28,11 +27,7 @@ const LogInForm = () => {
 
   const signInWithEmailAndPass = async () => {
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (error: any) {
       console.log(error.message);
     }

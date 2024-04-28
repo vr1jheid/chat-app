@@ -1,4 +1,4 @@
-import { Autocomplete, InputBase, TextField } from "@mui/material";
+import { Autocomplete } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../redux/hooks";

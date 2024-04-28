@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 interface Props {
   sendMessage: (messageText: string) => void;

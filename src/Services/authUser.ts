@@ -12,9 +12,8 @@ const authUser = async (authUser: User) => {
     where("userData.email", "==", authUser.email)
   );
   const check = await getDocs(q);
-  check.forEach((doc) => {
+  check.forEach(() => {
     alreadyExist = true;
-    /*    userFromDB = doc.data(); */
   });
   if (alreadyExist) return;
   createUserInDB(authUser);

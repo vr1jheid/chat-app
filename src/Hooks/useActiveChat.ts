@@ -12,13 +12,13 @@ export const useActiveChat = (dialogPartnerEmail: string | null) => {
   return () => {
     if (!dialogPartnerEmail) return;
     const entry = Object.entries(chats).find(
-      ([key, value]) =>
+      ([, value]) =>
         value.type === ChatTypes.dialog &&
         value.members?.includes(dialogPartnerEmail)
     );
     if (entry) {
       /* Если диалог уже есть берем ссылку из массива диалогов */
-      const [id, chat] = entry;
+      const [id] = entry;
       dispatch(setActive(id));
       return;
     }

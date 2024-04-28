@@ -6,7 +6,7 @@ import {
   doc,
 } from "firebase/firestore";
 import { db } from "../firebase-config";
-import { MessageAuthor } from "../Components/Types/messageTypes";
+import { MessageAuthor } from "../Types/messageTypes";
 
 type SendMessageToDB = (
   messageText: string,
