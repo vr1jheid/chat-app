@@ -1,6 +1,6 @@
 import { Button, Menu, MenuItem } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "../Shared/UserAvatar";
 import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUser";
 import { logOut } from "../../Services/logOut";

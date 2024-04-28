@@ -3,6 +3,7 @@ import { fetchChats } from "../../Services/fetchChats";
 import { createChat } from "../../Services/createChat";
 import { ChatDataDB, ChatTypes } from "../../Types/chatTypes";
 import { MessageData } from "../../Types/messageTypes";
+import { convertServerTime } from "../../utils/convertServerTime";
 
 export interface AllUserChats {
   [key: string]: ChatDataDB;
@@ -10,6 +11,7 @@ export interface AllUserChats {
 
 export interface LocalChatData extends ChatDataDB {
   messages: MessageData[];
+  isLoading: boolean;
 }
 
 export interface ChatsState {
@@ -20,10 +22,11 @@ export interface ChatsState {
 const initialState: ChatsState = {
   allChats: {},
   activeChat: {
-    id: "mainChat",
+    id: "",
     members: [],
     type: ChatTypes.group,
     messages: [],
+    isLoading: false,
   },
 };
 
@@ -33,6 +36,7 @@ const chatsSlice = createSlice({
   selectors: {
     selectAllChats: (state) => state.allChats,
     selectActiveChat: (state) => state.activeChat,
+    selectActiveChatLoading: (state) => state.activeChat.isLoading,
   },
   reducers: {
     setActive: (state, action: PayloadAction<string>) => {
@@ -40,12 +44,13 @@ const chatsSlice = createSlice({
         (c) => c.id === action.payload
       );
       if (!newActiveChat) return;
-      state.activeChat = { ...newActiveChat, messages: [] };
+      state.activeChat = { ...newActiveChat, messages: [], isLoading: true };
     },
     setMessages: ({ activeChat }, action: PayloadAction<MessageData[]>) => {
       activeChat.messages = action.payload.sort(
         (a, b) => b.serverTime!.seconds! - a.serverTime!.seconds
       );
+      activeChat.isLoading = false;
     },
     addMessage: ({ activeChat }, action: PayloadAction<MessageData>) => {
       const existableMsgIndex = activeChat.messages.findIndex(
@@ -55,15 +60,26 @@ const chatsSlice = createSlice({
         activeChat.messages[existableMsgIndex] = action.payload;
         return;
       }
-
       activeChat.messages.unshift(action.payload);
     },
     changeLastMessage: (state, { payload }: PayloadAction<ChatDataDB>) => {
-      state.allChats[payload.id].lastMessage = payload.lastMessage;
-    },
+      const correctServerTime = convertServerTime(payload.lastMessage);
+      if (!correctServerTime) return;
 
+      const newLastMessage = {
+        ...payload.lastMessage,
+        serverTime: correctServerTime,
+      } as MessageData;
+      state.allChats[payload.id].lastMessage = newLastMessage;
+    },
     clearChatsState: () => {
       return initialState;
+    },
+    clearActiveChat: (state) => {
+      state.activeChat = initialState.activeChat;
+    },
+    setActiveChatLoading: (state, action) => {
+      state.activeChat.isLoading = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -75,12 +91,13 @@ const chatsSlice = createSlice({
         console.log(action.payload);
         const newChat = action.payload;
         state.allChats = { ...state.allChats, ...{ [newChat.id]: newChat } };
-        state.activeChat = { ...newChat, messages: [] };
+        state.activeChat = { ...newChat, messages: [], isLoading: false };
       });
   },
 });
 
-export const { selectAllChats, selectActiveChat } = chatsSlice.selectors;
+export const { selectAllChats, selectActiveChat, selectActiveChatLoading } =
+  chatsSlice.selectors;
 
 export const {
   setActive,
@@ -88,6 +105,8 @@ export const {
   addMessage,
   clearChatsState,
   changeLastMessage,
+  setActiveChatLoading,
+  clearActiveChat,
 } = chatsSlice.actions;
 
 export default chatsSlice.reducer;

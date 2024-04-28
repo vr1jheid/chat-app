@@ -26,8 +26,8 @@ const ChatsList = () => {
 
         if (querySnapshot.metadata.hasPendingWrites) return;
 
-        if (change.type === "modified") {
-          dispatch(changeLastMessage(changedDoc));
+        if (change.type === "modified" && changedDoc.lastMessage) {
+          dispatch(changeLastMessage({ ...changedDoc }));
         }
       });
     });

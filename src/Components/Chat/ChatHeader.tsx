@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from "react";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "../Shared/UserAvatar";
 import { useAppSelector } from "../../redux/hooks";
 import { selectActiveChat } from "../../redux/slices/chats";
 import { selectCurrentUser } from "../../redux/slices/currentUser";

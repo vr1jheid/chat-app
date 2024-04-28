@@ -5,8 +5,9 @@ import { ChatDataDB, ChatTypes } from "../../Types/chatTypes";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUser";
 import getTimeFromTimestamp from "../../utils/getTimeFromTimestamp";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "../Shared/UserAvatar";
 import { selectActiveChat, setActive } from "../../redux/slices/chats";
+import clsx from "clsx";
 
 interface Props {
   chatData: ChatDataDB;
@@ -61,9 +62,10 @@ const ChatPreview = ({ chatData }: Props) => {
 
   return (
     <div
-      className={`max-w-full h-fit text-xl text-white rounded p-2 flex items-center gap-7 truncate ${
-        isActive && "bg-[#766ac8]"
-      } hover:${!isActive && "bg-[#2f2f2f]"} `}
+      className={clsx(
+        "max-w-full h-fit text-xl text-white rounded p-2 flex items-center gap-7 truncate",
+        { "bg-[#766ac8]": isActive, "hover:bg-[#2f2f2f]": !isActive }
+      )}
       onClick={setActiveChat}
     >
       <UserAvatar
@@ -72,7 +74,7 @@ const ChatPreview = ({ chatData }: Props) => {
         size={55}
       />
       <div className="flex flex-col gap-2 grow">
-        <div className="flex justify-between">
+        <div className="flex justify-between gap-4">
           <div className="text-2xl">{previewData.chatName}</div>
           <div className="text-xl text-[#a0a0a0]">
             {getTimeFromTimestamp(chatData.lastMessage?.serverTime?.seconds!)}

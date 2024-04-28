@@ -1,8 +1,8 @@
 import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUser";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "../Shared/UserAvatar";
 import { Paper } from "@mui/material";
-import Loader from "../Loader";
+import Loader from "../Shared/Loader";
 import getTimeFromTimestamp from "../../utils/getTimeFromTimestamp";
 import { MessageAuthor, Timestamp } from "../../Types/messageTypes";
 

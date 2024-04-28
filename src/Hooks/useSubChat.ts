@@ -5,14 +5,16 @@ import { db } from "../firebase-config";
 import {
   addMessage,
   selectActiveChat,
+  selectActiveChatLoading,
   setMessages,
 } from "../redux/slices/chats";
-import { convertServerTimestamp } from "../utils/convertServerTimestamp";
+import { convertServerTime } from "../utils/convertServerTime";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
-export const useSubChat = (dependencies: any) => {
+export const useSubChat = (dependencies: any[]) => {
   const dispatch = useAppDispatch();
   const { id: activeChatID } = useAppSelector(selectActiveChat);
+  const isLoading = useAppSelector(selectActiveChatLoading);
 
   const subOnChanges = () => {
     const q = query(collection(db, `chats/${activeChatID}/messages`));
@@ -26,7 +28,7 @@ export const useSubChat = (dependencies: any) => {
 
         const validMessage = {
           ...message,
-          serverTime: convertServerTimestamp(message.serverTime),
+          serverTime: convertServerTime(message.serverTime),
         };
 
         if (change.type === "added") {
@@ -34,10 +36,11 @@ export const useSubChat = (dependencies: any) => {
         }
         if (change.type === "modified") {
           dispatch(addMessage(validMessage));
+          return;
         }
       });
 
-      if (initMessages.length) {
+      if (isLoading) {
         dispatch(setMessages(initMessages));
       }
     });
@@ -48,5 +51,5 @@ export const useSubChat = (dependencies: any) => {
   useEffect(() => {
     const unsub = subOnChanges();
     return unsub;
-  }, [dependencies]);
+  }, [...dependencies, isLoading]);
 };

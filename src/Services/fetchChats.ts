@@ -1,16 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  collection,
-  where,
-  getDocs,
-  query,
-  doc,
-  getDoc,
-  or,
-} from "firebase/firestore";
+import { collection, where, getDocs, query, or } from "firebase/firestore";
 import { db } from "../firebase-config";
 import { AllUserChats } from "../redux/slices/chats";
-import { convertServerTimestamp } from "../utils/convertServerTimestamp";
+import { convertServerTime } from "../utils/convertServerTime";
 import { ChatDataDB } from "../Types/chatTypes";
 
 export const fetchChats = createAsyncThunk(
@@ -40,7 +32,7 @@ export const fetchChats = createAsyncThunk(
       if (lastMessage) {
         chatData.lastMessage = {
           ...lastMessage,
-          serverTime: convertServerTimestamp(lastMessage.serverTime),
+          serverTime: convertServerTime(lastMessage.serverTime),
         };
       }
       chatsFromDB[snapshotDoc.id] = chatData;

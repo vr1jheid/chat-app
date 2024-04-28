@@ -10,17 +10,23 @@ import biggerDate from "../../utils/biggerDate";
 import getDateFromTimestamp from "../../utils/getDateFromTimestamp";
 import sendMessageToDB from "../../Services/sendMessageToDB";
 import { db } from "../../firebase-config";
-import { selectActiveChat } from "../../redux/slices/chats";
+import {
+  selectActiveChat,
+  selectActiveChatLoading,
+} from "../../redux/slices/chats";
 import { useSubChat } from "../../Hooks/useSubChat";
+import { MessageData } from "../../Types/messageTypes";
 
 const Chat = () => {
   const { id: activeChatID } = useAppSelector(selectActiveChat);
+
   const { messages } = useAppSelector(selectActiveChat);
+  const isLoading = useAppSelector(selectActiveChatLoading);
 
   const currentUser = useAppSelector(selectCurrentUser);
   const scrollable = useRef<HTMLDivElement>(null);
 
-  useSubChat(activeChatID);
+  useSubChat([activeChatID]);
 
   const test = async () => {};
 
@@ -33,41 +39,41 @@ const Chat = () => {
     node?.scrollTo(0, node.scrollHeight);
   };
 
+  const renderMessages = (messages: MessageData[]) => {
+    /* Рендер начинается с самого свежего сообщения */
+    const nodes = messages.map((m, i, arr) => {
+      const newDate =
+        arr[i + 1] &&
+        arr[i].serverTime &&
+        arr[i + 1].serverTime &&
+        biggerDate(arr[i].serverTime!.seconds, arr[i + 1].serverTime!.seconds);
+      return (
+        <div key={m.id}>
+          {newDate && (
+            <Divider sx={{ marginBottom: "1rem", fontSize: "1.5rem" }}>
+              {getDateFromTimestamp(newDate)}
+            </Divider>
+          )}
+          <Message
+            author={m.author}
+            text={m.messageText}
+            timestamp={m.serverTime}
+            deleteMessage={() => deleteMessage(activeChatID, m.id)}
+          />
+        </div>
+      );
+    });
+    return nodes;
+  };
+
   return (
-    <div className="pb-5 w-full grow mx-auto bg-slate-100 flex items-center flex-col overflow-y-auto">
+    <div className="pb-5 grow mx-auto bg-slate-100 flex items-center flex-col overflow-y-auto">
       <ChatHeader />
       <div
         ref={scrollable}
         className="p-4  grow w-full flex flex-col-reverse gap-4 overflow-y-auto relative"
       >
-        {
-          /* Рендер начинается с самого свежего сообщения */
-          messages.map((m, i, arr) => {
-            const newDate =
-              arr[i + 1] &&
-              arr[i].serverTime &&
-              arr[i + 1].serverTime &&
-              biggerDate(
-                arr[i].serverTime!.seconds,
-                arr[i + 1].serverTime!.seconds
-              );
-            return (
-              <div key={m.id}>
-                {newDate && (
-                  <Divider sx={{ marginBottom: "1rem", fontSize: "1.5rem" }}>
-                    {getDateFromTimestamp(newDate)}
-                  </Divider>
-                )}
-                <Message
-                  author={m.author}
-                  text={m.messageText}
-                  timestamp={m.serverTime}
-                  deleteMessage={() => deleteMessage(activeChatID, m.id)}
-                />
-              </div>
-            );
-          })
-        }
+        {isLoading ? <div>LOADING</div> : renderMessages(messages)}
       </div>
       <MessageInput
         scroll={scrollToBottom}
