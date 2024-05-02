@@ -1,11 +1,14 @@
 import ChatsList from "../Components/Chat selection/ChatsList";
 import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../Store/hooks";
-import { selectCurrentUser } from "../Store/slices/currentUser";
+import { selectCurrentUser } from "../Store/CurrentUser/currentUser";
 import SearchUser from "../Components/Chat selection/SearchUser";
 import Chat from "../Components/Chat/Chat";
 import { fetchChats } from "../Services/fetchChats";
-import { clearActiveChat, selectActiveChat } from "../Store/slices/chats";
+import {
+  clearActiveChat,
+  selectActiveChat,
+} from "../Store/ActiveChat/activeChat";
 
 const MainPage = () => {
   const dispatch = useAppDispatch();

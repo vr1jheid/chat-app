@@ -3,14 +3,15 @@ import getUserFromDB from "../../Services/getUserFromDB";
 import { UserDataDB } from "../../Types/userTypes";
 import { ChatDataDB, ChatTypes } from "../../Types/chatTypes";
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
-import { selectCurrentUser } from "../../Store/slices/currentUser";
+import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
 import getTimeFromTimestamp from "../../utils/getTimeFromTimestamp";
 import UserAvatar from "../Shared/UserAvatar";
-import { selectActiveChat, setActive } from "../../Store/slices/chats";
 import clsx from "clsx";
+import { selectActiveChat } from "../../Store/ActiveChat/activeChat";
 
 interface Props {
   chatData: ChatDataDB;
+  clickAction: () => void;
 }
 
 interface ChatPreviewData {
@@ -18,7 +19,7 @@ interface ChatPreviewData {
   avatarURL: string | null;
 }
 
-const ChatPreview = ({ chatData }: Props) => {
+const ChatPreview = ({ chatData, clickAction }: Props) => {
   const initial = {
     chatName: chatData.id,
     avatarURL: null,
@@ -26,7 +27,6 @@ const ChatPreview = ({ chatData }: Props) => {
   const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
   const { id: activeChatID } = useAppSelector(selectActiveChat);
 
-  const dispatch = useAppDispatch();
   const [previewData, setPreviewData] = useState<ChatPreviewData>(initial);
   const isActive = chatData.id === activeChatID;
 
@@ -56,17 +56,13 @@ const ChatPreview = ({ chatData }: Props) => {
     getDiaLogPartner();
   }, []);
 
-  const setActiveChat = () => {
-    dispatch(setActive(chatData.id));
-  };
-
   return (
     <div
       className={clsx(
         "max-w-full h-fit text-xl text-white rounded p-2 flex items-center gap-7 truncate",
         { " bg-purple-main": isActive, "hover:bg-gray-hover": !isActive }
       )}
-      onClick={setActiveChat}
+      onClick={clickAction}
     >
       <UserAvatar
         alt={previewData.chatName}

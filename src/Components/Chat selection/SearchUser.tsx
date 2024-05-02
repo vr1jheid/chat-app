@@ -2,7 +2,7 @@ import { Autocomplete } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../Store/hooks";
-import { selectCurrentUser } from "../../Store/slices/currentUser";
+import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
 import getAllUsersEmailsFromDB from "../../Services/getAllUsersEmailsFromDB";
 import { useActiveChat } from "../../Hooks/useActiveChat";
 

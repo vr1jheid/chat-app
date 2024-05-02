@@ -6,14 +6,14 @@ import {
   clearUser,
   currentUserState,
   setUser,
-} from "./Store/slices/currentUser";
+} from "./Store/CurrentUser/currentUser";
 import ProtectedRoutes from "./Pages/ProtectedRoutes";
 import { useEffect } from "react";
 import Layout from "./Components/Layout";
 
 import getUserFromDB from "./Services/getUserFromDB";
 import AuthPage from "./Pages/AuthPage";
-import { clearChatsState } from "./Store/slices/chats";
+import { clearChatsState } from "./Store/Chats/chats";
 
 function App() {
   const navigate = useNavigate();

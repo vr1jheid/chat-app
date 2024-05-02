@@ -8,7 +8,7 @@ import { useState } from "react";
 import LogInForm from "../Components/Auth/LogInForm";
 import RegisterForm from "../Components/Auth/RegisterForm";
 import { useAppSelector } from "../Store/hooks";
-import { selectCurrentUser } from "../Store/slices/currentUser";
+import { selectCurrentUser } from "../Store/CurrentUser/currentUser";
 
 const AuthPage = () => {
   const { isLoaded } = useAppSelector(selectCurrentUser);

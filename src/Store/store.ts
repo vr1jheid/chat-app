@@ -1,12 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import currenUserReducer from "./slices/currentUser";
-
-import chatsReducer from "./slices/chats";
+import currenUserReducer from "./CurrentUser/currentUser";
+import chatsReducer from "./Chats/chats";
+import activeChatReducer from "./ActiveChat/activeChat";
 
 const store = configureStore({
   reducer: {
     currentUser: currenUserReducer,
     chats: chatsReducer,
+    activeChat: activeChatReducer,
   },
 });
 

@@ -1,8 +1,9 @@
 import { createChat } from "../Services/createChat";
 import { useAppDispatch, useAppSelector } from "../Store/hooks";
-import { selectAllChats, setActive } from "../Store/slices/chats";
-import { selectCurrentUser } from "../Store/slices/currentUser";
+import { selectAllChats } from "../Store/Chats/chats";
+import { selectCurrentUser } from "../Store/CurrentUser/currentUser";
 import { ChatTypes } from "../Types/chatTypes";
+import { setActive } from "../Store/ActiveChat/activeChat";
 
 export const useActiveChat = (dialogPartnerEmail: string | null) => {
   const dispatch = useAppDispatch();
@@ -18,8 +19,8 @@ export const useActiveChat = (dialogPartnerEmail: string | null) => {
     );
     if (entry) {
       /* Если диалог уже есть берем ссылку из массива диалогов */
-      const [id] = entry;
-      dispatch(setActive(id));
+      const [, chat] = entry;
+      dispatch(setActive(chat));
       return;
     }
 

@@ -11,3 +11,8 @@ export interface ChatDataDB {
   lastMessage?: MessageData;
   type: ChatTypes | null;
 }
+
+export interface LocalChatData extends ChatDataDB {
+  messages: MessageData[];
+  isLoading: boolean;
+}

@@ -2,14 +2,15 @@ import { query, collection, onSnapshot } from "firebase/firestore";
 import { useEffect } from "react";
 import { MessageData } from "../Types/messageTypes";
 import { db } from "../firebase-config";
+
+import { convertServerTime } from "../utils/convertServerTime";
+import { useAppDispatch, useAppSelector } from "../Store/hooks";
 import {
   addMessage,
   selectActiveChat,
   selectActiveChatLoading,
   setMessages,
-} from "../Store/slices/chats";
-import { convertServerTime } from "../utils/convertServerTime";
-import { useAppDispatch, useAppSelector } from "../Store/hooks";
+} from "../Store/ActiveChat/activeChat";
 
 export const useSubChat = (dependencies: any[]) => {
   const dispatch = useAppDispatch();

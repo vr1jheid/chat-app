@@ -1,5 +1,3 @@
-import { useAppSelector } from "../../Store/hooks";
-import { selectCurrentUser } from "../../Store/slices/currentUser";
 import UserAvatar from "../Shared/UserAvatar";
 import Loader from "../Shared/Loader";
 import getTimeFromTimestamp from "../../utils/getTimeFromTimestamp";

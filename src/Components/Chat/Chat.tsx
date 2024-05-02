@@ -3,21 +3,21 @@ import { deleteDoc, doc } from "firebase/firestore";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
 import { useAppSelector } from "../../Store/hooks";
-import { selectCurrentUser } from "../../Store/slices/currentUser";
+import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
 import ChatHeader from "./ChatHeader";
 import { Divider } from "@mui/material";
 import biggerDate from "../../utils/biggerDate";
 import getDateFromTimestamp from "../../utils/getDateFromTimestamp";
 import sendMessageToDB from "../../Services/sendMessageToDB";
 import { db } from "../../firebase-config";
-import {
-  selectActiveChat,
-  selectActiveChatLoading,
-} from "../../Store/slices/chats";
 import { useSubChat } from "../../Hooks/useSubChat";
 import { MessageData } from "../../Types/messageTypes";
 import Loader from "../Shared/Loader";
 import { ChatTypes } from "../../Types/chatTypes";
+import {
+  selectActiveChat,
+  selectActiveChatLoading,
+} from "../../Store/ActiveChat/activeChat";
 
 const Chat = () => {
   const { id: activeChatID, type: activeChatType } =

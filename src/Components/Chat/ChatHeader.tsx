@@ -1,10 +1,10 @@
 import { memo, useEffect, useState } from "react";
 import UserAvatar from "../Shared/UserAvatar";
 import { useAppSelector } from "../../Store/hooks";
-import { selectActiveChat } from "../../Store/slices/chats";
-import { selectCurrentUser } from "../../Store/slices/currentUser";
+import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
 import getUserFromDB from "../../Services/getUserFromDB";
 import { ChatTypes } from "../../Types/chatTypes";
+import { selectActiveChat } from "../../Store/ActiveChat/activeChat";
 
 const ChatHeader = () => {
   const [headerData, setHeaderData] = useState({ chatName: "", avatarURL: "" });
