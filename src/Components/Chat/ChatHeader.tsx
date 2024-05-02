@@ -1,8 +1,8 @@
 import { memo, useEffect, useState } from "react";
 import UserAvatar from "../Shared/UserAvatar";
-import { useAppSelector } from "../../redux/hooks";
-import { selectActiveChat } from "../../redux/slices/chats";
-import { selectCurrentUser } from "../../redux/slices/currentUser";
+import { useAppSelector } from "../../Store/hooks";
+import { selectActiveChat } from "../../Store/slices/chats";
+import { selectCurrentUser } from "../../Store/slices/currentUser";
 import getUserFromDB from "../../Services/getUserFromDB";
 import { ChatTypes } from "../../Types/chatTypes";
 
@@ -33,7 +33,7 @@ const ChatHeader = () => {
   }, [activeChat]);
 
   return (
-    <header className="flex w-full items-center justify-center gap-4 text-3xl p-2 bg-slate-600 text-white">
+    <header className="flex w-full items-center justify-center gap-4 text-3xl p-2 bg-gray-light text-white">
       {headerData.chatName}
       <UserAvatar alt={headerData.chatName} src={headerData.avatarURL} />
     </header>

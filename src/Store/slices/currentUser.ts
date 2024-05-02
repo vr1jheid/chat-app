@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { UserDataDB } from "../../Types/userTypes";
 
 export interface currentUserState extends UserDataDB {
+  displayName: string;
   isLoaded: boolean;
 }
 

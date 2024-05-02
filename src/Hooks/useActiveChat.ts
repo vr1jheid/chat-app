@@ -1,7 +1,7 @@
 import { createChat } from "../Services/createChat";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { selectAllChats, setActive } from "../redux/slices/chats";
-import { selectCurrentUser } from "../redux/slices/currentUser";
+import { useAppDispatch, useAppSelector } from "../Store/hooks";
+import { selectAllChats, setActive } from "../Store/slices/chats";
+import { selectCurrentUser } from "../Store/slices/currentUser";
 import { ChatTypes } from "../Types/chatTypes";
 
 export const useActiveChat = (dialogPartnerEmail: string | null) => {

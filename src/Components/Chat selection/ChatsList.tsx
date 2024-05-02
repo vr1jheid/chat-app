@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { changeLastMessage, selectAllChats } from "../../redux/slices/chats";
+import { useAppDispatch, useAppSelector } from "../../Store/hooks";
+import { changeLastMessage, selectAllChats } from "../../Store/slices/chats";
 import ChatPreview from "./ChatPreview";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../../firebase-config";

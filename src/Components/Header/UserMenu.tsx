@@ -1,9 +1,9 @@
 import { Button, Menu, MenuItem } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import UserAvatar from "../Shared/UserAvatar";
-import { useAppSelector } from "../../redux/hooks";
-import { selectCurrentUser } from "../../redux/slices/currentUser";
-import { logOut } from "../../Services/logOut";
+import { useAppSelector } from "../../Store/hooks";
+import { selectCurrentUser } from "../../Store/slices/currentUser";
+import { logout } from "../../Services/logout";
 
 const UserMenu = () => {
   const contRef = useRef<HTMLDivElement | null>(null);
@@ -59,7 +59,7 @@ const UserMenu = () => {
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={logOut}>Logout</MenuItem>
+        <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>
     </div>
   );

@@ -7,9 +7,9 @@ import {
   selectActiveChat,
   selectActiveChatLoading,
   setMessages,
-} from "../redux/slices/chats";
+} from "../Store/slices/chats";
 import { convertServerTime } from "../utils/convertServerTime";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../Store/hooks";
 
 export const useSubChat = (dependencies: any[]) => {
   const dispatch = useAppDispatch();

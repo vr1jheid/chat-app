@@ -7,8 +7,8 @@ import {
 import { useState } from "react";
 import LogInForm from "../Components/Auth/LogInForm";
 import RegisterForm from "../Components/Auth/RegisterForm";
-import { useAppSelector } from "../redux/hooks";
-import { selectCurrentUser } from "../redux/slices/currentUser";
+import { useAppSelector } from "../Store/hooks";
+import { selectCurrentUser } from "../Store/slices/currentUser";
 
 const AuthPage = () => {
   const { isLoaded } = useAppSelector(selectCurrentUser);

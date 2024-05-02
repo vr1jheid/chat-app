@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { collection, where, getDocs, query, or } from "firebase/firestore";
 import { db } from "../firebase-config";
-import { AllUserChats } from "../redux/slices/chats";
+import { AllUserChats } from "../Store/slices/chats";
 import { convertServerTime } from "../utils/convertServerTime";
 import { ChatDataDB } from "../Types/chatTypes";
 

@@ -21,7 +21,7 @@ const MessageInput = ({ sendMessage, scroll }: Props) => {
   };
 
   return (
-    <form className=" w-[65%] flex gap-2">
+    <form className=" w-[65%] flex gap-2 mt-6">
       <TextField
         onKeyDown={(e) => {
           if (e.key !== "Enter") return;

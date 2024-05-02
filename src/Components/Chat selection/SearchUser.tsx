@@ -1,8 +1,8 @@
 import { Autocomplete } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
-import { useAppSelector } from "../../redux/hooks";
-import { selectCurrentUser } from "../../redux/slices/currentUser";
+import { useAppSelector } from "../../Store/hooks";
+import { selectCurrentUser } from "../../Store/slices/currentUser";
 import getAllUsersEmailsFromDB from "../../Services/getAllUsersEmailsFromDB";
 import { useActiveChat } from "../../Hooks/useActiveChat";
 
@@ -34,7 +34,7 @@ const SearchUser = () => {
   }, [selectedUserEmail]);
 
   return (
-    <div className="flex items-center gap-3 bg-[#2c2c2c] h-fit rounded py-2 focus-within:outline outline-[#766ac8] outline-2">
+    <div className="flex items-center gap-3 bg-gray-very-light h-fit rounded py-2 focus-within:outline outline-purple-main outline-2">
       <Autocomplete
         value={selectedUserEmail}
         onChange={(_e, newValue) => {

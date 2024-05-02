@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "@firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { currentUserState } from "./redux/slices/currentUser";
+import { currentUserState } from "./Store/slices/currentUser";
 import createUserData from "./utils/createUserData";
 console.log("Firebase initialized");
 

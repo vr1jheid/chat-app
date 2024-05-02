@@ -1,17 +1,17 @@
 import ChatsList from "../Components/Chat selection/ChatsList";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { selectCurrentUser } from "../redux/slices/currentUser";
+import { useEffect, useRef } from "react";
+import { useAppDispatch, useAppSelector } from "../Store/hooks";
+import { selectCurrentUser } from "../Store/slices/currentUser";
 import SearchUser from "../Components/Chat selection/SearchUser";
 import Chat from "../Components/Chat/Chat";
 import { fetchChats } from "../Services/fetchChats";
-import { Divider } from "@mui/material";
-import { clearActiveChat, selectActiveChat } from "../redux/slices/chats";
+import { clearActiveChat, selectActiveChat } from "../Store/slices/chats";
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
   const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
   const { id: activeChatID } = useAppSelector(selectActiveChat);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     dispatch(fetchChats(currentUserEmail!));
@@ -33,14 +33,14 @@ const MainPage = () => {
   }, [activeChatID]);
 
   return (
-    <div className="grow max-h-screen flex pt-[82px]">
-      <div className="min-w-[25%] p-3 flex flex-col gap-5 bg-[#212121]">
+    <div ref={containerRef} className="grow max-h-screen flex pt-[82px]">
+      <div className="min-w-[25%] p-3 flex flex-col gap-5 bg-gray-light border-r-2 border-solid  border-gray-very-light ">
         <SearchUser />
-        <Divider sx={{ border: "1px solid black" }} />
         <ChatsList />
       </div>
-
-      {activeChatID && <Chat />}
+      <div className={`bg-gray-dark grow max-h-full bg-cats-svg`}>
+        {activeChatID && <Chat />}
+      </div>
     </div>
   );
 };

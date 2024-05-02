@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAppSelector } from "../redux/hooks";
-import { selectCurrentUser } from "../redux/slices/currentUser";
+import { useAppSelector } from "../Store/hooks";
+import { selectCurrentUser } from "../Store/slices/currentUser";
 import Loader from "../Components/Shared/Loader";
 
 const ProtectedRoutes = () => {

@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import getUserFromDB from "../../Services/getUserFromDB";
 import { UserDataDB } from "../../Types/userTypes";
 import { ChatDataDB, ChatTypes } from "../../Types/chatTypes";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { selectCurrentUser } from "../../redux/slices/currentUser";
+import { useAppDispatch, useAppSelector } from "../../Store/hooks";
+import { selectCurrentUser } from "../../Store/slices/currentUser";
 import getTimeFromTimestamp from "../../utils/getTimeFromTimestamp";
 import UserAvatar from "../Shared/UserAvatar";
-import { selectActiveChat, setActive } from "../../redux/slices/chats";
+import { selectActiveChat, setActive } from "../../Store/slices/chats";
 import clsx from "clsx";
 
 interface Props {
@@ -64,7 +64,7 @@ const ChatPreview = ({ chatData }: Props) => {
     <div
       className={clsx(
         "max-w-full h-fit text-xl text-white rounded p-2 flex items-center gap-7 truncate",
-        { "bg-[#766ac8]": isActive, "hover:bg-[#2f2f2f]": !isActive }
+        { " bg-purple-main": isActive, "hover:bg-gray-hover": !isActive }
       )}
       onClick={setActiveChat}
     >
