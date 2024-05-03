@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import getUserFromDB from "../../Services/getUserFromDB";
 import { UserDataDB } from "../../Types/userTypes";
 import { ChatDataDB, ChatTypes } from "../../Types/chatTypes";
@@ -85,4 +85,4 @@ const ChatPreview = ({ chatData, clickAction }: Props) => {
   );
 };
 
-export default ChatPreview;
+export default memo(ChatPreview);

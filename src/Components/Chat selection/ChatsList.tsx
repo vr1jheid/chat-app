@@ -1,6 +1,10 @@
 import { useEffect, useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
-import { changeLastMessage, selectAllChats } from "../../Store/Chats/chats";
+import {
+  changeLastMessage,
+  selectAllChats,
+  selectChatsNum,
+} from "../../Store/Chats/chats";
 import ChatPreview from "./ChatPreview";
 import { subOnLastMessageChange } from "./utils/subOnLastMessageChange";
 import { setActive } from "../../Store/ActiveChat/activeChat";
@@ -8,25 +12,22 @@ import { setActive } from "../../Store/ActiveChat/activeChat";
 const ChatsList = () => {
   const dispatch = useAppDispatch();
   const chatsList = useAppSelector(selectAllChats);
+  const chatsNum = useAppSelector(selectChatsNum);
 
   useEffect(() => {
     const sub = subOnLastMessageChange(chatsList, (message) => {
       dispatch(changeLastMessage(message));
     });
     return sub;
-  }, [chatsList]);
+  }, [chatsNum]);
 
-  const sortedChats = useMemo(
-    () =>
-      Object.values(chatsList)
-        .filter((c) => c.lastMessage)
-        .sort(
-          (a, b) =>
-            b.lastMessage?.serverTime?.seconds! -
-            a.lastMessage?.serverTime?.seconds!
-        ),
-    [chatsList]
-  );
+  const sortedChats = Object.values(chatsList)
+    .filter((c) => c.lastMessage)
+    .sort(
+      (a, b) =>
+        b.lastMessage?.serverTime?.seconds! -
+        a.lastMessage?.serverTime?.seconds!
+    );
 
   return (
     <section className="flex flex-col gap-2">

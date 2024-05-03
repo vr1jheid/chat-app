@@ -17,10 +17,12 @@ const activeChatSlice = createSlice({
   selectors: {
     selectActiveChat: (state) => state,
     selectActiveChatLoading: (state) => state.isLoading,
+    selectActiveChatID: (state) => state.id,
   },
   reducers: {
     setActive: (_state, action: PayloadAction<ChatDataDB>) => {
-      return { ...action.payload, messages: [], isLoading: true };
+      const { lastMessage, ...newActiveChat } = action.payload;
+      return { ...newActiveChat, messages: [], isLoading: true };
     },
     setMessages: (state, action: PayloadAction<MessageData[]>) => {
       state.messages = action.payload.sort(
@@ -52,7 +54,7 @@ const activeChatSlice = createSlice({
 export const { setActive, addMessage, setMessages, clearActiveChat } =
   activeChatSlice.actions;
 
-export const { selectActiveChat, selectActiveChatLoading } =
+export const { selectActiveChat, selectActiveChatLoading, selectActiveChatID } =
   activeChatSlice.selectors;
 
 export default activeChatSlice.reducer;

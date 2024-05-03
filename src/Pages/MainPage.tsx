@@ -7,13 +7,13 @@ import Chat from "../Components/Chat/Chat";
 import { fetchChats } from "../Store/Chats/thunks/fetchChats";
 import {
   clearActiveChat,
-  selectActiveChat,
+  selectActiveChatID,
 } from "../Store/ActiveChat/activeChat";
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
   const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
-  const { id: activeChatID } = useAppSelector(selectActiveChat);
+  const activeChatID = useAppSelector(selectActiveChatID);
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -22,8 +22,6 @@ const MainPage = () => {
 
   useEffect(() => {
     const clearActiveChatFunc = (e: KeyboardEvent) => {
-      console.log(activeChatID);
-
       if (e.code === "Escape" && activeChatID) {
         dispatch(clearActiveChat());
       }

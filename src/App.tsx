@@ -32,20 +32,11 @@ function App() {
     */
     const userFromDB = await getUserFromDB(userFromAuth.email);
 
-    /*     const userRefDB = doc(db, `users/${userFromAuth.email}`);
-    const docSnap = await getDoc(userRefDB); */
-
     if (userFromDB) {
       dispatch(setUser({ ...userFromDB, isLoaded: true }));
     } else {
       dispatch(setUser(userFromAuth));
     }
-    /*     if (docSnap.exists()) {
-      const userFromDB = docSnap.data().userData as UserDataDB;
-      dispatch(setUser({ ...userFromDB, isLoaded: true }));
-    } else {
-      dispatch(setUser(userFromAuth));
-    } */
     navigate("/");
   };
 

@@ -20,6 +20,7 @@ const chatsSlice = createSlice({
   initialState,
   selectors: {
     selectAllChats: (state) => state,
+    selectChatsNum: (state) => Object.keys(state).length,
   },
   reducers: {
     changeLastMessage: (
@@ -44,7 +45,7 @@ const chatsSlice = createSlice({
   },
 });
 
-export const { selectAllChats } = chatsSlice.selectors;
+export const { selectAllChats, selectChatsNum } = chatsSlice.selectors;
 
 export const { clearChatsState, changeLastMessage } = chatsSlice.actions;
 

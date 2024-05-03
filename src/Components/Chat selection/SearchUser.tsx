@@ -11,6 +11,8 @@ export interface UserWithLabel {
 }
 
 const SearchUser = () => {
+  /*   console.log("RERENDER SEARCH USER"); */
+
   const [usersList, setUsersList] = useState<string[]>(["EMPTY"]);
   const [selectedUserEmail, setSelectedUserEmail] = useState<string | null>(
     null

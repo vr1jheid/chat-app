@@ -10,7 +10,6 @@ const ChatHeader = () => {
   const [headerData, setHeaderData] = useState({ chatName: "", avatarURL: "" });
   const activeChat = useAppSelector(selectActiveChat);
   const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
-
   useEffect(() => {
     const setHeader = async () => {
       if (activeChat.type === ChatTypes.group) {
@@ -30,7 +29,7 @@ const ChatHeader = () => {
       });
     };
     setHeader();
-  }, [activeChat]);
+  }, [activeChat.id]);
 
   return (
     <header className="flex w-full items-center justify-center gap-4 text-3xl p-2 bg-gray-light text-white">
