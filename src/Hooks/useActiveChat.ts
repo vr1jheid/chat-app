@@ -1,4 +1,4 @@
-import { createChat } from "../Services/createChat";
+import { createChat } from "../Store/Chats/thunks/createChat";
 import { useAppDispatch, useAppSelector } from "../Store/hooks";
 import { selectAllChats } from "../Store/Chats/chats";
 import { selectCurrentUser } from "../Store/CurrentUser/currentUser";

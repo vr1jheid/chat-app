@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../Store/hooks";
 import { selectCurrentUser } from "../Store/CurrentUser/currentUser";
 import SearchUser from "../Components/Chat selection/SearchUser";
 import Chat from "../Components/Chat/Chat";
-import { fetchChats } from "../Services/fetchChats";
+import { fetchChats } from "../Store/Chats/thunks/fetchChats";
 import {
   clearActiveChat,
   selectActiveChat,

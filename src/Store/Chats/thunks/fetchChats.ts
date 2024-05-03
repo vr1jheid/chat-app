@@ -1,9 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { collection, where, getDocs, query, or } from "firebase/firestore";
-import { db } from "../firebase-config";
-import { AllUserChats } from "../Store/Chats/chats";
-import { convertServerTime } from "../utils/convertServerTime";
-import { ChatDataDB } from "../Types/chatTypes";
+import { db } from "../../../firebase-config";
+import { convertServerTime } from "../../../utils/convertServerTime";
+import { ChatDataDB } from "../../../Types/chatTypes";
+import { ChatsState } from "../chats";
 
 export const fetchChats = createAsyncThunk(
   "chats/fetchChats",
@@ -17,7 +17,7 @@ export const fetchChats = createAsyncThunk(
     );
 
     const querySnaphot = await getDocs(q);
-    const chatsFromDB: AllUserChats = {};
+    const chatsFromDB: ChatsState = {};
 
     querySnaphot.forEach((snapshotDoc) => {
       const docData = snapshotDoc.data();

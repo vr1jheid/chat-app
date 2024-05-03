@@ -85,7 +85,7 @@ const Chat = () => {
         ref={scrollable}
         className=" px-5 grow w-full flex flex-col-reverse gap-4 overflow-y-auto relative"
       >
-        {isLoading ? <Loader color="black" /> : renderMessages(messages)}
+        {isLoading ? <Loader color="white" /> : renderMessages(messages)}
       </div>
       <MessageInput
         scroll={scrollToBottom}

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import getUserFromDB from "../../Services/getUserFromDB";
 import { UserDataDB } from "../../Types/userTypes";
 import { ChatDataDB, ChatTypes } from "../../Types/chatTypes";
-import { useAppDispatch, useAppSelector } from "../../Store/hooks";
+import { useAppSelector } from "../../Store/hooks";
 import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
 import getTimeFromTimestamp from "../../utils/getTimeFromTimestamp";
 import UserAvatar from "../Shared/UserAvatar";

@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ChatDataDB, ChatTypes, LocalChatData } from "../../Types/chatTypes";
-import { createChat } from "../../Services/createChat";
+import { createChat } from "../Chats/thunks/createChat";
 import { MessageData } from "../../Types/messageTypes";
 
 const initialState: LocalChatData = {
