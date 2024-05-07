@@ -35,7 +35,7 @@ const MainPage = () => {
 
   return (
     <div ref={containerRef} className="grow max-h-screen flex pt-[82px]">
-      <div className="min-w-[25%] p-3 flex flex-col gap-5 bg-gray-light border-r-2 border-solid  border-gray-very-light ">
+      <div className="min-w-[25%] w-[25%] p-3 flex flex-col gap-5 bg-gray-light border-r-2 border-solid  border-gray-very-light ">
         <SearchUser />
         <ChatsList />
       </div>

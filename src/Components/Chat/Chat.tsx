@@ -11,13 +11,19 @@ import getDateFromTimestamp from "../../utils/getDateFromTimestamp";
 import sendMessageToDB from "../../Services/sendMessageToDB";
 import { db } from "../../firebase-config";
 import { useSubChat } from "../../Hooks/useSubChat";
-import { MessageData } from "../../Types/messageTypes";
 import Loader from "../Shared/Loader";
 import { ChatTypes } from "../../Types/chatTypes";
 import {
   selectActiveChat,
   selectActiveChatLoading,
 } from "../../Store/ActiveChat/activeChat";
+import { VariableSizeList } from "react-window";
+import { MessageData } from "../../Types/messageTypes";
+import MessageContainer from "./MessageContainer";
+
+const Row = ({ index, style }: { index: string; style: any }) => (
+  <div style={style}>Row {index}</div>
+);
 
 const Chat = () => {
   const { id: activeChatID, type: activeChatType } =
@@ -50,6 +56,7 @@ const Chat = () => {
         arr[i + 1].serverTime &&
         biggerDate(arr[i].serverTime!.seconds, arr[i + 1].serverTime!.seconds);
       const isMyself = currentUserEmail === m.author.email;
+
       return (
         <div key={m.id}>
           {newDate && (
@@ -78,15 +85,33 @@ const Chat = () => {
     return nodes;
   };
 
+  const messagesReverse = [...messages].reverse();
+
   return (
     <div className="pb-5 max-h-full h-full grow mx-auto bg-transparent flex items-center flex-col overflow-y-auto">
       <ChatHeader />
-      <div
+      {/*       <div
         ref={scrollable}
         className=" px-5 grow w-full flex flex-col-reverse gap-4 overflow-y-auto relative"
       >
         {isLoading ? <Loader color="white" /> : renderMessages(messages)}
-      </div>
+      </div> */}
+      <VariableSizeList
+        height={1000}
+        itemCount={messages.length}
+        itemSize={(index) => {
+          const message = messagesReverse[index];
+          console.log(message);
+
+          const additionalSize = 50;
+          return (
+            Math.ceil(message.messageText.length / 40) * 30 + additionalSize
+          );
+        }}
+        width={1000}
+      >
+        {MessageContainer}
+      </VariableSizeList>
       <MessageInput
         scroll={scrollToBottom}
         sendMessage={(messageText) => {
