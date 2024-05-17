@@ -25,9 +25,9 @@ const activeChatSlice = createSlice({
       return { ...newActiveChat, messages: [], isLoading: true };
     },
     setMessages: (state, action: PayloadAction<MessageData[]>) => {
-      state.messages = action.payload.sort(
-        (a, b) => b.serverTime!.seconds! - a.serverTime!.seconds
-      );
+      state.messages = action.payload
+        .sort((a, b) => b.serverTime!.seconds! - a.serverTime!.seconds)
+        .reverse();
       state.isLoading = false;
     },
     addMessage: (state, action: PayloadAction<MessageData>) => {
@@ -38,7 +38,7 @@ const activeChatSlice = createSlice({
         state.messages[existableMsgIndex] = action.payload;
         return;
       }
-      state.messages.unshift(action.payload);
+      state.messages.push(action.payload);
     },
     clearActiveChat: () => {
       return initialState;

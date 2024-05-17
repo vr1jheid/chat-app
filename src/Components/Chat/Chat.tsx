@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { deleteDoc, doc } from "firebase/firestore";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
@@ -21,30 +21,21 @@ import { VariableSizeList } from "react-window";
 import { MessageData } from "../../Types/messageTypes";
 import MessageContainer from "./MessageContainer";
 
-const Row = ({ index, style }: { index: string; style: any }) => (
-  <div style={style}>Row {index}</div>
-);
-
 const Chat = () => {
   const { id: activeChatID, type: activeChatType } =
     useAppSelector(selectActiveChat);
   const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
-
   const { messages } = useAppSelector(selectActiveChat);
   const isLoading = useAppSelector(selectActiveChatLoading);
-
   const currentUser = useAppSelector(selectCurrentUser);
-  const scrollable = useRef<HTMLDivElement>(null);
+
+  const [chatBodySize, setChatBodySize] = useState<any>(null);
+  const chatBodyContainer = useRef<HTMLDivElement | null>(null);
 
   useSubChat([activeChatID]);
 
   const deleteMessage = async (chatID: string, messageID: string) => {
     await deleteDoc(doc(db, `chats/${chatID}/messages/${messageID}`));
-  };
-
-  const scrollToBottom = () => {
-    const node = scrollable.current;
-    node?.scrollTo(0, node.scrollHeight);
   };
 
   const renderMessages = (messages: MessageData[]) => {
@@ -85,35 +76,47 @@ const Chat = () => {
     return nodes;
   };
 
-  const messagesReverse = [...messages].reverse();
+  useEffect(() => {
+    if (chatBodyContainer.current) {
+      console.log("here");
+
+      setChatBodySize({
+        width: chatBodyContainer.current.clientWidth,
+        height: chatBodyContainer.current.clientHeight,
+      });
+    }
+  }, [activeChatID]);
 
   return (
-    <div className="pb-5 max-h-full h-full grow mx-auto bg-transparent flex items-center flex-col overflow-y-auto">
+    <div className="pb-5 max-h-full h-full relative grow mx-auto bg-transparent flex items-center flex-col overflow-y-auto">
       <ChatHeader />
-      {/*       <div
-        ref={scrollable}
-        className=" px-5 grow w-full flex flex-col-reverse gap-4 overflow-y-auto relative"
-      >
-        {isLoading ? <Loader color="white" /> : renderMessages(messages)}
-      </div> */}
-      <VariableSizeList
-        height={1000}
-        itemCount={messages.length}
-        itemSize={(index) => {
-          const message = messagesReverse[index];
-          console.log(message);
+      {isLoading && <Loader color="white" />}
 
-          const additionalSize = 50;
-          return (
-            Math.ceil(message.messageText.length / 40) * 30 + additionalSize
-          );
-        }}
-        width={1000}
+      <div
+        ref={chatBodyContainer}
+        className="w-full h-full flex justify-center items-center"
       >
-        {MessageContainer}
-      </VariableSizeList>
+        {chatBodyContainer.current && (
+          <VariableSizeList
+            height={chatBodySize.height}
+            width={chatBodySize.width}
+            itemCount={messages.length}
+            itemSize={(index) => {
+              const message = messages[index];
+
+              const additionalSize = 16 + 10 + 20;
+              return (
+                Math.ceil(message.messageText.length / 57) * 28 + additionalSize
+              );
+            }}
+          >
+            {MessageContainer}
+          </VariableSizeList>
+        )}
+      </div>
+
       <MessageInput
-        scroll={scrollToBottom}
+        scroll={() => {}}
         sendMessage={(messageText) => {
           sendMessageToDB(messageText, activeChatID, currentUser);
         }}
