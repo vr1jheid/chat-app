@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react";
 import { deleteMessage } from "../../Services/deleteMessage";
 import { selectActiveChat } from "../../Store/ActiveChat/activeChat";
 import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
@@ -14,21 +13,12 @@ const MessageContainer = ({ index, style }: any) => {
   } = useAppSelector(selectActiveChat);
   const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
   const message = messages[index];
-
   const isMyself = currentUserEmail === message.author.email;
 
   return (
-    <div
-      style={{
-        padding: "10px",
-        ...style,
-        height: "fit-content",
-        /*         display: "flex",
-        justifyContent: "center",
-        alignItems: "center", */
-      }}
-    >
+    <div style={style} className="flex justify-center items-center">
       <Message
+        index={index}
         isMyself={isMyself}
         author={
           !isMyself && activeChatType === ChatTypes.group

@@ -2,12 +2,16 @@ import { configureStore } from "@reduxjs/toolkit";
 import currenUserReducer from "./CurrentUser/currentUser";
 import chatsReducer from "./Chats/chats";
 import activeChatReducer from "./ActiveChat/activeChat";
+import messagesSizesReducer from "./MessagesSizes/messagesSizes";
+import MessagesListRefSlice from "./MessagesListRef/MessagesListRef";
 
 const store = configureStore({
   reducer: {
     currentUser: currenUserReducer,
     chats: chatsReducer,
     activeChat: activeChatReducer,
+    messagesSizes: messagesSizesReducer,
+    messagesListRef: MessagesListRefSlice,
   },
 });
 

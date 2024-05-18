@@ -9,6 +9,7 @@ import {
   clearActiveChat,
   selectActiveChatID,
 } from "../Store/ActiveChat/activeChat";
+import ChatContextContainer from "../Components/Chat/ChatContextContainer";
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
@@ -40,7 +41,11 @@ const MainPage = () => {
         <ChatsList />
       </div>
       <div className={`bg-gray-dark grow max-h-full bg-cats-svg`}>
-        {activeChatID && <Chat />}
+        {activeChatID && (
+          <ChatContextContainer>
+            <Chat />
+          </ChatContextContainer>
+        )}
       </div>
     </div>
   );

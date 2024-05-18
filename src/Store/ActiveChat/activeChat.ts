@@ -18,6 +18,7 @@ const activeChatSlice = createSlice({
     selectActiveChat: (state) => state,
     selectActiveChatLoading: (state) => state.isLoading,
     selectActiveChatID: (state) => state.id,
+    selectActiveChatMessagesCount: (state) => state.messages.length,
   },
   reducers: {
     setActive: (_state, action: PayloadAction<ChatDataDB>) => {
@@ -54,7 +55,11 @@ const activeChatSlice = createSlice({
 export const { setActive, addMessage, setMessages, clearActiveChat } =
   activeChatSlice.actions;
 
-export const { selectActiveChat, selectActiveChatLoading, selectActiveChatID } =
-  activeChatSlice.selectors;
+export const {
+  selectActiveChat,
+  selectActiveChatLoading,
+  selectActiveChatID,
+  selectActiveChatMessagesCount,
+} = activeChatSlice.selectors;
 
 export default activeChatSlice.reducer;

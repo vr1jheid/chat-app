@@ -3,6 +3,10 @@ import Loader from "../Shared/Loader";
 import getTimeFromTimestamp from "../../utils/getTimeFromTimestamp";
 import { MessageAuthor, Timestamp } from "../../Types/messageTypes";
 import clsx from "clsx";
+import { useContext, useEffect, useRef } from "react";
+import { setSize } from "../../Store/MessagesSizes/messagesSizes";
+import { useAppDispatch } from "../../Store/hooks";
+import { ChatContext } from "./ChatContextContainer";
 
 interface Props {
   isMyself: boolean;
@@ -10,6 +14,7 @@ interface Props {
   text: string;
   timestamp: Timestamp | null;
   deleteMessage: () => Promise<void>;
+  index: number;
 }
 
 const Message = ({
@@ -18,12 +23,23 @@ const Message = ({
   timestamp,
   deleteMessage,
   isMyself,
+  index,
 }: Props) => {
+  const dispatch = useAppDispatch();
   const time = timestamp && getTimeFromTimestamp(timestamp.seconds);
+  const messageRoot = useRef<HTMLDivElement | null>(null);
+  const { listRef } = useContext(ChatContext);
+  useEffect(() => {
+    const size = messageRoot.current?.getBoundingClientRect().height;
+    if (!size) return;
+    dispatch(setSize({ index, size }));
+    listRef?.current?.resetAfterIndex(index);
+  }, []);
 
   return (
     <div
-      className={clsx("flex max-w-full justify-start", {
+      ref={messageRoot}
+      className={clsx("flex grow h-fit max-w-full justify-start", {
         "justify-end": isMyself,
       })}
     >
