@@ -19,10 +19,13 @@ const messagesSizesSlice = createSlice({
     ) => {
       state[action.payload.index] = action.payload.size;
     },
+    clearSizes: () => {
+      return initialState;
+    },
   },
 });
 
-export const { setSize } = messagesSizesSlice.actions;
+export const { setSize, clearSizes } = messagesSizesSlice.actions;
 export const { selectMessagesSizes } = messagesSizesSlice.selectors;
 
 export default messagesSizesSlice.reducer;

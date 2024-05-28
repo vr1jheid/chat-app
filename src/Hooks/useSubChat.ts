@@ -1,20 +1,19 @@
 import { query, collection, onSnapshot } from "firebase/firestore";
 import { useEffect } from "react";
-import { MessageData } from "../Types/messageTypes";
+import { MessageData, MessageDataDB } from "../Types/messageTypes";
 import { db } from "../firebase-config";
-
-import { convertServerTime } from "../utils/convertServerTime";
 import { useAppDispatch, useAppSelector } from "../Store/hooks";
 import {
   addMessage,
-  selectActiveChat,
+  selectActiveChatID,
   selectActiveChatLoading,
   setMessages,
 } from "../Store/ActiveChat/activeChat";
+import { convertServerTime } from "../utils/convertServerTime";
 
 export const useSubChat = (dependencies: any[]) => {
   const dispatch = useAppDispatch();
-  const { id: activeChatID } = useAppSelector(selectActiveChat);
+  const activeChatID = useAppSelector(selectActiveChatID);
   const isLoading = useAppSelector(selectActiveChatLoading);
 
   const subOnChanges = () => {
@@ -24,10 +23,9 @@ export const useSubChat = (dependencies: any[]) => {
       const initMessages: MessageData[] = [];
 
       querySnapshot.docChanges().forEach((change) => {
-        const message = change.doc.data() as MessageData;
+        const message = change.doc.data() as MessageDataDB;
         if (!message.id) return;
-
-        const validMessage = {
+        const validMessage: MessageData = {
           ...message,
           serverTime: convertServerTime(message.serverTime),
         };
@@ -48,6 +46,8 @@ export const useSubChat = (dependencies: any[]) => {
 
     return unsubscribe;
   };
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     const unsub = subOnChanges();

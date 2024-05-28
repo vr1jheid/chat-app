@@ -1,3 +1,5 @@
+import { Timestamp as TimestampDB } from "firebase/firestore";
+
 export interface MessageAuthor {
   email: string | null;
   displayName: string | null;
@@ -9,9 +11,18 @@ export interface Timestamp {
   seconds: number;
 }
 
-export interface MessageData {
+export interface MessageTime {
+  seconds: number | null;
+  nanoseconds: number | null;
+}
+
+export interface MessageDataDB {
   id: string;
   messageText: string;
   author: MessageAuthor;
-  serverTime: Timestamp | null;
+  serverTime: TimestampDB;
+}
+
+export interface MessageData extends Omit<MessageDataDB, "serverTime"> {
+  serverTime: Timestamp;
 }

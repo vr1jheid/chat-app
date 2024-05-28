@@ -3,7 +3,6 @@ import currenUserReducer from "./CurrentUser/currentUser";
 import chatsReducer from "./Chats/chats";
 import activeChatReducer from "./ActiveChat/activeChat";
 import messagesSizesReducer from "./MessagesSizes/messagesSizes";
-import MessagesListRefSlice from "./MessagesListRef/MessagesListRef";
 
 const store = configureStore({
   reducer: {
@@ -11,8 +10,18 @@ const store = configureStore({
     chats: chatsReducer,
     activeChat: activeChatReducer,
     messagesSizes: messagesSizesReducer,
-    messagesListRef: MessagesListRefSlice,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ["activeChat/setMessages", "messagesSizes/setSize"],
+      },
+      ignoredActionPaths: [
+        `payload./^(0|[1-9]\d*)$/.serverTime`,
+        "activeChat.messages.0.serverTime",
+      ],
+      ignoredPaths: ["activeChat.messages.0.serverTime"],
+    }),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

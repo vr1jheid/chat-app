@@ -35,6 +35,7 @@ const ChatHeader = () => {
     <header className="flex w-full items-center justify-center gap-4 text-3xl p-2 bg-gray-light text-white">
       {headerData.chatName}
       <UserAvatar alt={headerData.chatName} src={headerData.avatarURL} />
+      <span className=" text-xs">{activeChat.id}</span>
     </header>
   );
 };

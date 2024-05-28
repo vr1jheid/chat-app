@@ -1,7 +1,7 @@
 import { MutableRefObject, ReactNode, createContext, useState } from "react";
 import { VariableSizeList } from "react-window";
 
-type RefType = MutableRefObject<VariableSizeList<any> | null> | null;
+type RefType = any | null;
 
 export interface IMessagesListContext {
   listRef: RefType;

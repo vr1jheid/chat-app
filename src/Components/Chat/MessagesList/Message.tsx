@@ -1,18 +1,18 @@
-import UserAvatar from "../Shared/UserAvatar";
-import Loader from "../Shared/Loader";
-import getTimeFromTimestamp from "../../utils/getTimeFromTimestamp";
-import { MessageAuthor, Timestamp } from "../../Types/messageTypes";
 import clsx from "clsx";
-import { useContext, useEffect, useRef } from "react";
-import { setSize } from "../../Store/MessagesSizes/messagesSizes";
-import { useAppDispatch } from "../../Store/hooks";
-import { ChatContext } from "./ChatContextContainer";
+import { useRef, useContext, useEffect } from "react";
+import { setSize } from "../../../Store/MessagesSizes/messagesSizes";
+import { useAppDispatch } from "../../../Store/hooks";
+import { MessageAuthor, MessageTime } from "../../../Types/messageTypes";
+import getTimeFromTimestamp from "../../../utils/getTimeFromTimestamp";
+import Loader from "../../Shared/Loader";
+import UserAvatar from "../../Shared/UserAvatar";
+import { ChatContext } from "../ChatContextContainer";
 
 interface Props {
   isMyself: boolean;
   author: MessageAuthor | null;
   text: string;
-  timestamp: Timestamp | null;
+  timestamp: MessageTime | null;
   deleteMessage: () => Promise<void>;
   index: number;
 }
@@ -26,11 +26,13 @@ const Message = ({
   index,
 }: Props) => {
   const dispatch = useAppDispatch();
-  const time = timestamp && getTimeFromTimestamp(timestamp.seconds);
+  const time = timestamp?.seconds && getTimeFromTimestamp(timestamp.seconds);
   const messageRoot = useRef<HTMLDivElement | null>(null);
   const { listRef } = useContext(ChatContext);
+
   useEffect(() => {
     const size = messageRoot.current?.getBoundingClientRect().height;
+
     if (!size) return;
     dispatch(setSize({ index, size }));
     listRef?.current?.resetAfterIndex(index);
@@ -39,11 +41,12 @@ const Message = ({
   return (
     <div
       ref={messageRoot}
-      className={clsx("flex grow h-fit max-w-full justify-start", {
-        "justify-end": isMyself,
+      className={clsx("flex grow h-fit max-w-full   rotate-180", {
+        "justify-end": !isMyself,
+        "justify-start": isMyself,
       })}
     >
-      <div className="flex items-end w-fit max-w-[40%] gap-2">
+      <div className="flex flex-row-reverse items-end w-fit max-w-[40%] gap-2">
         {author && (
           <UserAvatar
             alt={author.displayName ?? author.email}
@@ -64,7 +67,7 @@ const Message = ({
             <div className=" text-purple-main">{author.displayName}</div>
           )}
 
-          <div className="flex max-w-full gap-3 justify-between">
+          <div className="flex flex-row-reverse max-w-full gap-3 justify-between">
             <div className="text-xl break-words w-[80%] grow">{text}</div>
             <div
               className={clsx("text-gray-extra-light self-end", {

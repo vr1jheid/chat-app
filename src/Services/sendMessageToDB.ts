@@ -4,9 +4,10 @@ import {
   addDoc,
   collection,
   doc,
+  Timestamp,
 } from "firebase/firestore";
 import { db } from "../firebase-config";
-import { MessageAuthor } from "../Types/messageTypes";
+import { MessageAuthor, MessageDataDB } from "../Types/messageTypes";
 
 type SendMessageToDB = (
   messageText: string,
@@ -26,8 +27,9 @@ const sendMessageToDB: SendMessageToDB = async (
     {}
   );
   const chatDocRef = doc(db, `chats/${chatID}`);
+  const serverTime = serverTimestamp() as Timestamp;
 
-  const messageWithInfo = {
+  const messageWithInfo: MessageDataDB = {
     id: messageDocRef.id,
     messageText,
     author: {
@@ -35,7 +37,7 @@ const sendMessageToDB: SendMessageToDB = async (
       displayName: author.displayName,
       avatarURL: author.avatarURL,
     },
-    serverTime: serverTimestamp(),
+    serverTime,
   };
 
   await updateDoc(messageDocRef, { ...messageWithInfo });

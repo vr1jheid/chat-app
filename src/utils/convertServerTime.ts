@@ -1,14 +1,14 @@
-export const convertServerTime = (serverTime: any) => {
-  if (
-    !serverTime ||
-    !serverTime.seconds === undefined ||
-    serverTime.nanoseconds === undefined
-  )
+import { Timestamp as TimestampDB } from "firebase/firestore";
+import { Timestamp } from "../Types/messageTypes";
+
+export const convertServerTime = (
+  serverTime: TimestampDB
+): Timestamp | null => {
+  if (!serverTime || !serverTime.seconds || !serverTime.nanoseconds) {
     return null;
-  const seconds: number = serverTime.seconds;
-  const nanoseconds: number = serverTime.nanoseconds;
+  }
   return {
-    seconds,
-    nanoseconds,
+    seconds: serverTime.seconds,
+    nanoseconds: serverTime.nanoseconds,
   };
 };

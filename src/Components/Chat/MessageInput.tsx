@@ -1,20 +1,20 @@
 import { Button, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useState } from "react";
+import { selectActiveChat } from "../../Store/ActiveChat/activeChat";
+import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
+import { useAppSelector } from "../../Store/hooks";
+import sendMessageToDB from "../../Services/sendMessageToDB";
 
-interface Props {
-  sendMessage: (messageText: string) => void;
-  scroll: () => void;
-}
-
-const MessageInput = ({ sendMessage, scroll }: Props) => {
+const SendMessageForm = () => {
   const [message, setMessage] = useState("");
+  const { id: activeChatID } = useAppSelector(selectActiveChat);
+  const currentUser = useAppSelector(selectCurrentUser);
 
-  const sendMessageToDB = () => {
+  const sendMessage = () => {
     try {
-      sendMessage(message);
+      sendMessageToDB(message, activeChatID, currentUser);
       setMessage("");
-      scroll();
     } catch (error) {
       console.log(error);
     }
@@ -26,7 +26,7 @@ const MessageInput = ({ sendMessage, scroll }: Props) => {
         onKeyDown={(e) => {
           if (e.key !== "Enter") return;
           e.preventDefault();
-          sendMessageToDB();
+          sendMessage();
         }}
         sx={{ background: "white" }}
         multiline
@@ -40,7 +40,7 @@ const MessageInput = ({ sendMessage, scroll }: Props) => {
         type="button"
         variant="contained"
         endIcon={<SendIcon />}
-        onClick={sendMessageToDB}
+        onClick={sendMessage}
       >
         Send
       </Button>
@@ -48,4 +48,4 @@ const MessageInput = ({ sendMessage, scroll }: Props) => {
   );
 };
 
-export default MessageInput;
+export default SendMessageForm;

@@ -1,8 +1,9 @@
-import { deleteMessage } from "../../Services/deleteMessage";
-import { selectActiveChat } from "../../Store/ActiveChat/activeChat";
-import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
-import { useAppSelector } from "../../Store/hooks";
-import { ChatTypes } from "../../Types/chatTypes";
+import { deleteMessage } from "../../../Services/deleteMessage";
+import { selectActiveChat } from "../../../Store/ActiveChat/activeChat";
+import { selectCurrentUser } from "../../../Store/CurrentUser/currentUser";
+import { useAppSelector } from "../../../Store/hooks";
+import { ChatTypes } from "../../../Types/chatTypes";
+
 import Message from "./Message";
 
 const MessageContainer = ({ index, style }: any) => {
@@ -16,7 +17,7 @@ const MessageContainer = ({ index, style }: any) => {
   const isMyself = currentUserEmail === message.author.email;
 
   return (
-    <div style={style} className="flex justify-center items-center">
+    <div style={style}>
       <Message
         index={index}
         isMyself={isMyself}
