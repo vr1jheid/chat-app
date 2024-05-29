@@ -1,7 +1,7 @@
-import { MutableRefObject, ReactNode, createContext, useState } from "react";
+import { ReactNode, createContext, useState } from "react";
 import { VariableSizeList } from "react-window";
 
-type RefType = any | null;
+type RefType = React.MutableRefObject<VariableSizeList<any> | null> | null;
 
 export interface IMessagesListContext {
   listRef: RefType;
@@ -14,7 +14,8 @@ export const ChatContext = createContext<IMessagesListContext>({
 });
 
 const ChatContextContainer = ({ children }: { children: ReactNode }) => {
-  const [listRef, setListRef] = useState<RefType>(null);
+  const [listRef, setListRef] =
+    useState<React.MutableRefObject<VariableSizeList<any> | null> | null>(null);
 
   return (
     <ChatContext.Provider value={{ listRef, setListRef }}>

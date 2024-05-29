@@ -69,7 +69,7 @@ const ChatPreview = ({ chatData, clickAction }: Props) => {
         src={previewData.avatarURL}
         size={55}
       />
-      <div className="flex flex-col gap-2 grow">
+      <div className="flex flex-col gap-2 grow max-w-[250px]">
         <div className="flex justify-between gap-4">
           <div className="text-2xl">{previewData.chatName}</div>
           <div className="text-xl text-[#a0a0a0]">

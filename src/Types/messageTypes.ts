@@ -24,5 +24,5 @@ export interface MessageDataDB {
 }
 
 export interface MessageData extends Omit<MessageDataDB, "serverTime"> {
-  serverTime: Timestamp;
+  serverTime: Timestamp | null;
 }

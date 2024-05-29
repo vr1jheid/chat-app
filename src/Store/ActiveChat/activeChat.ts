@@ -26,9 +26,10 @@ const activeChatSlice = createSlice({
       return { ...newActiveChat, messages: [], isLoading: true };
     },
     setMessages: (state, action: PayloadAction<MessageData[]>) => {
-      state.messages = action.payload
-        .sort((a, b) => b.serverTime.seconds! - a.serverTime.seconds!)
-        .reverse();
+      state.messages = action.payload.sort(
+        (a, b) => b.serverTime!.seconds! - a.serverTime!.seconds!
+      );
+
       state.isLoading = false;
     },
     addMessage: (state, action: PayloadAction<MessageData>) => {

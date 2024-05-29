@@ -31,11 +31,15 @@ const Message = ({
   const { listRef } = useContext(ChatContext);
 
   useEffect(() => {
+    console.log(messageRoot.current);
+    console.log(text);
+
     const size = messageRoot.current?.getBoundingClientRect().height;
 
     if (!size) return;
     dispatch(setSize({ index, size }));
     listRef?.current?.resetAfterIndex(index);
+    console.log(size, index);
   }, []);
 
   return (
