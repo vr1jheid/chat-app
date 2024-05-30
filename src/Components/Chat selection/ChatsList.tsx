@@ -30,7 +30,7 @@ const ChatsList = () => {
     );
 
   return (
-    <section className="flex flex-col gap-2">
+    <section className="flex flex-col gap-2 overflow-auto">
       {sortedChats &&
         sortedChats.map((chat) => {
           return (

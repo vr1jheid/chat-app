@@ -1,14 +1,16 @@
 import clsx from "clsx";
 import { useRef, useContext, useEffect } from "react";
 import { setSize } from "../../../Store/MessagesSizes/messagesSizes";
-import { useAppDispatch } from "../../../Store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../Store/hooks";
 import { MessageAuthor, MessageTime } from "../../../Types/messageTypes";
 import getTimeFromTimestamp from "../../../utils/getTimeFromTimestamp";
 import Loader from "../../Shared/Loader";
 import UserAvatar from "../../Shared/UserAvatar";
 import { ChatContext } from "../ChatContextContainer";
+import { selectScreenSize } from "../../../Store/ScreenSize/screenSize";
 
 interface Props {
+  id: string;
   isMyself: boolean;
   author: MessageAuthor | null;
   text: string;
@@ -18,6 +20,7 @@ interface Props {
 }
 
 const Message = ({
+  id,
   author,
   text,
   timestamp,
@@ -25,32 +28,29 @@ const Message = ({
   isMyself,
   index,
 }: Props) => {
-  const dispatch = useAppDispatch();
-  const time = timestamp?.seconds && getTimeFromTimestamp(timestamp.seconds);
   const messageRoot = useRef<HTMLDivElement | null>(null);
   const { listRef } = useContext(ChatContext);
+  const dispatch = useAppDispatch();
+  const screenSize = useAppSelector(selectScreenSize);
 
   useEffect(() => {
-    console.log(messageRoot.current);
-    console.log(text);
-
     const size = messageRoot.current?.getBoundingClientRect().height;
-
     if (!size) return;
-    dispatch(setSize({ index, size }));
+    dispatch(setSize({ id, size }));
     listRef?.current?.resetAfterIndex(index);
-    console.log(size, index);
-  }, []);
+  }, [screenSize]);
 
+  const time = timestamp?.seconds && getTimeFromTimestamp(timestamp.seconds);
   return (
     <div
       ref={messageRoot}
-      className={clsx("flex grow h-fit max-w-full   rotate-180", {
-        "justify-end": !isMyself,
-        "justify-start": isMyself,
+      className={clsx("flex grow max-w-full rotate-180", {
+        "justify-end": isMyself,
+        "justify-start": !isMyself,
       })}
+      style={{ direction: "ltr" }}
     >
-      <div className="flex flex-row-reverse items-end w-fit max-w-[40%] gap-2">
+      <div className="flex items-end w-fit max-w-[40%] gap-2">
         {author && (
           <UserAvatar
             alt={author.displayName ?? author.email}
@@ -68,18 +68,24 @@ const Message = ({
         >
           {!timestamp && <Loader />}
           {author && (
-            <div className=" text-purple-main">{author.displayName}</div>
+            <div className="text-purple-main text-left">
+              {author.displayName}
+            </div>
           )}
 
-          <div className="flex flex-row-reverse max-w-full gap-3 justify-between">
-            <div className="text-xl break-words w-[80%] grow">{text}</div>
-            <div
-              className={clsx("text-gray-extra-light self-end", {
-                "text-purple-extra-light": isMyself,
-              })}
-              onClick={deleteMessage}
-            >
-              {time}
+          <div className="flex flex-row-reverse  max-w-full gap-3 justify-between">
+            <div className="text-xl break-words w-[80%] grow text-left">
+              {text}
+              <span
+                className={clsx(
+                  " inline-block ml-3 text-gray-extra-light text-s float-right ",
+                  {
+                    "text-purple-extra-light": isMyself,
+                  }
+                )}
+              >
+                {time || "??:??"}
+              </span>
             </div>
           </div>
         </div>

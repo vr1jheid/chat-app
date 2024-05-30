@@ -78,7 +78,9 @@ const MainPage = () => {
   return (
     <div ref={containerRef} className="grow max-h-screen flex pt-[82px]">
       <button
-        onClick={getSomeMessages}
+        onClick={() => {
+          console.log(window.innerWidth, window.innerHeight);
+        }}
         className=" absolute left-0 bottom-0 size-10 bg-white"
       >
         test

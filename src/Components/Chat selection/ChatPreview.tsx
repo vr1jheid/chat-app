@@ -59,7 +59,7 @@ const ChatPreview = ({ chatData, clickAction }: Props) => {
   return (
     <div
       className={clsx(
-        "max-w-full h-fit text-xl text-white rounded p-2 flex items-center gap-7 truncate",
+        "max-w-full h-fit text-xl text-white rounded p-2 flex items-center justify-between truncate",
         { " bg-purple-main": isActive, "hover:bg-gray-hover": !isActive }
       )}
       onClick={clickAction}
@@ -69,9 +69,11 @@ const ChatPreview = ({ chatData, clickAction }: Props) => {
         src={previewData.avatarURL}
         size={55}
       />
-      <div className="flex flex-col gap-2 grow max-w-[250px]">
+      <div className="flex flex-col gap-2 grow max-w-[calc(100%-80px)]">
         <div className="flex justify-between gap-4">
-          <div className="text-2xl">{previewData.chatName}</div>
+          <div className="text-2xl max-w-[80%] truncate">
+            {previewData.chatName}
+          </div>
           <div className="text-xl text-[#a0a0a0]">
             {getTimeFromTimestamp(chatData.lastMessage?.serverTime?.seconds!)}
           </div>

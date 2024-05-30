@@ -1,4 +1,4 @@
-import { Button, TextField } from "@mui/material";
+import { Button, IconButton, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useState } from "react";
 import { selectActiveChat } from "../../Store/ActiveChat/activeChat";
@@ -21,14 +21,24 @@ const SendMessageForm = () => {
   };
 
   return (
-    <form className=" w-[65%] flex gap-2 mt-6">
+    <form className="w-[65%] flex gap-2 mt-6">
       <TextField
         onKeyDown={(e) => {
           if (e.key !== "Enter") return;
           e.preventDefault();
           sendMessage();
         }}
-        sx={{ background: "white" }}
+        sx={{
+          background: "#212121",
+          borderRadius: "0.25rem",
+          "& .MuiInputBase-input": {
+            color: "white",
+            fontSize: 20,
+          },
+          "& .MuiOutlinedInput-notchedOutline": {
+            border: "none",
+          },
+        }}
         multiline
         fullWidth
         value={message}
@@ -36,14 +46,11 @@ const SendMessageForm = () => {
           setMessage(e.target.value);
         }}
       ></TextField>
-      <Button
-        type="button"
-        variant="contained"
-        endIcon={<SendIcon />}
-        onClick={sendMessage}
-      >
-        Send
-      </Button>
+      <IconButton onClick={sendMessage} aria-label="send">
+        <div className=" bg-gray-light h-12 w-12 rounded-full flex items-center justify-center">
+          <SendIcon sx={{ color: "white" }} />
+        </div>
+      </IconButton>
     </form>
   );
 };

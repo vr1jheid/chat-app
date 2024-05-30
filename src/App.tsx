@@ -14,6 +14,9 @@ import Layout from "./Components/Layout";
 import getUserFromDB from "./Services/getUserFromDB";
 import AuthPage from "./Pages/AuthPage";
 import { clearChatsState } from "./Store/Chats/chats";
+import { clearSizes } from "./Store/MessagesSizes/messagesSizes";
+import { clearActiveChat } from "./Store/ActiveChat/activeChat";
+import { useWindowResize } from "./Hooks/useWindowResize";
 
 function App() {
   const navigate = useNavigate();
@@ -24,6 +27,8 @@ function App() {
     if (!userFromAuth) {
       dispatch(clearUser());
       dispatch(clearChatsState());
+      dispatch(clearSizes());
+      dispatch(clearActiveChat());
       navigate("/login");
       return;
     }
@@ -43,6 +48,8 @@ function App() {
   useEffect(() => {
     activateUserObserver(changeUserHandler);
   }, []);
+
+  useWindowResize();
 
   return (
     <Routes>

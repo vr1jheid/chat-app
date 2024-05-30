@@ -1,9 +1,9 @@
+import { useRef } from "react";
 import { deleteMessage } from "../../../Services/deleteMessage";
 import { selectActiveChat } from "../../../Store/ActiveChat/activeChat";
 import { selectCurrentUser } from "../../../Store/CurrentUser/currentUser";
 import { useAppSelector } from "../../../Store/hooks";
 import { ChatTypes } from "../../../Types/chatTypes";
-
 import Message from "./Message";
 
 const MessageContainer = ({ index, style }: any) => {
@@ -16,9 +16,12 @@ const MessageContainer = ({ index, style }: any) => {
   const message = messages[index];
   const isMyself = currentUserEmail === message.author.email;
 
+  const container = useRef<HTMLDivElement | null>(null);
+
   return (
-    <div style={style}>
+    <div ref={container} style={style} key={message.id}>
       <Message
+        id={message.id}
         index={index}
         isMyself={isMyself}
         author={

@@ -13,11 +13,8 @@ const messagesSizesSlice = createSlice({
     selectMessagesSizes: (state) => state,
   },
   reducers: {
-    setSize: (
-      state,
-      action: PayloadAction<{ index: number; size: number }>
-    ) => {
-      state[action.payload.index] = action.payload.size;
+    setSize: (state, action: PayloadAction<{ id: string; size: number }>) => {
+      state[action.payload.id] = action.payload.size;
     },
     clearSizes: () => {
       return initialState;

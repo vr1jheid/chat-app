@@ -8,7 +8,6 @@ import { selectMessagesSizes } from "../../../Store/MessagesSizes/messagesSizes"
 import { useContext, useEffect, useRef } from "react";
 import { ChatContext } from "../ChatContextContainer";
 import MessageContainer from "./MessageContainer";
-
 import Loader from "../../Shared/Loader";
 import { VariableSizeList } from "react-window";
 
@@ -59,7 +58,7 @@ const MessagesList = () => {
     };
   }, []);
 
-  const getSize = (index: number) => sizes[index] + 10 || 50;
+  const getSize = (index: number) => sizes[messages[index].id] + 10 || 50;
   return (
     <div ref={listContainerRef} className="w-full h-full pb-3 rotate-180">
       {isLoading && <Loader color="white" />}
@@ -76,6 +75,7 @@ const MessagesList = () => {
               itemCount={messages.length}
               itemSize={getSize}
               direction="rtl"
+              itemKey={(index) => messages[index].id}
               onScroll={({ scrollOffset: thisScrollOffset }) => {
                 scrollOffset.current = thisScrollOffset;
               }}
