@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppDispatch } from "../Store/hooks";
-import { setScreenSize } from "../Store/ScreenSize/screenSize";
+import { setWindowSize } from "../Store/WindowSize/windowSize";
 
 const throttle = (func: any, delay: number) => {
   let isThrottle = false;
@@ -23,7 +23,7 @@ export const useWindowResize = () => {
     console.log({ width: window.innerWidth, height: window.innerHeight });
 
     dispatch(
-      setScreenSize({ width: window.innerWidth, height: window.innerHeight })
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight })
     );
   };
 

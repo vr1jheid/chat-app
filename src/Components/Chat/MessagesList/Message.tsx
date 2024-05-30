@@ -7,7 +7,7 @@ import getTimeFromTimestamp from "../../../utils/getTimeFromTimestamp";
 import Loader from "../../Shared/Loader";
 import UserAvatar from "../../Shared/UserAvatar";
 import { ChatContext } from "../ChatContextContainer";
-import { selectScreenSize } from "../../../Store/ScreenSize/screenSize";
+import { selectWindowSize } from "../../../Store/WindowSize/windowSize";
 
 interface Props {
   id: string;
@@ -31,7 +31,7 @@ const Message = ({
   const messageRoot = useRef<HTMLDivElement | null>(null);
   const { listRef } = useContext(ChatContext);
   const dispatch = useAppDispatch();
-  const screenSize = useAppSelector(selectScreenSize);
+  const screenSize = useAppSelector(selectWindowSize);
 
   useEffect(() => {
     const size = messageRoot.current?.getBoundingClientRect().height;
