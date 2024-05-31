@@ -3,7 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import UserAvatar from "../Shared/UserAvatar";
 import { useAppSelector } from "../../Store/hooks";
 import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
-import { logout } from "../../Services/logout";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase-config";
 
 const UserMenu = () => {
   const contRef = useRef<HTMLDivElement | null>(null);
@@ -25,6 +26,10 @@ const UserMenu = () => {
       setWidth(contRef.current.clientWidth);
     }
   }, []);
+
+  const logout = async () => {
+    await signOut(auth);
+  };
 
   const userName = displayName ?? email;
 
