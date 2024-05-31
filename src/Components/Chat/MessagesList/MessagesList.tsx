@@ -60,7 +60,7 @@ const MessagesList = () => {
 
   const getSize = (index: number) => sizes[messages[index].id] + 10 || 50;
   return (
-    <div ref={listContainerRef} className="w-full h-full pb-3 rotate-180">
+    <div ref={listContainerRef} className="w-full h-full pb-3 px-2 rotate-180">
       {isLoading && <Loader color="white" />}
       {
         <AutoSizer>
