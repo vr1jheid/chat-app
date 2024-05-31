@@ -1,14 +1,14 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { fetchChats } from "./thunks/fetchChats";
 import { createChat } from "./thunks/createChat";
-import { ChatDataDB } from "../../Types/chatTypes";
+import { ChatData } from "../../Types/chatTypes";
 import { MessageData } from "../../Types/messageTypes";
 
 export interface ChatsState {
-  [key: string]: ChatDataDB;
+  [key: string]: ChatData;
 }
 
-export interface LastMessageWithID {
+export interface LastMessageWithChatID {
   chatID: string;
   message: MessageData;
 }
@@ -25,7 +25,7 @@ const chatsSlice = createSlice({
   reducers: {
     changeLastMessage: (
       state,
-      { payload }: PayloadAction<LastMessageWithID>
+      { payload }: PayloadAction<LastMessageWithChatID>
     ) => {
       state[payload.chatID].lastMessage = payload.message;
     },

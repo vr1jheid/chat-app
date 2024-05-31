@@ -10,8 +10,7 @@ import {
   selectActiveChatID,
 } from "../Store/ActiveChat/activeChat";
 import ChatContextContainer from "../Components/Chat/ChatContextContainer";
-import {
-  Timestamp,
+/* import {
   collection,
   getDocs,
   limit,
@@ -20,7 +19,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../firebase-config";
-import { convertServerTime } from "../utils/convertServerTime";
+import { convertServerTime } from "../utils/convertServerTime"; */
 
 const MainPage = () => {
   console.log("mainpage rerender");
@@ -47,7 +46,7 @@ const MainPage = () => {
     };
   }, [activeChatID]);
 
-  const getSomeMessages = async () => {
+  /*   const getSomeMessages = async () => {
     const ref = collection(db, `chats/${activeChatID}/messages`);
     const q = query(ref, orderBy("serverTime", "desc"), limit(5));
     const querySnapshot = await getDocs(q);
@@ -56,8 +55,8 @@ const MainPage = () => {
       const data = doc.data();
       const serverTime = data.serverTime;
       arr.push(data);
-      /*       const serverTimeCopy = { ...serverTime };
-      console.log(serverTimeCopy); */
+            const serverTimeCopy = { ...serverTime };
+      console.log(serverTimeCopy);
     });
 
     console.log(arr[3]);
@@ -74,17 +73,17 @@ const MainPage = () => {
       console.log(data);
     });
   };
-
+ */
   return (
     <div ref={containerRef} className="grow max-h-screen flex pt-[82px]">
-      <button
+      {/*       <button
         onClick={() => {
           console.log(window.innerWidth, window.innerHeight);
         }}
         className=" absolute left-0 bottom-0 size-10 bg-white"
       >
         test
-      </button>
+      </button> */}
       <div className="min-w-[25%] w-[25%] p-3 flex flex-col gap-5 bg-gray-light border-r-2 border-solid  border-gray-very-light ">
         <SearchUser />
         <ChatsList />

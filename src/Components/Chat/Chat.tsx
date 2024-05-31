@@ -1,10 +1,6 @@
-import { deleteDoc, doc } from "firebase/firestore";
 import SendMessageForm from "./MessageInput";
 import ChatHeader from "./ChatHeader";
-import { db } from "../../firebase-config";
-
 import { useSubChat } from "../../Hooks/useSubChat";
-
 import MessagesList from "./MessagesList/MessagesList";
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 import { selectActiveChatID } from "../../Store/ActiveChat/activeChat";
@@ -16,9 +12,6 @@ const Chat = () => {
   const activeChatID = useAppSelector(selectActiveChatID);
   const dispatch = useAppDispatch();
 
-  const deleteMessage = async (chatID: string, messageID: string) => {
-    await deleteDoc(doc(db, `chats/${chatID}/messages/${messageID}`));
-  };
   useSubChat([]);
 
   useEffect(() => {

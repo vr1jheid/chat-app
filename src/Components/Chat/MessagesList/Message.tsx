@@ -77,6 +77,7 @@ const Message = ({
             <div className="text-xl break-words w-[80%] grow text-left">
               {text}
               <span
+                onClick={deleteMessage}
                 className={clsx(
                   " inline-block ml-3 text-gray-extra-light text-s float-right ",
                   {

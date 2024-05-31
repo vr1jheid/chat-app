@@ -1,4 +1,4 @@
-import { MessageData } from "./messageTypes";
+import { MessageData, MessageDataDB } from "./messageTypes";
 
 export enum ChatTypes {
   dialog = "dialog",
@@ -8,11 +8,15 @@ export enum ChatTypes {
 export interface ChatDataDB {
   id: string;
   members: string[];
-  lastMessage?: MessageData;
+  lastMessage?: MessageDataDB;
   type: ChatTypes | null;
 }
 
-export interface LocalChatData extends ChatDataDB {
+export interface ChatData extends Omit<ChatDataDB, "lastMessage"> {
+  lastMessage?: MessageData;
+}
+
+export interface ActiveChat extends Omit<ChatData, "lastMessage"> {
   messages: MessageData[];
   isLoading: boolean;
 }

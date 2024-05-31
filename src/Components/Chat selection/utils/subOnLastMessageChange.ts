@@ -1,12 +1,12 @@
 import { query, collection, where, onSnapshot } from "firebase/firestore";
-import { ChatsState, LastMessageWithID } from "../../../Store/Chats/chats";
+import { ChatsState, LastMessageWithChatID } from "../../../Store/Chats/chats";
 import { ChatDataDB } from "../../../Types/chatTypes";
 import { db } from "../../../firebase-config";
 import { convertServerTime } from "../../../utils/convertServerTime";
 
 export const subOnLastMessageChange = (
   chatsList: ChatsState,
-  action: (message: LastMessageWithID) => void
+  action: (message: LastMessageWithChatID) => void
 ) => {
   const chatsIds = Object.keys(chatsList);
   if (!chatsIds.length) return;

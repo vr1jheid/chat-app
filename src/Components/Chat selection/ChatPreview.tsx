@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from "react";
 import getUserFromDB from "../../Services/getUserFromDB";
 import { UserDataDB } from "../../Types/userTypes";
-import { ChatDataDB, ChatTypes } from "../../Types/chatTypes";
+import { ChatData, ChatTypes } from "../../Types/chatTypes";
 import { useAppSelector } from "../../Store/hooks";
 import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
 import getTimeFromTimestamp from "../../utils/getTimeFromTimestamp";
@@ -10,7 +10,7 @@ import clsx from "clsx";
 import { selectActiveChat } from "../../Store/ActiveChat/activeChat";
 
 interface Props {
-  chatData: ChatDataDB;
+  chatData: ChatData;
   clickAction: () => void;
 }
 

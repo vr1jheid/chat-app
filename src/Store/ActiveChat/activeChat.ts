@@ -1,9 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { ChatDataDB, ChatTypes, LocalChatData } from "../../Types/chatTypes";
+import { ActiveChat, ChatData, ChatTypes } from "../../Types/chatTypes";
 import { createChat } from "../Chats/thunks/createChat";
 import { MessageData } from "../../Types/messageTypes";
 
-const initialState: LocalChatData = {
+const initialState: ActiveChat = {
   id: "",
   members: [],
   type: ChatTypes.group,
@@ -21,7 +21,7 @@ const activeChatSlice = createSlice({
     selectActiveChatMessagesCount: (state) => state.messages.length,
   },
   reducers: {
-    setActive: (_state, action: PayloadAction<ChatDataDB>) => {
+    setActive: (_state, action: PayloadAction<ChatData>) => {
       const { lastMessage, ...newActiveChat } = action.payload;
       return { ...newActiveChat, messages: [], isLoading: true };
     },
