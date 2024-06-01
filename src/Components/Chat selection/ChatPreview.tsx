@@ -59,7 +59,7 @@ const ChatPreview = ({ chatData, clickAction }: Props) => {
   return (
     <div
       className={clsx(
-        "max-w-full h-fit min-h-16 text-xl text-white rounded p-2 flex items-center justify-between truncate cursor-pointer",
+        "max-w-full h-fit min-h-20 text-xl text-white rounded p-2 flex items-center justify-between truncate cursor-pointer",
         { " bg-purple-main": isActive, "hover:bg-gray-hover": !isActive }
       )}
       onClick={clickAction}

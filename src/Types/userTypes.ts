@@ -4,4 +4,5 @@ export interface UserDataDB {
   displayName: string | null;
   avatarURL: string | null;
   emailVerified: boolean;
+  chats: string[];
 }

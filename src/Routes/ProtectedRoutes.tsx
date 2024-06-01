@@ -4,6 +4,8 @@ import { selectCurrentUser } from "../Store/CurrentUser/currentUser";
 import Loader from "../Components/Shared/Loader";
 
 const ProtectedRoutes = () => {
+  console.log("protected routes");
+
   const { uid, isLoaded } = useAppSelector(selectCurrentUser);
   const isAuth = Boolean(uid);
 
@@ -15,6 +17,7 @@ const ProtectedRoutes = () => {
         </div>
       );
     }
+
     return isAuth ? <Outlet /> : <Navigate to={"/login"} />;
   };
 

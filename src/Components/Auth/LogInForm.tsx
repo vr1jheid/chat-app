@@ -8,7 +8,6 @@ import {
 import { auth } from "../../firebase-config";
 import { useState } from "react";
 import PasswordInput from "./PasswordInput";
-import authUser from "../../Services/authUser";
 
 const LogInForm = () => {
   const [email, setEmail] = useState("");
@@ -17,9 +16,7 @@ const LogInForm = () => {
   const googleAuthenticate = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      const res = await signInWithPopup(auth, provider);
-
-      authUser(res.user);
+      await signInWithPopup(auth, provider);
     } catch (error) {
       console.log("Не удалось залогиньться через гуголь(", error);
     }
@@ -74,14 +71,6 @@ const LogInForm = () => {
         >
           Log In
         </Button>
-        <Button
-          sx={{ fontWeight: 600 }}
-          variant="outlined"
-          onClick={() => console.log(auth.currentUser)}
-        >
-          Get current User
-        </Button>
-
         <Box>
           <IconButton onClick={googleAuthenticate}>
             <GoogleIcon />

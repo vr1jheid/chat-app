@@ -21,6 +21,7 @@ export const fetchChats = createAsyncThunk(
 
     querySnaphot.forEach((snapshotDoc) => {
       const docData = snapshotDoc.data() as ChatDataDB;
+
       const { members, lastMessage, type } = docData;
 
       const chatData: ChatData = {

@@ -4,27 +4,38 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
-import LogInForm from "../Components/Auth/LogInForm";
-import RegisterForm from "../Components/Auth/RegisterForm";
 import { useAppSelector } from "../Store/hooks";
 import { selectCurrentUser } from "../Store/CurrentUser/currentUser";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import Loader from "../Components/Shared/Loader";
+import { useEffect } from "react";
 
 const AuthPage = () => {
-  const { isLoaded } = useAppSelector(selectCurrentUser);
-  const [action, setAction] = useState("login");
+  const { isLoaded, uid } = useAppSelector(selectCurrentUser);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (uid) {
+      navigate("/main");
+    }
+  }, [uid]);
+
+  if (!isLoaded) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
+  }
 
   const handleActionChanger = (
     _e: React.MouseEvent<HTMLElement, MouseEvent>,
     newValue: string
   ) => {
     if (!newValue) return;
-    setAction(newValue);
+    navigate(`${newValue}`);
   };
-
-  if (!isLoaded) {
-    return <div>Loading pls wait</div>;
-  }
 
   return (
     <Container
@@ -39,12 +50,12 @@ const AuthPage = () => {
       maxWidth="xl"
     >
       <Typography variant="h2" textAlign="center">
-        Login Page
+        React Chat
       </Typography>
       <ToggleButtonGroup
         size="medium"
         exclusive
-        value={action}
+        value={location.pathname.slice(1)}
         onChange={handleActionChanger}
       >
         <ToggleButton sx={{ width: "100px" }} value={"login"}>
@@ -54,7 +65,7 @@ const AuthPage = () => {
           Register
         </ToggleButton>
       </ToggleButtonGroup>
-      {action === "login" ? <LogInForm /> : <RegisterForm />}
+      <Outlet />
     </Container>
   );
 };

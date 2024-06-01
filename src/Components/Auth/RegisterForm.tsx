@@ -4,7 +4,6 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import PasswordInput from "./PasswordInput";
 import { auth } from "../../firebase-config";
-import createUserInDB from "../../Services/createUserInDB";
 
 const RegisterForm = () => {
   const [email, setEmail] = useState("");
@@ -12,13 +11,7 @@ const RegisterForm = () => {
 
   const registerNewUser = async () => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
-      createUserInDB(user);
+      await createUserWithEmailAndPassword(auth, email, password);
     } catch (error) {
       console.log(error);
     }

@@ -1,7 +1,6 @@
 import ChatsList from "../Components/Chat selection/ChatsList";
 import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../Store/hooks";
-import { selectCurrentUser } from "../Store/CurrentUser/currentUser";
 import SearchUser from "../Components/Chat selection/SearchUser";
 import Chat from "../Components/Chat/Chat";
 import { fetchChats } from "../Store/Chats/thunks/fetchChats";
@@ -10,6 +9,8 @@ import {
   selectActiveChatID,
 } from "../Store/ActiveChat/activeChat";
 import ChatContextContainer from "../Components/Chat/ChatContextContainer";
+import { useSubChat } from "../Hooks/useSubChat";
+import store from "../Store/store";
 /* import {
   collection,
   getDocs,
@@ -21,17 +22,20 @@ import ChatContextContainer from "../Components/Chat/ChatContextContainer";
 import { db } from "../firebase-config";
 import { convertServerTime } from "../utils/convertServerTime"; */
 
+export const loader = async () => {
+  console.log("loader");
+
+  const currentUserEmail = store.getState().currentUser.email;
+  store.dispatch(fetchChats(currentUserEmail));
+  return null;
+};
+
 const MainPage = () => {
-  console.log("mainpage rerender");
+  console.log("mainpage render");
 
   const dispatch = useAppDispatch();
-  const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
   const activeChatID = useAppSelector(selectActiveChatID);
   const containerRef = useRef(null);
-
-  useEffect(() => {
-    dispatch(fetchChats(currentUserEmail!));
-  }, []);
 
   useEffect(() => {
     const clearActiveChatFunc = (e: KeyboardEvent) => {
@@ -45,6 +49,8 @@ const MainPage = () => {
       window.removeEventListener("keydown", clearActiveChatFunc);
     };
   }, [activeChatID]);
+
+  useSubChat([]);
 
   /*   const getSomeMessages = async () => {
     const ref = collection(db, `chats/${activeChatID}/messages`);
@@ -76,14 +82,16 @@ const MainPage = () => {
  */
   return (
     <div ref={containerRef} className="grow max-h-screen flex pt-[82px]">
-      {/*       <button
-        onClick={() => {
-          console.log(window.innerWidth, window.innerHeight);
-        }}
-        className=" absolute left-0 bottom-0 size-10 bg-white"
-      >
-        test
-      </button> */}
+      {
+        <button
+          onClick={() => {
+            console.log(window.innerWidth, window.innerHeight);
+          }}
+          className=" absolute z-50 left-0 bottom-0 size-10 bg-white"
+        >
+          test
+        </button>
+      }
       <div className="min-w-[25%] w-[25%] p-3 flex flex-col gap-5 bg-gray-light border-r-2 border-solid  border-gray-very-light ">
         <SearchUser />
         <ChatsList />

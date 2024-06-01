@@ -8,18 +8,19 @@ import {
 import ChatPreview from "./ChatPreview";
 import { subOnLastMessageChange } from "./utils/subOnLastMessageChange";
 import { setActive } from "../../Store/ActiveChat/activeChat";
+import { selectUserChatsCount } from "../../Store/CurrentUser/currentUser";
 
 const ChatsList = () => {
   const dispatch = useAppDispatch();
   const chatsList = useAppSelector(selectAllChats);
-  const chatsNum = useAppSelector(selectChatsNum);
+  const userChatsCount = useAppSelector(selectUserChatsCount);
 
   useEffect(() => {
     const sub = subOnLastMessageChange(chatsList, (message) => {
       dispatch(changeLastMessage(message));
     });
     return sub;
-  }, [chatsNum]);
+  }, [userChatsCount]);
 
   const sortedChats = Object.values(chatsList)
     .filter((c) => c.lastMessage)

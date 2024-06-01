@@ -10,6 +10,7 @@ const createUserData: UserDataCreator = (user) => {
     displayName: user.displayName,
     avatarURL: user.photoURL,
     emailVerified: user.emailVerified,
+    chats: ["mainChat"],
   };
 };
 

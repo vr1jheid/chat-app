@@ -11,6 +11,7 @@ const initialState: currentUserState = {
   displayName: "",
   avatarURL: "",
   emailVerified: false,
+  chats: [],
   isLoaded: false,
 };
 
@@ -19,10 +20,15 @@ const currentUserSlice = createSlice({
   initialState,
   selectors: {
     selectCurrentUser: (state) => state,
+    selectCurrentUserEmail: (state) => state.email,
+    selectUserChatsCount: (state) => state.chats.length,
   },
   reducers: {
     setUser: (_state, action: PayloadAction<currentUserState>) => {
       return action.payload;
+    },
+    setUserEmail: (state, { payload }: PayloadAction<string>) => {
+      state.email = payload;
     },
     clearUser: () => {
       return { ...initialState, isLoaded: true };
@@ -33,7 +39,11 @@ const currentUserSlice = createSlice({
   },
 });
 
-export const { selectCurrentUser } = currentUserSlice.selectors;
-export const { setUser, clearUser } = currentUserSlice.actions;
+export const {
+  selectCurrentUser,
+  selectCurrentUserEmail,
+  selectUserChatsCount,
+} = currentUserSlice.selectors;
+export const { setUser, setUserEmail, clearUser } = currentUserSlice.actions;
 
 export default currentUserSlice.reducer;

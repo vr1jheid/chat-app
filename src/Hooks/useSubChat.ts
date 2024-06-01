@@ -17,6 +17,8 @@ export const useSubChat = (dependencies: any[]) => {
   const isLoading = useAppSelector(selectActiveChatLoading);
 
   const subOnChanges = () => {
+    if (!activeChatID) return;
+
     const q = query(collection(db, `chats/${activeChatID}/messages`));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -52,5 +54,5 @@ export const useSubChat = (dependencies: any[]) => {
   useEffect(() => {
     const unsub = subOnChanges();
     return unsub;
-  }, [...dependencies, isLoading]);
+  }, [...dependencies, activeChatID, isLoading]);
 };

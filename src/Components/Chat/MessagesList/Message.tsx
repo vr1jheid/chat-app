@@ -69,7 +69,7 @@ const Message = ({
           {!timestamp && <Loader />}
           {author && (
             <div className="text-purple-main text-left">
-              {author.displayName}
+              {author.displayName ?? author.email}
             </div>
           )}
 

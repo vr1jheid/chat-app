@@ -1,14 +1,12 @@
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase-config";
-import { User } from "firebase/auth";
-import createUserData from "../utils/createUserData";
+import { UserDataDB } from "../Types/userTypes";
 
-type UserCreator = (user: User) => void;
+type UserCreator = (user: UserDataDB) => void;
 
 const createUserInDB: UserCreator = async (user) => {
-  const userData = createUserData(user);
-  await setDoc(doc(db, "users", userData.email ?? "заглушка заменить"), {
-    userData,
+  await setDoc(doc(db, "users", user.email ?? "заглушка заменить"), {
+    userData: user,
   });
 };
 

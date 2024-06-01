@@ -13,7 +13,6 @@ import { VariableSizeList } from "react-window";
 
 const MessagesList = () => {
   const isLoading = useAppSelector(selectActiveChatLoading);
-  console.log("messageList update");
 
   const scrollOffset = useRef(0);
   const listContainerRef = useRef<HTMLDivElement | null>(null);

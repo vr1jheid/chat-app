@@ -8,11 +8,8 @@ import { useEffect } from "react";
 import { clearSizes } from "../../Store/MessagesSizes/messagesSizes";
 
 const Chat = () => {
-  console.log("chat rerender");
   const activeChatID = useAppSelector(selectActiveChatID);
   const dispatch = useAppDispatch();
-
-  useSubChat([]);
 
   useEffect(() => {
     dispatch(clearSizes());

@@ -15,7 +15,6 @@ export const subOnLastMessageChange = (
     collection(db, "chats"),
     where("id", "in", Object.keys(chatsList))
   );
-  console.log("subscribed");
 
   const unsubscribe = onSnapshot(chatsQuery, (querySnapshot) => {
     querySnapshot.docChanges().forEach((change) => {

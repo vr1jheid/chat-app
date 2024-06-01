@@ -1,24 +1,24 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
-import MainPage from "./Pages/MainPage";
-import { activateUserObserver } from "./firebase-config";
-import { useAppDispatch } from "./Store/hooks";
+import { useNavigate, Outlet } from "react-router-dom";
+import { activateUserObserver as activateUserChangeObserver } from "./firebase-config";
+import { useAppDispatch, useAppSelector } from "./Store/hooks";
 import {
   clearUser,
   currentUserState,
-  setUser,
+  selectCurrentUserEmail,
+  setUserEmail,
 } from "./Store/CurrentUser/currentUser";
-import ProtectedRoutes from "./Pages/ProtectedRoutes";
 import { useEffect } from "react";
-import Layout from "./Components/Layout";
-
 import getUserFromDB from "./Services/getUserFromDB";
-import AuthPage from "./Pages/AuthPage";
 import { clearChatsState } from "./Store/Chats/chats";
 import { clearSizes } from "./Store/MessagesSizes/messagesSizes";
 import { clearActiveChat } from "./Store/ActiveChat/activeChat";
 import { useWindowResize } from "./Hooks/useWindowResize";
+import createUserInDB from "./Services/createUserInDB";
+import { subOnUserData } from "./Components/Auth/utils/subOnUserData";
 
 function App() {
+  const currentUserEmail = useAppSelector(selectCurrentUserEmail);
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -32,35 +32,30 @@ function App() {
       navigate("/login");
       return;
     }
-    /*
-      Новый user берется из auth данных, а существующий из БД
-    */
-    const userFromDB = await getUserFromDB(userFromAuth.email);
 
-    if (userFromDB) {
-      dispatch(setUser({ ...userFromDB, isLoaded: true }));
-    } else {
-      dispatch(setUser(userFromAuth));
+    const userFromDB = await getUserFromDB(userFromAuth.email!);
+
+    if (!userFromDB) {
+      createUserInDB(userFromAuth);
     }
-    navigate("/");
+    dispatch(setUserEmail(userFromAuth.email!));
   };
 
   useEffect(() => {
-    activateUserObserver(changeUserHandler);
+    activateUserChangeObserver(changeUserHandler);
   }, []);
+
+  useEffect(() => {
+    if (!currentUserEmail) return;
+    const unSub = subOnUserData(currentUserEmail);
+    return () => {
+      unSub();
+    };
+  }, [currentUserEmail]);
 
   useWindowResize();
 
-  return (
-    <Routes>
-      <Route path="/login" element={<AuthPage />} />
-      <Route element={<ProtectedRoutes />}>
-        <Route element={<Layout />}>
-          <Route path="/" element={<MainPage />} />
-        </Route>
-      </Route>
-    </Routes>
-  );
+  return <Outlet />;
 }
 
 export default App;
