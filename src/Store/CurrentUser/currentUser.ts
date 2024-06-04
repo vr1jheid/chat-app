@@ -24,8 +24,8 @@ const currentUserSlice = createSlice({
     selectUserChatsCount: (state) => state.chats.length,
   },
   reducers: {
-    setUser: (_state, action: PayloadAction<currentUserState>) => {
-      return action.payload;
+    updateUserData: (_state, { payload }: PayloadAction<UserDataDB>) => {
+      return { ...payload, isLoaded: true };
     },
     setUserEmail: (state, { payload }: PayloadAction<string>) => {
       state.email = payload;
@@ -44,6 +44,7 @@ export const {
   selectCurrentUserEmail,
   selectUserChatsCount,
 } = currentUserSlice.selectors;
-export const { setUser, setUserEmail, clearUser } = currentUserSlice.actions;
+export const { updateUserData, setUserEmail, clearUser } =
+  currentUserSlice.actions;
 
 export default currentUserSlice.reducer;

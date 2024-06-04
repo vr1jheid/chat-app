@@ -1,6 +1,5 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
 import { fetchChats } from "./thunks/fetchChats";
-import { createChat } from "./thunks/createChat";
 import { ChatData } from "../../Types/chatTypes";
 import { MessageData } from "../../Types/messageTypes";
 
@@ -20,6 +19,10 @@ const chatsSlice = createSlice({
   initialState,
   selectors: {
     selectAllChats: (state) => state,
+    selectChatsIDs: createSelector(
+      (state) => state,
+      (state) => Object.keys(state)
+    ),
     selectChatsNum: (state) => Object.keys(state).length,
   },
   reducers: {
@@ -34,18 +37,14 @@ const chatsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchChats.fulfilled, (_state, action) => {
-        return action.payload;
-      })
-      .addCase(createChat.fulfilled, (state, action) => {
-        const newChat = action.payload;
-        state[newChat.id] = newChat;
-      });
+    builder.addCase(fetchChats.fulfilled, (_state, action) => {
+      return action.payload;
+    });
   },
 });
 
-export const { selectAllChats, selectChatsNum } = chatsSlice.selectors;
+export const { selectAllChats, selectChatsNum, selectChatsIDs } =
+  chatsSlice.selectors;
 
 export const { clearChats, changeLastMessage } = chatsSlice.actions;
 

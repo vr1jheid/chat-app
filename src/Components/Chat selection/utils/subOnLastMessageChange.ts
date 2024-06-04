@@ -1,19 +1,17 @@
 import { query, collection, where, onSnapshot } from "firebase/firestore";
-import { ChatsState, LastMessageWithChatID } from "../../../Store/Chats/chats";
+import { changeLastMessage } from "../../../Store/Chats/chats";
 import { ChatDataDB } from "../../../Types/chatTypes";
 import { convertServerTime } from "../../../utils/convertServerTime";
 import { db } from "../../../main";
+import store from "../../../Store/store";
 
-export const subOnLastMessageChange = (
-  chatsList: ChatsState,
-  action: (message: LastMessageWithChatID) => void
-) => {
-  const chatsIds = Object.keys(chatsList);
-  if (!chatsIds.length) return;
+export const subOnLastMessageChange = (chatsIDs: string[]) => {
+  const dispatch = store.dispatch;
+  if (!chatsIDs.length) return;
 
   const chatsQuery = query(
     collection(db, "chats"),
-    where("id", "in", Object.keys(chatsList))
+    where("id", "in", chatsIDs)
   );
 
   const unsubscribe = onSnapshot(chatsQuery, (querySnapshot) => {
@@ -23,13 +21,17 @@ export const subOnLastMessageChange = (
       if (querySnapshot.metadata.hasPendingWrites) return;
 
       if (change.type === "modified" && changedDoc.lastMessage) {
-        action({
-          chatID: changedDoc.id,
-          message: {
-            ...changedDoc.lastMessage,
-            serverTime: convertServerTime(changedDoc.lastMessage.serverTime),
-          },
-        });
+        console.log(changedDoc.lastMessage);
+
+        dispatch(
+          changeLastMessage({
+            chatID: changedDoc.id,
+            message: {
+              ...changedDoc.lastMessage,
+              serverTime: convertServerTime(changedDoc.lastMessage.serverTime),
+            },
+          })
+        );
       }
     });
   });

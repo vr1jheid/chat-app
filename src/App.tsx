@@ -3,7 +3,6 @@ import { useWindowResize } from "./Hooks/useWindowResize";
 
 function App() {
   useWindowResize();
-
   return <Outlet />;
 }
 

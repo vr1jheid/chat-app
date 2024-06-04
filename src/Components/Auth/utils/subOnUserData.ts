@@ -1,11 +1,12 @@
 import { doc, onSnapshot } from "firebase/firestore";
 import store from "../../../Store/store";
-import { setUser } from "../../../Store/CurrentUser/currentUser";
+import { updateUserData } from "../../../Store/CurrentUser/currentUser";
 import { UserDataDB } from "../../../Types/userTypes";
 import { db } from "../../../main";
+import { fetchChats } from "../../../Store/Chats/thunks/fetchChats";
 
 export const subOnUserData = (currentUserEmail: string) => {
-  console.log("subOnUserData");
+  const dispatch = store.dispatch;
 
   const userDocRef = doc(db, `users/${currentUserEmail}`);
   const unsub = onSnapshot(
@@ -16,12 +17,17 @@ export const subOnUserData = (currentUserEmail: string) => {
         return;
       }
       const userDocData = doc.data();
-      console.log(userDocData);
-
       if (!userDocData) return;
 
       const userData = userDocData.userData as UserDataDB;
-      store.dispatch(setUser({ ...userData, isLoaded: true }));
+      dispatch(updateUserData(userData));
+
+      const currentChatsCount = Object.keys(store.getState().chats).length;
+
+      if (userData.chats.length !== currentChatsCount) {
+        console.log("here");
+        dispatch(fetchChats(userData.chats));
+      }
     }
   );
   return unsub;

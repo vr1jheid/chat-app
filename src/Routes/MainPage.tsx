@@ -10,7 +10,7 @@ import {
 } from "../Store/ActiveChat/activeChat";
 import ChatContextContainer from "../Components/Chat/ChatContextContainer";
 import { useSubChat } from "../Hooks/useSubChat";
-import store from "../Store/store";
+import { selectChatsIDs } from "../Store/Chats/chats";
 /* import {
   collection,
   getDocs,
@@ -28,6 +28,7 @@ const MainPage = () => {
   const dispatch = useAppDispatch();
   const activeChatID = useAppSelector(selectActiveChatID);
   const containerRef = useRef(null);
+  const chatsIDs = useAppSelector(selectChatsIDs);
 
   useEffect(() => {
     const clearActiveChatFunc = (e: KeyboardEvent) => {
@@ -77,7 +78,8 @@ const MainPage = () => {
       {
         <button
           onClick={() => {
-            console.log(window.innerWidth, window.innerHeight);
+            /* console.log(window.innerWidth, window.innerHeight); */
+            dispatch(fetchChats(chatsIDs));
           }}
           className=" absolute z-50 left-0 bottom-0 size-10 bg-white"
         >

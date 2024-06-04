@@ -4,16 +4,16 @@ import { convertServerTime } from "../../../utils/convertServerTime";
 import { ChatData, ChatDataDB } from "../../../Types/chatTypes";
 import { ChatsState } from "../chats";
 import { db } from "../../../main";
+import { subOnLastMessageChange } from "../../../Components/Chat selection/utils/subOnLastMessageChange";
+import { Unsubscribe } from "firebase/auth";
 
-export const fetchChats = createAsyncThunk(
-  "chats/fetchChats",
-  async (userEmail: string) => {
+const fetchChatsWrapper = () => {
+  let unsubOnLastMessage: Unsubscribe | null | undefined = null;
+
+  return createAsyncThunk("chats/fetchChats", async (chatsIDs: string[]) => {
     const q = query(
       collection(db, "chats"),
-      or(
-        where("id", "==", "mainChat"),
-        where("members", "array-contains", userEmail)
-      )
+      or(where("id", "in", ["mainChat", ...chatsIDs]))
     );
 
     const querySnaphot = await getDocs(q);
@@ -39,6 +39,11 @@ export const fetchChats = createAsyncThunk(
       chatsFromDB[snapshotDoc.id] = chatData;
     });
 
+    unsubOnLastMessage && unsubOnLastMessage();
+    unsubOnLastMessage = subOnLastMessageChange(Object.keys(chatsFromDB));
+
     return chatsFromDB;
-  }
-);
+  });
+};
+
+export const fetchChats = fetchChatsWrapper();
