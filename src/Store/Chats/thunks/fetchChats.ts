@@ -1,9 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { collection, where, getDocs, query, or } from "firebase/firestore";
-import { db } from "../../../firebase-config";
 import { convertServerTime } from "../../../utils/convertServerTime";
 import { ChatData, ChatDataDB } from "../../../Types/chatTypes";
 import { ChatsState } from "../chats";
+import { db } from "../../../main";
 
 export const fetchChats = createAsyncThunk(
   "chats/fetchChats",

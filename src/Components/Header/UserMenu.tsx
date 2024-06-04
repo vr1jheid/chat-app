@@ -4,7 +4,7 @@ import UserAvatar from "../Shared/UserAvatar";
 import { useAppSelector } from "../../Store/hooks";
 import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
 import { signOut } from "firebase/auth";
-import { auth } from "../../firebase-config";
+import { auth } from "../../main";
 
 const UserMenu = () => {
   const contRef = useRef<HTMLDivElement | null>(null);

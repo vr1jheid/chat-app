@@ -6,8 +6,8 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "../../../firebase-config";
 import { ChatDataDB, ChatTypes } from "../../../Types/chatTypes";
+import { db } from "../../../main";
 
 export const createChat = createAsyncThunk(
   "chats/createChat",

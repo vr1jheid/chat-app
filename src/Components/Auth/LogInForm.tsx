@@ -5,9 +5,9 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { auth } from "../../firebase-config";
 import { useState } from "react";
 import PasswordInput from "./PasswordInput";
+import { auth } from "../../main";
 
 const LogInForm = () => {
   const [email, setEmail] = useState("");
@@ -56,14 +56,7 @@ const LogInForm = () => {
         value={password}
       />
 
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          gap: 3,
-        }}
-      >
+      <div className="flex flex-col justify-center gap-3">
         <Button
           sx={{ fontWeight: 600 }}
           variant="outlined"
@@ -71,12 +64,12 @@ const LogInForm = () => {
         >
           Log In
         </Button>
-        <Box>
+        <div className="flex justify-center">
           <IconButton onClick={googleAuthenticate}>
             <GoogleIcon />
           </IconButton>
-        </Box>
-      </Box>
+        </div>
+      </div>
     </Container>
   );
 };

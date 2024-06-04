@@ -1,6 +1,6 @@
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "../firebase-config";
 import { UserDataDB } from "../Types/userTypes";
+import { db } from "../main";
 
 type UserCreator = (user: UserDataDB) => void;
 

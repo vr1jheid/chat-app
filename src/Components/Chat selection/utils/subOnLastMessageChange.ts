@@ -1,8 +1,8 @@
 import { query, collection, where, onSnapshot } from "firebase/firestore";
 import { ChatsState, LastMessageWithChatID } from "../../../Store/Chats/chats";
 import { ChatDataDB } from "../../../Types/chatTypes";
-import { db } from "../../../firebase-config";
 import { convertServerTime } from "../../../utils/convertServerTime";
+import { db } from "../../../main";
 
 export const subOnLastMessageChange = (
   chatsList: ChatsState,

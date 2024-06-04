@@ -4,7 +4,7 @@ import LogInForm from "../Components/Auth/LogInForm";
 import RegisterForm from "../Components/Auth/RegisterForm";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Layout from "../Components/Layout";
-import MainPage, { loader as mainPageLoader } from "./MainPage";
+import MainPage from "./MainPage";
 import App from "../App";
 
 export const router = createBrowserRouter([
@@ -34,7 +34,6 @@ export const router = createBrowserRouter([
               {
                 path: "/",
                 element: <MainPage />,
-                loader: mainPageLoader,
               },
             ],
           },

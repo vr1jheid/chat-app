@@ -29,7 +29,7 @@ const chatsSlice = createSlice({
     ) => {
       state[payload.chatID].lastMessage = payload.message;
     },
-    clearChatsState: () => {
+    clearChats: () => {
       return initialState;
     },
   },
@@ -47,6 +47,6 @@ const chatsSlice = createSlice({
 
 export const { selectAllChats, selectChatsNum } = chatsSlice.selectors;
 
-export const { clearChatsState, changeLastMessage } = chatsSlice.actions;
+export const { clearChats, changeLastMessage } = chatsSlice.actions;
 
 export default chatsSlice.reducer;

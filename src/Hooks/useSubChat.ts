@@ -1,7 +1,6 @@
 import { query, collection, onSnapshot } from "firebase/firestore";
 import { useEffect } from "react";
 import { MessageData, MessageDataDB } from "../Types/messageTypes";
-import { db } from "../firebase-config";
 import { useAppDispatch, useAppSelector } from "../Store/hooks";
 import {
   addMessage,
@@ -10,6 +9,7 @@ import {
   setMessages,
 } from "../Store/ActiveChat/activeChat";
 import { convertServerTime } from "../utils/convertServerTime";
+import { db } from "../main";
 
 export const useSubChat = (dependencies: any[]) => {
   const dispatch = useAppDispatch();

@@ -17,7 +17,7 @@ const AuthPage = () => {
 
   useEffect(() => {
     if (uid) {
-      navigate("/main");
+      navigate("/");
     }
   }, [uid]);
 

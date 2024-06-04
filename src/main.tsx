@@ -5,6 +5,11 @@ import "./index.css";
 import "./reset.css";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./Routes/router.tsx";
+import { initializeFirebase } from "./firebase-config.ts";
+import { observeUser } from "./Services/observeUser.ts";
+
+export const { app, db, auth } = initializeFirebase();
+observeUser();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>

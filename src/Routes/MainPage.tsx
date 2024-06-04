@@ -22,14 +22,6 @@ import store from "../Store/store";
 import { db } from "../firebase-config";
 import { convertServerTime } from "../utils/convertServerTime"; */
 
-export const loader = async () => {
-  console.log("loader");
-
-  const currentUserEmail = store.getState().currentUser.email;
-  store.dispatch(fetchChats(currentUserEmail));
-  return null;
-};
-
 const MainPage = () => {
   console.log("mainpage render");
 

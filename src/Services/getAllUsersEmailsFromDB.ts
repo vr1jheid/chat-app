@@ -1,6 +1,6 @@
 import { getDocs, collection } from "firebase/firestore";
-import { db } from "../firebase-config";
 import { UserDataDB } from "../Types/userTypes";
+import { db } from "../main";
 
 const getAllUsersEmailsFromDB = async () => {
   const querySnaphot = await getDocs(collection(db, "users"));
