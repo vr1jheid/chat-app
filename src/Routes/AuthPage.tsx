@@ -21,10 +21,10 @@ const AuthPage = () => {
     }
   }, [uid]);
 
-  if (!isLoaded) {
+  if (isLoaded === false) {
     return (
       <div>
-        <Loader />
+        <Loader color="black" />
       </div>
     );
   }

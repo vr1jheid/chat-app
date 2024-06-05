@@ -1,49 +1,47 @@
 import { Autocomplete } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppSelector } from "../../Store/hooks";
-import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
-import getAllUsersEmailsFromDB from "../../Services/getAllUsersEmailsFromDB";
-import { useActiveChat } from "../../Hooks/useActiveChat";
+import { setActiveChat } from "../../Hooks/useActiveChat";
+import { selectAllUsersList } from "../../Store/AllUsersList/allUsersList";
 
 export interface UserWithLabel {
   label: string;
 }
 
 const SearchUser = () => {
-  /*   console.log("RERENDER SEARCH USER"); */
-
-  const [usersList, setUsersList] = useState<string[]>(["EMPTY"]);
+  const [inputValue, setInputValue] = useState("");
   const [selectedUserEmail, setSelectedUserEmail] = useState<string | null>(
     null
   );
+  const usersList = useAppSelector(selectAllUsersList);
 
-  const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
-  const setActiveChat = useActiveChat(selectedUserEmail);
+  const onOptionSelect = (
+    _e: React.SyntheticEvent<Element, Event>,
+    newValue: string | null
+  ) => {
+    if (!newValue) return;
+    setSelectedUserEmail(newValue);
+    setActiveChat(newValue);
+  };
 
-  useEffect(() => {
-    const fillUsersList = async () => {
-      const usersEmailsFromDB = await getAllUsersEmailsFromDB();
-      setUsersList(
-        usersEmailsFromDB.filter((email) => email !== currentUserEmail)
-      );
-    };
-    fillUsersList();
-  }, []);
-
-  useEffect(() => {
-    setActiveChat();
-  }, [selectedUserEmail]);
+  const onInputChange = (
+    _e: React.SyntheticEvent<Element, Event>,
+    newValue: string
+  ) => {
+    setInputValue(newValue);
+  };
 
   return (
     <div className="flex items-center gap-3 bg-gray-very-light h-fit rounded py-2 focus-within:outline outline-purple-main outline-2">
       <Autocomplete
+        sx={{ flexGrow: 1 }}
         value={selectedUserEmail}
-        onChange={(_e, newValue) => {
-          setSelectedUserEmail(newValue);
-        }}
+        onChange={onOptionSelect}
+        inputValue={inputValue}
+        onInputChange={onInputChange}
         onBlur={() => setSelectedUserEmail(null)}
-        options={usersList}
+        options={inputValue ? usersList : []}
         renderInput={(params) => (
           <div
             ref={params.InputProps.ref}

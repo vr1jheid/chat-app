@@ -1,29 +1,24 @@
-import { createChat } from "../Store/Chats/thunks/createChat";
-import { useAppDispatch, useAppSelector } from "../Store/hooks";
-import { selectAllChats } from "../Store/Chats/chats";
-import { selectCurrentUser } from "../Store/CurrentUser/currentUser";
+import { createChat } from "../Store/ActiveChat/thunks/createChat";
 import { ChatTypes } from "../Types/chatTypes";
 import { setActive } from "../Store/ActiveChat/activeChat";
+import store from "../Store/store";
 
-export const useActiveChat = (dialogPartnerEmail: string | null) => {
-  const dispatch = useAppDispatch();
-  const chats = useAppSelector(selectAllChats);
-  const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
+export const setActiveChat = (dialogPartnerEmail: string) => {
+  const { chats, currentUser } = store.getState();
+  const dispatch = store.dispatch;
+  const entry = Object.entries(chats).find(
+    ([_, value]) =>
+      value.type === ChatTypes.dialog &&
+      value.members?.includes(dialogPartnerEmail)
+  );
 
-  return () => {
-    if (!dialogPartnerEmail) return;
-    const entry = Object.entries(chats).find(
-      ([, value]) =>
-        value.type === ChatTypes.dialog &&
-        value.members?.includes(dialogPartnerEmail)
-    );
-    if (entry) {
-      /* Если диалог уже есть берем ссылку из массива диалогов */
-      const [, chat] = entry;
-      dispatch(setActive(chat));
-      return;
-    }
+  /* Если чат уже есть берем ссылку из массива чатов */
+  if (entry) {
+    const [_, chat] = entry;
+    dispatch(setActive(chat));
+    return;
+  }
 
-    dispatch(createChat([currentUserEmail, dialogPartnerEmail]));
-  };
+  /*  Иначе, создаем новый */
+  dispatch(createChat([currentUser.email, dialogPartnerEmail]));
 };

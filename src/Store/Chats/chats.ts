@@ -32,14 +32,10 @@ const chatsSlice = createSlice({
     ) => {
       state[payload.chatID].lastMessage = payload.message;
     },
-    clearChats: () => {
-      return initialState;
-    },
+    clearChats: () => initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchChats.fulfilled, (_state, action) => {
-      return action.payload;
-    });
+    builder.addCase(fetchChats.fulfilled, (_state, action) => action.payload);
   },
 });
 

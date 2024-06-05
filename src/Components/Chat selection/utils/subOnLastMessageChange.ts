@@ -21,8 +21,6 @@ export const subOnLastMessageChange = (chatsIDs: string[]) => {
       if (querySnapshot.metadata.hasPendingWrites) return;
 
       if (change.type === "modified" && changedDoc.lastMessage) {
-        console.log(changedDoc.lastMessage);
-
         dispatch(
           changeLastMessage({
             chatID: changedDoc.id,

@@ -1,3 +1,4 @@
+import store from "../Store/store";
 import { Unsubscribe, onAuthStateChanged } from "firebase/auth";
 import { clearUser, setUserEmail } from "../Store/CurrentUser/currentUser";
 import { auth } from "../main";
@@ -7,11 +8,12 @@ import getUserFromDB from "./getUserFromDB";
 import { clearActiveChat } from "../Store/ActiveChat/activeChat";
 import { clearChats } from "../Store/Chats/chats";
 import { clearSizes } from "../Store/MessagesSizes/messagesSizes";
-import store from "../Store/store";
 import { subOnUserData } from "../Components/Auth/utils/subOnUserData";
+import fetchAllUsersEmailsFromDB from "../Store/AllUsersList/thunks/fetchAllUsersFromDB";
 
 export const observeUser = async () => {
   const dispatch = store.dispatch;
+
   let unSubOnUserData: Unsubscribe | null = null;
   onAuthStateChanged(auth, async (userFromAuth) => {
     if (!userFromAuth) {
@@ -30,6 +32,7 @@ export const observeUser = async () => {
       createUserInDB(validUserData);
     }
     dispatch(setUserEmail(validUserData.email));
+    dispatch(fetchAllUsersEmailsFromDB());
     unSubOnUserData = subOnUserData(validUserData.email);
   });
 };

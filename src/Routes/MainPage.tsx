@@ -23,8 +23,6 @@ import { db } from "../firebase-config";
 import { convertServerTime } from "../utils/convertServerTime"; */
 
 const MainPage = () => {
-  console.log("mainpage render");
-
   const dispatch = useAppDispatch();
   const activeChatID = useAppSelector(selectActiveChatID);
   const containerRef = useRef(null);

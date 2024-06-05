@@ -4,6 +4,7 @@ import chatsReducer from "./Chats/chats";
 import activeChatReducer from "./ActiveChat/activeChat";
 import messagesSizesReducer from "./MessagesSizes/messagesSizes";
 import windowSizeReducer from "./WindowSize/windowSize";
+import allUsersListReducer from "./AllUsersList/allUsersList";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     activeChat: activeChatReducer,
     messagesSizes: messagesSizesReducer,
     windowSize: windowSizeReducer,
+    allUsersList: allUsersListReducer,
   },
 });
 
