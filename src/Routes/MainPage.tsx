@@ -3,25 +3,22 @@ import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../Store/hooks";
 import SearchUser from "../Components/Chat selection/SearchUser";
 import Chat from "../Components/Chat/Chat";
-import { fetchChats } from "../Store/Chats/thunks/fetchChats";
 import {
   clearActiveChat,
   selectActiveChatID,
 } from "../Store/ActiveChat/activeChat";
 import ChatContextContainer from "../Components/Chat/ChatContextContainer";
 import { useSubChat } from "../Hooks/useSubChat";
-import { selectChatsIDs } from "../Store/Chats/chats";
 import {
   collection,
   doc,
   getDoc,
   getDocs,
-  limit,
   orderBy,
   query,
   where,
 } from "firebase/firestore";
-import { convertServerTime } from "../utils/convertServerTime";
+
 import { db } from "../main";
 import { MessageDataDB } from "../Types/messageTypes";
 
@@ -29,7 +26,6 @@ const MainPage = () => {
   const dispatch = useAppDispatch();
   const activeChatID = useAppSelector(selectActiveChatID);
   const containerRef = useRef(null);
-  const chatsIDs = useAppSelector(selectChatsIDs);
 
   useEffect(() => {
     const clearActiveChatFunc = (e: KeyboardEvent) => {

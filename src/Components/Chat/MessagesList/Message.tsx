@@ -40,7 +40,10 @@ const Message = ({
     listRef?.current?.resetAfterIndex(index);
   }, [screenSize]);
 
-  const time = timestamp?.seconds && getTimeFromTimestamp(timestamp.seconds);
+  const time = timestamp?.seconds
+    ? getTimeFromTimestamp(timestamp.seconds)
+    : getTimeFromTimestamp(Date.now() / 1000);
+
   return (
     <div
       ref={messageRoot}

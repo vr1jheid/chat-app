@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ChatData, ChatDataDB } from "../../../Types/chatTypes";
+import { ChatData } from "../../../Types/chatTypes";
 import {
   collection,
   doc,
