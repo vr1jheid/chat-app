@@ -11,16 +11,19 @@ import {
 import ChatContextContainer from "../Components/Chat/ChatContextContainer";
 import { useSubChat } from "../Hooks/useSubChat";
 import { selectChatsIDs } from "../Store/Chats/chats";
-/* import {
+import {
   collection,
+  doc,
+  getDoc,
   getDocs,
   limit,
   orderBy,
   query,
   where,
 } from "firebase/firestore";
-import { db } from "../firebase-config";
-import { convertServerTime } from "../utils/convertServerTime"; */
+import { convertServerTime } from "../utils/convertServerTime";
+import { db } from "../main";
+import { MessageDataDB } from "../Types/messageTypes";
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
@@ -43,26 +46,27 @@ const MainPage = () => {
 
   useSubChat([]);
 
-  /*   const getSomeMessages = async () => {
+  const getSomeMessages = async () => {
     const ref = collection(db, `chats/${activeChatID}/messages`);
-    const q = query(ref, orderBy("serverTime", "desc"), limit(5));
+    /*     const q = query(ref, orderBy("serverTime", "desc"), limit(50));
     const querySnapshot = await getDocs(q);
     const arr: any[] = [];
     querySnapshot.forEach((doc) => {
       const data = doc.data();
       const serverTime = data.serverTime;
       arr.push(data);
-            const serverTimeCopy = { ...serverTime };
-      console.log(serverTimeCopy);
-    });
+    }); */
 
-    console.log(arr[3]);
+    /* 07Rypdw4dcTHrmERG7QI */
+    const docRef = doc(db, `chats/mainChat/messages/${"07Rypdw4dcTHrmERG7QI"}`);
+    const docc = await getDoc(docRef);
+    const docData = docc.data() as MessageDataDB;
 
     const q2 = query(
       ref,
-      where("serverTime", "<", convertServerTime(arr[3].serverTime)),
-      orderBy("serverTime", "desc"),
-      limit(5)
+      where("serverTime", ">", docData.serverTime),
+      orderBy("serverTime", "desc")
+      /*       limit(5) */
     );
     const querySnapshot2 = await getDocs(q2);
     querySnapshot2.forEach((doc) => {
@@ -70,14 +74,15 @@ const MainPage = () => {
       console.log(data);
     });
   };
- */
+
   return (
     <div ref={containerRef} className="grow max-h-screen flex pt-[82px]">
       {
         <button
           onClick={() => {
             /* console.log(window.innerWidth, window.innerHeight); */
-            dispatch(fetchChats(chatsIDs));
+            /* dispatch(fetchChats(chatsIDs)); */
+            getSomeMessages();
           }}
           className=" absolute z-50 left-0 bottom-0 size-10 bg-white"
         >

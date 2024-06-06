@@ -14,9 +14,11 @@ export interface ChatDataDB {
 
 export interface ChatData extends Omit<ChatDataDB, "lastMessage"> {
   lastMessage?: MessageData;
+  cachedMessages: MessageData[];
 }
 
-export interface ActiveChat extends Omit<ChatData, "lastMessage"> {
+export interface ActiveChat
+  extends Omit<ChatData, "lastMessage" | "cachedMessages"> {
   messages: MessageData[];
   isLoading: boolean;
 }

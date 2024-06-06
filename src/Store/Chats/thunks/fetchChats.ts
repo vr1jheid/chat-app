@@ -28,6 +28,7 @@ const fetchChatsWrapper = () => {
         id: snapshotDoc.id,
         members,
         type,
+        cachedMessages: [],
       };
 
       if (lastMessage) {

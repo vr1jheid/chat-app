@@ -6,7 +6,7 @@ import {
   addMessage,
   selectActiveChatID,
   selectActiveChatLoading,
-  setMessages,
+  /*   setMessages, */
 } from "../Store/ActiveChat/activeChat";
 import { convertServerTime } from "../utils/convertServerTime";
 import { db } from "../main";
@@ -32,18 +32,18 @@ export const useSubChat = (dependencies: any[]) => {
           serverTime: convertServerTime(message.serverTime),
         };
 
-        if (change.type === "added") {
+        /*         if (change.type === "added") {
           initMessages.push(validMessage);
-        }
+        } */
         if (change.type === "modified") {
           dispatch(addMessage(validMessage));
           return;
         }
       });
 
-      if (isLoading) {
+      /*       if (isLoading) {
         dispatch(setMessages(initMessages));
-      }
+      } */
     });
 
     return unsubscribe;

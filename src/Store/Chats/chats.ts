@@ -12,6 +12,11 @@ export interface LastMessageWithChatID {
   message: MessageData;
 }
 
+export interface CachedMessagesWithChatID {
+  chatID: string;
+  messages: MessageData[];
+}
+
 const initialState: ChatsState = {};
 
 const chatsSlice = createSlice({
@@ -32,6 +37,12 @@ const chatsSlice = createSlice({
     ) => {
       state[payload.chatID].lastMessage = payload.message;
     },
+    setCachedMessages: (
+      state,
+      { payload }: PayloadAction<CachedMessagesWithChatID>
+    ) => {
+      state[payload.chatID].cachedMessages = payload.messages;
+    },
     clearChats: () => initialState,
   },
   extraReducers: (builder) => {
@@ -42,6 +53,7 @@ const chatsSlice = createSlice({
 export const { selectAllChats, selectChatsNum, selectChatsIDs } =
   chatsSlice.selectors;
 
-export const { clearChats, changeLastMessage } = chatsSlice.actions;
+export const { clearChats, changeLastMessage, setCachedMessages } =
+  chatsSlice.actions;
 
 export default chatsSlice.reducer;

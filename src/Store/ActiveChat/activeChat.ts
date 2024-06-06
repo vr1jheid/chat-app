@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ActiveChat, ChatData, ChatTypes } from "../../Types/chatTypes";
 import { createChat } from "./thunks/createChat";
 import { MessageData } from "../../Types/messageTypes";
+import { setInitialMessages } from "./thunks/setInitialMessages";
 
 const initialState: ActiveChat = {
   id: "",
@@ -22,16 +23,16 @@ const activeChatSlice = createSlice({
   },
   reducers: {
     setActive: (_state, action: PayloadAction<ChatData>) => {
-      const { lastMessage, ...newActiveChat } = action.payload;
-      return { ...newActiveChat, messages: [], isLoading: true };
+      const { lastMessage, cachedMessages, ...newActiveChat } = action.payload;
+      return { ...newActiveChat, messages: [], isLoading: false };
     },
-    setMessages: (state, action: PayloadAction<MessageData[]>) => {
+    /*     setMessages: (state, action: PayloadAction<MessageData[]>) => {
       state.messages = action.payload.sort(
         (a, b) => b.serverTime!.seconds! - a.serverTime!.seconds!
       );
 
       state.isLoading = false;
-    },
+    }, */
     addMessage: (state, action: PayloadAction<MessageData>) => {
       const existableMsgIndex = state.messages.findIndex(
         (m) => m.id === action.payload.id
@@ -50,10 +51,13 @@ const activeChatSlice = createSlice({
     builder.addCase(createChat.fulfilled, (_state, action) => {
       return { ...action.payload, messages: [], isLoading: false };
     });
+    builder.addCase(setInitialMessages.fulfilled, (state, action) => {
+      state.messages = action.payload;
+    });
   },
 });
 
-export const { setActive, addMessage, setMessages, clearActiveChat } =
+export const { setActive, addMessage, /* setMessages, */ clearActiveChat } =
   activeChatSlice.actions;
 
 export const {

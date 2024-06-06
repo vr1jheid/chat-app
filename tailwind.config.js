@@ -1,3 +1,5 @@
+import cats from "./src/Assets/";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -13,7 +15,7 @@ export default {
         "purple-extra-light": "#bab9e5",
       },
       backgroundImage: {
-        "cats-svg": "url(./Assets/bg-cats.svg)",
+        "cats-svg": "url(./src/Assets//bg-cats.svg)",
       },
     },
   },
