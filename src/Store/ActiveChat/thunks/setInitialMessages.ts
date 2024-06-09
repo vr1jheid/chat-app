@@ -57,6 +57,7 @@ export const setInitialMessages = createAsyncThunk(
         messages: [...messages, ...chatData.cachedMessages],
       })
     );
+
     return [...messages, ...chatData.cachedMessages];
   }
 );

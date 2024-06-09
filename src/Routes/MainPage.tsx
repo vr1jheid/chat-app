@@ -8,7 +8,6 @@ import {
   selectActiveChatID,
 } from "../Store/ActiveChat/activeChat";
 import ChatContextContainer from "../Components/Chat/ChatContextContainer";
-import { useSubChat } from "../Hooks/useSubChat";
 import {
   collection,
   doc,
@@ -39,8 +38,6 @@ const MainPage = () => {
       window.removeEventListener("keydown", clearActiveChatFunc);
     };
   }, [activeChatID]);
-
-  useSubChat([]);
 
   const getSomeMessages = async () => {
     const ref = collection(db, `chats/${activeChatID}/messages`);

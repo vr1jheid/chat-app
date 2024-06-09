@@ -5,16 +5,14 @@ import { useAppDispatch, useAppSelector } from "../Store/hooks";
 import {
   addMessage,
   selectActiveChatID,
-  selectActiveChatLoading,
   /*   setMessages, */
 } from "../Store/ActiveChat/activeChat";
 import { convertServerTime } from "../utils/convertServerTime";
 import { db } from "../main";
 
-export const useSubChat = (dependencies: any[]) => {
+export const useSubChat = () => {
   const dispatch = useAppDispatch();
   const activeChatID = useAppSelector(selectActiveChatID);
-  const isLoading = useAppSelector(selectActiveChatLoading);
 
   const subOnChanges = () => {
     if (!activeChatID) return;
@@ -22,8 +20,6 @@ export const useSubChat = (dependencies: any[]) => {
     const q = query(collection(db, `chats/${activeChatID}/messages`));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const initMessages: MessageData[] = [];
-
       querySnapshot.docChanges().forEach((change) => {
         const message = change.doc.data() as MessageDataDB;
         if (!message.id) return;
@@ -32,18 +28,11 @@ export const useSubChat = (dependencies: any[]) => {
           serverTime: convertServerTime(message.serverTime),
         };
 
-        /*         if (change.type === "added") {
-          initMessages.push(validMessage);
-        } */
         if (change.type === "modified") {
           dispatch(addMessage(validMessage));
           return;
         }
       });
-
-      /*       if (isLoading) {
-        dispatch(setMessages(initMessages));
-      } */
     });
 
     return unsubscribe;
@@ -54,5 +43,5 @@ export const useSubChat = (dependencies: any[]) => {
   useEffect(() => {
     const unsub = subOnChanges();
     return unsub;
-  }, [...dependencies, activeChatID, isLoading]);
+  }, [activeChatID]);
 };

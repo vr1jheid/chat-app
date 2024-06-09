@@ -51,8 +51,13 @@ const activeChatSlice = createSlice({
     builder.addCase(createChat.fulfilled, (_state, action) => {
       return { ...action.payload, messages: [], isLoading: false };
     });
+
+    builder.addCase(setInitialMessages.pending, (state) => {
+      state.isLoading = true;
+    });
     builder.addCase(setInitialMessages.fulfilled, (state, action) => {
       state.messages = action.payload;
+      state.isLoading = false;
     });
   },
 });
