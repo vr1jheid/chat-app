@@ -3,6 +3,7 @@ import { ActiveChat, ChatData, ChatTypes } from "../../Types/chatTypes";
 import { createChat } from "./thunks/createChat";
 import { MessageData } from "../../Types/messageTypes";
 import { setInitialMessages } from "./thunks/setInitialMessages";
+import { loadNextPage } from "./thunks/loadNextPage";
 
 const initialState: ActiveChat = {
   id: "",
@@ -10,6 +11,8 @@ const initialState: ActiveChat = {
   type: ChatTypes.group,
   messages: [],
   isLoading: false,
+  hasNextPage: true,
+  isNextPageLoading: false,
 };
 
 const activeChatSlice = createSlice({
@@ -20,11 +23,19 @@ const activeChatSlice = createSlice({
     selectActiveChatLoading: (state) => state.isLoading,
     selectActiveChatID: (state) => state.id,
     selectActiveChatMessagesCount: (state) => state.messages.length,
+    selectActiveChatNextPageLoading: (state) => state.isNextPageLoading,
+    selectActiveChatHasNextPage: (state) => state.hasNextPage,
   },
   reducers: {
     setActive: (_state, action: PayloadAction<ChatData>) => {
       const { lastMessage, cachedMessages, ...newActiveChat } = action.payload;
-      return { ...newActiveChat, messages: [], isLoading: false };
+      return {
+        ...newActiveChat,
+        messages: [],
+        isLoading: false,
+        isNextPageLoading: false,
+        hasNextPage: true,
+      };
     },
     /*     setMessages: (state, action: PayloadAction<MessageData[]>) => {
       state.messages = action.payload.sort(
@@ -49,7 +60,13 @@ const activeChatSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(createChat.fulfilled, (_state, action) => {
-      return { ...action.payload, messages: [], isLoading: false };
+      return {
+        ...action.payload,
+        messages: [],
+        isLoading: false,
+        isNextPageLoading: false,
+        hasNextPage: false,
+      };
     });
 
     builder.addCase(setInitialMessages.pending, (state) => {
@@ -58,6 +75,16 @@ const activeChatSlice = createSlice({
     builder.addCase(setInitialMessages.fulfilled, (state, action) => {
       state.messages = action.payload;
       state.isLoading = false;
+    });
+    builder.addCase(loadNextPage.pending, (state) => {
+      state.isNextPageLoading = true;
+    });
+    builder.addCase(loadNextPage.fulfilled, (state, action) => {
+      state.messages = [...state.messages, ...action.payload];
+      if (action.payload.length < 20) {
+        state.hasNextPage = false;
+      }
+      state.isNextPageLoading = false;
     });
   },
 });
@@ -70,6 +97,8 @@ export const {
   selectActiveChatLoading,
   selectActiveChatID,
   selectActiveChatMessagesCount,
+  selectActiveChatHasNextPage,
+  selectActiveChatNextPageLoading,
 } = activeChatSlice.selectors;
 
 export default activeChatSlice.reducer;

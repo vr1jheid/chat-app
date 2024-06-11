@@ -21,4 +21,6 @@ export interface ActiveChat
   extends Omit<ChatData, "lastMessage" | "cachedMessages"> {
   messages: MessageData[];
   isLoading: boolean;
+  hasNextPage: boolean;
+  isNextPageLoading: boolean;
 }

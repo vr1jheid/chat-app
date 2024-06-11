@@ -26,12 +26,14 @@
     "react-virtualized": "^9.22.5",
     "react-virtualized-auto-sizer": "^1.0.24",
     "react-window": "^1.8.10",
+    "react-window-infinite-loader": "^1.0.9",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@types/react-virtualized": "^9.21.30",
+    "@types/react-window-infinite-loader": "^1.0.9",
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",

@@ -20,6 +20,7 @@ import {
 
 import { db } from "../main";
 import { MessageDataDB } from "../Types/messageTypes";
+import { loadNextPage } from "../Store/ActiveChat/thunks/loadNextPage";
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
@@ -75,7 +76,8 @@ const MainPage = () => {
           onClick={() => {
             /* console.log(window.innerWidth, window.innerHeight); */
             /* dispatch(fetchChats(chatsIDs)); */
-            getSomeMessages();
+            /* getSomeMessages(); */
+            dispatch(loadNextPage());
           }}
           className=" absolute z-50 left-0 bottom-0 size-10 bg-white"
         >
