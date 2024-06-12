@@ -1,14 +1,14 @@
 import { IconButton, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useState } from "react";
-import { selectActiveChat } from "../../Store/ActiveChat/activeChat";
+import { selectActiveChatID } from "../../Store/ActiveChat/activeChat";
 import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
 import { useAppSelector } from "../../Store/hooks";
 import sendMessageToDB from "../../Services/sendMessageToDB";
 
 const SendMessageForm = () => {
   const [message, setMessage] = useState("");
-  const { id: activeChatID } = useAppSelector(selectActiveChat);
+  const activeChatID = useAppSelector(selectActiveChatID);
   const currentUser = useAppSelector(selectCurrentUser);
 
   const sendMessage = () => {

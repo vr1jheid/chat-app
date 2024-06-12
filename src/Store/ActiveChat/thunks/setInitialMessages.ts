@@ -13,12 +13,11 @@ import {
 import { db } from "../../../main";
 import { MessageData, MessageDataDB } from "../../../Types/messageTypes";
 import { convertServerTime } from "../../../utils/convertServerTime";
-import { setCachedMessages } from "../../Chats/chats";
 
 const getQuery = async (chatData: ChatData) => {
   const ref = collection(db, `chats/${chatData.id}/messages`);
   if (!chatData.cachedMessages.length) {
-    return query(ref, orderBy("serverTime", "desc"), limit(20));
+    return query(ref, orderBy("serverTime", "desc"), limit(30));
   }
 
   const lastCachedMessageRef = doc(
@@ -37,7 +36,7 @@ const getQuery = async (chatData: ChatData) => {
 
 export const setInitialMessages = createAsyncThunk(
   "activeChat/setInitialMessages",
-  async (chatData: ChatData, thunkAPI) => {
+  async (chatData: ChatData) => {
     const messages: MessageData[] = [];
 
     const query = await getQuery(chatData);
@@ -50,13 +49,6 @@ export const setInitialMessages = createAsyncThunk(
       };
       messages.push(validMessage);
     });
-
-    thunkAPI.dispatch(
-      setCachedMessages({
-        chatID: chatData.id,
-        messages: [...messages, ...chatData.cachedMessages],
-      })
-    );
 
     return [...messages, ...chatData.cachedMessages];
   }

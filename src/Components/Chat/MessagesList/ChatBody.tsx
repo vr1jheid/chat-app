@@ -68,9 +68,9 @@ export const ChatBody = () => {
   const getSize = (index: number) => sizes[messages[index]?.id] + 10 || 50;
 
   const isItemLoaded = (index: number) => index < messages.length;
+
   const loadMoreMessages = () => {
     if (!hasNextPage) return;
-
     console.log("Loading items");
     dispatch(loadNextPage());
   };
@@ -85,7 +85,7 @@ export const ChatBody = () => {
               isItemLoaded={isItemLoaded}
               itemCount={messages.length + 1}
               loadMoreItems={loadMoreMessages}
-              threshold={1}
+              threshold={10}
             >
               {({ onItemsRendered, ref: loaderRef }) => (
                 <VariableSizeList

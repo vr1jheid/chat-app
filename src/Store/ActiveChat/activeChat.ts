@@ -37,13 +37,6 @@ const activeChatSlice = createSlice({
         hasNextPage: true,
       };
     },
-    /*     setMessages: (state, action: PayloadAction<MessageData[]>) => {
-      state.messages = action.payload.sort(
-        (a, b) => b.serverTime!.seconds! - a.serverTime!.seconds!
-      );
-
-      state.isLoading = false;
-    }, */
     addMessage: (state, action: PayloadAction<MessageData>) => {
       const existableMsgIndex = state.messages.findIndex(
         (m) => m.id === action.payload.id
@@ -81,7 +74,7 @@ const activeChatSlice = createSlice({
     });
     builder.addCase(loadNextPage.fulfilled, (state, action) => {
       state.messages = [...state.messages, ...action.payload];
-      if (action.payload.length < 20) {
+      if (action.payload.length < 30) {
         state.hasNextPage = false;
       }
       state.isNextPageLoading = false;
@@ -89,7 +82,7 @@ const activeChatSlice = createSlice({
   },
 });
 
-export const { setActive, addMessage, /* setMessages, */ clearActiveChat } =
+export const { setActive, addMessage, clearActiveChat } =
   activeChatSlice.actions;
 
 export const {

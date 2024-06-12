@@ -8,6 +8,7 @@ import {
 import { ChatData } from "../../Types/chatTypes";
 import { clearSizes } from "../../Store/MessagesSizes/messagesSizes";
 import { setInitialMessages } from "../../Store/ActiveChat/thunks/setInitialMessages";
+import { setActiveAndCacheMessages } from "../../Store/ActiveChat/thunks/setActiveAndCacheMessages";
 
 const ChatsList = () => {
   const dispatch = useAppDispatch();
@@ -25,7 +26,7 @@ const ChatsList = () => {
   const selectAsActive = (chat: ChatData) => {
     if (activeChatID === chat.id) return;
 
-    dispatch(setActive(chat));
+    dispatch(setActiveAndCacheMessages(chat));
     dispatch(setInitialMessages(chat));
     dispatch(clearSizes());
   };

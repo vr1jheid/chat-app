@@ -19,7 +19,6 @@ const ListItem = ({ index, style }: any) => {
 
   const container = useRef<HTMLDivElement | null>(null);
   const isItemLoaded = (index: number) => index < messages.length;
-  console.log(index, isItemLoaded(index));
 
   return (
     <div ref={container} style={style}>

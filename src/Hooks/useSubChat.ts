@@ -13,10 +13,9 @@ import { db } from "../main";
 export const useSubChat = () => {
   const dispatch = useAppDispatch();
   const activeChatID = useAppSelector(selectActiveChatID);
+  if (!activeChatID) return;
 
-  const subOnChanges = () => {
-    if (!activeChatID) return;
-
+  const subOnMessages = () => {
     const q = query(collection(db, `chats/${activeChatID}/messages`));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -38,10 +37,11 @@ export const useSubChat = () => {
     return unsubscribe;
   };
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
-    const unsub = subOnChanges();
-    return unsub;
+    console.log("subOnMessages");
+    const unsub = subOnMessages();
+    return () => {
+      unsub();
+    };
   }, [activeChatID]);
 };
