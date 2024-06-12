@@ -1,5 +1,5 @@
 import ChatsList from "../Components/Chat selection/ChatsList";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../Store/hooks";
 import SearchUser from "../Components/Chat selection/SearchUser";
 import Chat from "../Components/Chat/Chat";
@@ -8,24 +8,10 @@ import {
   selectActiveChatID,
 } from "../Store/ActiveChat/activeChat";
 import ChatContextContainer from "../Components/Chat/ChatContextContainer";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
-
-import { db } from "../main";
-import { MessageDataDB } from "../Types/messageTypes";
-import { loadNextPage } from "../Store/ActiveChat/thunks/loadNextPage";
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
   const activeChatID = useAppSelector(selectActiveChatID);
-  const containerRef = useRef(null);
 
   useEffect(() => {
     const clearActiveChatFunc = (e: KeyboardEvent) => {
@@ -40,45 +26,11 @@ const MainPage = () => {
     };
   }, [activeChatID]);
 
-  const getSomeMessages = async () => {
-    const ref = collection(db, `chats/${activeChatID}/messages`);
-    /*     const q = query(ref, orderBy("serverTime", "desc"), limit(50));
-    const querySnapshot = await getDocs(q);
-    const arr: any[] = [];
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      const serverTime = data.serverTime;
-      arr.push(data);
-    }); */
-
-    /* 07Rypdw4dcTHrmERG7QI */
-    const docRef = doc(db, `chats/mainChat/messages/${"07Rypdw4dcTHrmERG7QI"}`);
-    const docc = await getDoc(docRef);
-    const docData = docc.data() as MessageDataDB;
-
-    const q2 = query(
-      ref,
-      where("serverTime", ">", docData.serverTime),
-      orderBy("serverTime", "desc")
-      /*       limit(5) */
-    );
-    const querySnapshot2 = await getDocs(q2);
-    querySnapshot2.forEach((doc) => {
-      const data = doc.data();
-      console.log(data);
-    });
-  };
-
   return (
-    <div ref={containerRef} className="grow max-h-screen flex pt-[82px]">
+    <div className="grow max-h-screen flex pt-[82px]">
       {
         <button
-          onClick={() => {
-            /* console.log(window.innerWidth, window.innerHeight); */
-            /* dispatch(fetchChats(chatsIDs)); */
-            /* getSomeMessages(); */
-            dispatch(loadNextPage());
-          }}
+          onClick={() => {}}
           className=" absolute z-50 left-0 bottom-0 size-10 bg-white"
         >
           test

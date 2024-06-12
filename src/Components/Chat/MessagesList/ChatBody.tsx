@@ -7,15 +7,19 @@ import {
 } from "../../../Store/ActiveChat/activeChat";
 import { useAppDispatch, useAppSelector } from "../../../Store/hooks";
 import { selectMessagesSizes } from "../../../Store/MessagesSizes/messagesSizes";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ChatContext } from "../ChatContextContainer";
 import Loader from "../../Shared/Loader";
 import { VariableSizeList } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
 import { loadNextPage } from "../../../Store/ActiveChat/thunks/loadNextPage";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ListItem from "./ListItem";
+import { selectCurrentUserEmail } from "../../../Store/CurrentUser/currentUser";
 
 export const ChatBody = () => {
+  const [showToBottomButton, setShowToBottomButton] = useState(false);
+  const currentUserEmail = useAppSelector(selectCurrentUserEmail);
   const isLoading = useAppSelector(selectActiveChatLoading);
   const isNextPageLoading = useAppSelector(selectActiveChatNextPageLoading);
   const hasNextPage = useAppSelector(selectActiveChatHasNextPage);
@@ -24,7 +28,7 @@ export const ChatBody = () => {
   const scrollOffset = useRef(0);
 
   const listContainerRef = useRef<HTMLDivElement | null>(null);
-  const listRef = useRef<any>(null);
+  const listRef = useRef<VariableSizeList<any> | null>(null);
   const innerListRef = useRef<HTMLDivElement | null>(null);
   const outerListRef = useRef<HTMLDivElement | null>(null);
 
@@ -52,12 +56,29 @@ export const ChatBody = () => {
       Math.max(0, scrollOffset.current),
       listScrollHeight
     );
-
+    console.log(scrollOffset.current);
     listRef.current.scrollTo(scrollOffset.current);
+
+    scrollOffset.current > 500
+      ? setShowToBottomButton(true)
+      : setShowToBottomButton(false);
+  };
+
+  const toBottom = () => {
+    scrollOffset.current = 0;
+    listRef.current?.scrollTo(scrollOffset.current);
+    setShowToBottomButton(false);
   };
 
   useEffect(() => {
+    if (messages[0]?.author.email === currentUserEmail) {
+      toBottom();
+    }
+  }, [messages[0]]);
+
+  useEffect(() => {
     setListRef(listRef);
+
     listContainerRef.current?.addEventListener("wheel", reverseScroll);
     return () => {
       scrollOffset.current = 0;
@@ -76,8 +97,22 @@ export const ChatBody = () => {
   };
 
   return (
-    <div ref={listContainerRef} className="w-full h-full pb-3 px-2 rotate-180">
+    <div
+      ref={listContainerRef}
+      className="w-full h-full pb-3 px-2 rotate-180 relative"
+    >
       {isLoading && <Loader color="white" />}
+      {showToBottomButton && (
+        <button
+          className="p-2 rotate-180 absolute z-10 left-6 top-6 rounded-full bg-gray-extra-light opacity-50 hover:opacity-100"
+          onClick={toBottom}
+        >
+          <ArrowDownwardIcon
+            className=" text-gray-dark"
+            sx={{ width: 40, height: 40 }}
+          />
+        </button>
+      )}
       {
         <AutoSizer>
           {({ height, width }) => (

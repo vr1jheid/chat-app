@@ -1,10 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 import { selectAllChats } from "../../Store/Chats/chats";
 import ChatPreview from "./ChatPreview";
-import {
-  selectActiveChatID,
-  setActive,
-} from "../../Store/ActiveChat/activeChat";
+import { selectActiveChatID } from "../../Store/ActiveChat/activeChat";
 import { ChatData } from "../../Types/chatTypes";
 import { clearSizes } from "../../Store/MessagesSizes/messagesSizes";
 import { setInitialMessages } from "../../Store/ActiveChat/thunks/setInitialMessages";

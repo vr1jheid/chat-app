@@ -10,6 +10,7 @@ import { clearChats } from "../Store/Chats/chats";
 import { clearSizes } from "../Store/MessagesSizes/messagesSizes";
 import { subOnUserData } from "../Components/Auth/utils/subOnUserData";
 import fetchAllUsersEmailsFromDB from "../Store/AllUsersList/thunks/fetchAllUsersFromDB";
+import { clearAllUsersList } from "../Store/AllUsersList/allUsersList";
 
 export const observeUser = async () => {
   const dispatch = store.dispatch;
@@ -21,6 +22,7 @@ export const observeUser = async () => {
       dispatch(clearChats());
       dispatch(clearSizes());
       dispatch(clearActiveChat());
+      dispatch(clearAllUsersList());
       unSubOnUserData && unSubOnUserData();
       return;
     }

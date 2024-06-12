@@ -67,6 +67,12 @@ const activeChatSlice = createSlice({
     });
     builder.addCase(setInitialMessages.fulfilled, (state, action) => {
       state.messages = action.payload;
+      if (action.payload.length < 30) {
+        state.hasNextPage = false;
+      }
+      state.isLoading = false;
+    });
+    builder.addCase(setInitialMessages.rejected, (state) => {
       state.isLoading = false;
     });
     builder.addCase(loadNextPage.pending, (state) => {
@@ -77,6 +83,9 @@ const activeChatSlice = createSlice({
       if (action.payload.length < 30) {
         state.hasNextPage = false;
       }
+      state.isNextPageLoading = false;
+    });
+    builder.addCase(loadNextPage.rejected, (state) => {
       state.isNextPageLoading = false;
     });
   },

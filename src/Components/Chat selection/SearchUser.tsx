@@ -49,7 +49,7 @@ const SearchUser = () => {
           >
             <SearchIcon sx={{ width: 35, height: 35, color: "#a0a0a0" }} />
             <input
-              placeholder="Search"
+              placeholder="Search user"
               type="text"
               {...params.inputProps}
               className=" h-full block w-full bg-inherit focus-visible:outline-none text-xl text-white"

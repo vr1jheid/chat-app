@@ -36,20 +36,23 @@ const getQuery = async (chatData: ChatData) => {
 
 export const setInitialMessages = createAsyncThunk(
   "activeChat/setInitialMessages",
-  async (chatData: ChatData) => {
+  async (chatData: ChatData, { rejectWithValue }) => {
     const messages: MessageData[] = [];
 
-    const query = await getQuery(chatData);
-    const querySnapshot = await getDocs(query);
-    querySnapshot.forEach((doc) => {
-      const message = doc.data() as MessageDataDB;
-      const validMessage: MessageData = {
-        ...message,
-        serverTime: convertServerTime(message.serverTime),
-      };
-      messages.push(validMessage);
-    });
-
+    try {
+      const query = await getQuery(chatData);
+      const querySnapshot = await getDocs(query);
+      querySnapshot.forEach((doc) => {
+        const message = doc.data() as MessageDataDB;
+        const validMessage: MessageData = {
+          ...message,
+          serverTime: convertServerTime(message.serverTime),
+        };
+        messages.push(validMessage);
+      });
+    } catch (error) {
+      return rejectWithValue(error);
+    }
     return [...messages, ...chatData.cachedMessages];
   }
 );

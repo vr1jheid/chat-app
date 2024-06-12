@@ -47,8 +47,8 @@ const SendMessageForm = () => {
         }}
       ></TextField>
       <IconButton onClick={sendMessage} aria-label="send">
-        <div className=" bg-gray-light h-12 w-12 rounded-full flex items-center justify-center">
-          <SendIcon sx={{ color: "white" }} />
+        <div className=" bg-gray-light p-2 h-fit w-fit text-gray-extra-light rounded-full  hover:text-white hover:bg-purple-main">
+          <SendIcon sx={{ width: 30, height: 30 }} />
         </div>
       </IconButton>
     </form>

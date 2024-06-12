@@ -18,7 +18,12 @@ const ChatContextContainer = ({ children }: { children: ReactNode }) => {
     useState<React.MutableRefObject<VariableSizeList<any> | null> | null>(null);
 
   return (
-    <ChatContext.Provider value={{ listRef, setListRef }}>
+    <ChatContext.Provider
+      value={{
+        listRef,
+        setListRef,
+      }}
+    >
       {children}
     </ChatContext.Provider>
   );

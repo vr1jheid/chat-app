@@ -1,6 +1,5 @@
 import { ChatTypes } from "../../../Types/chatTypes";
 import store from "../../../Store/store";
-import { setActive } from "../../../Store/ActiveChat/activeChat";
 import { createChat } from "../../../Store/ActiveChat/thunks/createChat";
 import { setActiveAndCacheMessages } from "../../../Store/ActiveChat/thunks/setActiveAndCacheMessages";
 
@@ -17,7 +16,6 @@ export const setActiveChat = async (dialogPartnerEmail: string) => {
   if (entry) {
     const [_, chat] = entry;
     console.log("Entry", chat);
-    /* dispatch(setActive(chat)); */
     dispatch(setActiveAndCacheMessages(chat));
     return;
   }
