@@ -28,7 +28,6 @@ export const useReverseScroll = () => {
       Math.max(0, scrollOffset.current),
       listScrollHeight
     );
-    console.log(scrollOffset.current);
     listRef.current.scrollTo(scrollOffset.current);
   };
 

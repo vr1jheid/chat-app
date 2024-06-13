@@ -51,7 +51,6 @@ export const loadNextPage = createAsyncThunk(
       return rejectWithValue(error);
     }
 
-    console.log(nextPageMessages);
     return nextPageMessages;
   }
 );

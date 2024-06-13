@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ChatData } from "../../../Types/chatTypes";
 import { RootState } from "../../store";
-import { setCachedMessages } from "../../Chats/chats";
+import { setCachedMessages, setHasNextPage } from "../../Chats/chats";
 import { setActive } from "../activeChat";
 
 export const setActiveAndCacheMessages = createAsyncThunk(
@@ -17,6 +17,18 @@ export const setActiveAndCacheMessages = createAsyncThunk(
         })
       );
     }
+
+    console.log(activeChat);
+
+    if (!activeChat.hasNextPage) {
+      dispatch(
+        setHasNextPage({
+          chatID: activeChat.id,
+          hasNextPage: activeChat.hasNextPage,
+        })
+      );
+    }
+
     dispatch(setActive(chat));
   }
 );

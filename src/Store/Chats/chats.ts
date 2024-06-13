@@ -17,6 +17,11 @@ export interface CachedMessagesWithChatID {
   messages: MessageData[];
 }
 
+export interface HasNextPageWithChatID {
+  chatID: string;
+  hasNextPage: boolean;
+}
+
 const initialState: ChatsState = {};
 
 const chatsSlice = createSlice({
@@ -41,9 +46,15 @@ const chatsSlice = createSlice({
       state,
       { payload }: PayloadAction<CachedMessagesWithChatID>
     ) => {
+      state[payload.chatID].cachedMessages = payload.messages;
+    },
+    setHasNextPage: (
+      state,
+      { payload }: PayloadAction<HasNextPageWithChatID>
+    ) => {
       console.log(payload);
 
-      state[payload.chatID].cachedMessages = payload.messages;
+      state[payload.chatID].hasNextPage = payload.hasNextPage;
     },
     clearChats: () => initialState,
   },
@@ -55,7 +66,11 @@ const chatsSlice = createSlice({
 export const { selectAllChats, selectChatsNum, selectChatsIDs } =
   chatsSlice.selectors;
 
-export const { clearChats, changeLastMessage, setCachedMessages } =
-  chatsSlice.actions;
+export const {
+  clearChats,
+  changeLastMessage,
+  setCachedMessages,
+  setHasNextPage,
+} = chatsSlice.actions;
 
 export default chatsSlice.reducer;

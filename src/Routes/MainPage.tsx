@@ -29,7 +29,7 @@ const MainPage = () => {
   }, [activeChatID]);
 
   return (
-    <div className="grow h-screen flex w-screen overflow-hidden">
+    <div className="grow h-dvh flex w-screen overflow-hidden">
       {
         <button
           onClick={() => {}}

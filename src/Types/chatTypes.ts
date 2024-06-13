@@ -15,12 +15,12 @@ export interface ChatDataDB {
 export interface ChatData extends Omit<ChatDataDB, "lastMessage"> {
   lastMessage?: MessageData;
   cachedMessages: MessageData[];
+  hasNextPage: boolean;
 }
 
 export interface ActiveChat
   extends Omit<ChatData, "lastMessage" | "cachedMessages"> {
   messages: MessageData[];
   isLoading: boolean;
-  hasNextPage: boolean;
   isNextPageLoading: boolean;
 }
