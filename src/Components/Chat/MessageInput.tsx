@@ -21,7 +21,7 @@ const SendMessageForm = () => {
   };
 
   return (
-    <form className="w-[65%] flex gap-2 mt-6">
+    <form className=" flex w-full pl-2 mt-6 lg:w-[65%] lg:gap-2 lg:pl-0">
       <TextField
         onKeyDown={(e) => {
           if (e.key !== "Enter") return;

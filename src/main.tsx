@@ -7,12 +7,16 @@ import { initializeFirebase } from "./firebase-config.ts";
 import { observeUser } from "./Services/observeUser.ts";
 import "./styles/index.css";
 import "./styles/reset.css";
+import { ThemeProvider } from "@emotion/react";
+import { theme } from "./styles/MUITheme.ts";
 
 export const { app, db, auth } = initializeFirebase();
 observeUser();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <Provider store={store}>
-    <RouterProvider router={router} />
-  </Provider>
+  <ThemeProvider theme={theme}>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  </ThemeProvider>
 );

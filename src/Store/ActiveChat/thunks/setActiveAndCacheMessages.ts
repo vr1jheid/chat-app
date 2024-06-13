@@ -9,7 +9,7 @@ export const setActiveAndCacheMessages = createAsyncThunk(
   (chat: ChatData, { getState, dispatch }) => {
     const { activeChat } = getState() as RootState;
 
-    if (activeChat.messages.length) {
+    if (activeChat.messages.length && activeChat.id) {
       dispatch(
         setCachedMessages({
           chatID: activeChat.id,

@@ -5,7 +5,7 @@ import { db } from "../main";
 type UserCreator = (user: UserDataDB) => void;
 
 const createUserInDB: UserCreator = async (user) => {
-  await setDoc(doc(db, "users", user.email ?? "заглушка заменить"), {
+  await setDoc(doc(db, "users", user.email), {
     userData: user,
   });
 };

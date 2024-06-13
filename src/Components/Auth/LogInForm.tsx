@@ -1,4 +1,4 @@
-import { Button, Container, IconButton, TextField } from "@mui/material";
+import { Button, IconButton, TextField } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import {
   signInWithPopup,
@@ -31,22 +31,13 @@ const LogInForm = () => {
   };
 
   return (
-    <Container
-      component="form"
-      maxWidth="lg"
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        flexDirection: "column",
-        gap: 5,
-        width: "500px",
-      }}
-    >
+    <>
       <TextField
         label="Email"
         value={email}
         type="email"
         onChange={(e) => setEmail(e.target.value)}
+        className=" max-w-full"
       ></TextField>
 
       <PasswordInput
@@ -56,8 +47,9 @@ const LogInForm = () => {
         value={password}
       />
 
-      <div className="flex flex-col justify-center gap-3">
+      <div className="flex flex-col justify-center items-center gap-3">
         <Button
+          className="w-20 h-10 inline-flex items-center justify-center"
           sx={{ fontWeight: 600 }}
           variant="outlined"
           onClick={signInWithEmailAndPass}
@@ -70,7 +62,7 @@ const LogInForm = () => {
           </IconButton>
         </div>
       </div>
-    </Container>
+    </>
   );
 };
 

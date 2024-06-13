@@ -1,5 +1,5 @@
 import { Button, Menu, MenuItem } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import UserAvatar from "../Shared/UserAvatar";
 import { useAppSelector } from "../../Store/hooks";
 import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
@@ -8,7 +8,6 @@ import { auth } from "../../main";
 
 const UserMenu = () => {
   const contRef = useRef<HTMLDivElement | null>(null);
-  const [width, setWidth] = useState<number | null>(null);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isOpen = Boolean(anchorEl);
@@ -21,12 +20,6 @@ const UserMenu = () => {
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    if (contRef.current) {
-      setWidth(contRef.current.clientWidth);
-    }
-  }, []);
-
   const logout = async () => {
     await signOut(auth);
   };
@@ -36,24 +29,17 @@ const UserMenu = () => {
   return (
     <div className="flex items-center content-center" ref={contRef}>
       <Button
+        color="primary"
         size="large"
-        sx={{
-          color: "white",
-        }}
         variant="text"
         onClick={handleClick}
+        sx={{ padding: 0 }}
       >
-        <div className="flex gap-5 items-center">
-          <div>{userName}</div>
-          <UserAvatar alt={userName} src={avatarURL} size={30} />
+        <div className="flex gap-5 items-center text-white p-2 hover:bg-gray-hover rounded">
+          <UserAvatar alt={userName} src={avatarURL} size={40} />
         </div>
       </Button>
       <Menu
-        sx={{
-          "& .MuiList-root": {
-            minWidth: `${width}px`,
-          },
-        }}
         id="basic-menu"
         anchorEl={anchorEl}
         open={isOpen}

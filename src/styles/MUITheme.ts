@@ -1,29 +1,9 @@
-/* import { createTheme } from "@mui/material";
-import { purple } from "@mui/material/colors";
+import { createTheme } from "@mui/material";
 
-declare module "@mui/material/styles" {
-  interface Palette {
-    myAwesomeColor: string;
-  }
-  interface PaletteOptions {
-    myAwesomeColor: string;
-  }
-}
-
-declare module "@mui/material/Button" {
-  interface ButtonPropsColorOverrides {
-    myAwesomeColor: true;
-  }
-}
-
-const { palette } = createTheme();
-const theme = createTheme({
+export const theme = createTheme({
   palette: {
-    myAwesomeColor: palette.augmentColor({
-      color: {
-        main: "#00ff00",
-      },
-    }),
+    primary: {
+      main: "#212121",
+    },
   },
 });
- */

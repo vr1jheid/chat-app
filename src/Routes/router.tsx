@@ -3,7 +3,6 @@ import AuthPage from "./AuthPage";
 import LogInForm from "../Components/Auth/LogInForm";
 import RegisterForm from "../Components/Auth/RegisterForm";
 import ProtectedRoutes from "./ProtectedRoutes";
-import Layout from "../Components/Layout";
 import MainPage from "./MainPage";
 import App from "../App";
 
@@ -29,13 +28,8 @@ export const router = createBrowserRouter([
         element: <ProtectedRoutes />,
         children: [
           {
-            element: <Layout />,
-            children: [
-              {
-                path: "/",
-                element: <MainPage />,
-              },
-            ],
+            path: "/",
+            element: <MainPage />,
           },
         ],
       },

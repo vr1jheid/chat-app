@@ -1,7 +1,7 @@
 import SendMessageForm from "./MessageInput";
 import ChatHeader from "./ChatHeader";
 import { useSubChat } from "../../Hooks/useSubChat";
-import { ChatBody } from "./MessagesList/ChatBody";
+import { ChatBody } from "./ChatBody/ChatBody";
 
 const Chat = () => {
   console.log("chat rerender");

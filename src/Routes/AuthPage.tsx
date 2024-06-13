@@ -38,35 +38,34 @@ const AuthPage = () => {
   };
 
   return (
-    <Container
-      sx={{
-        pt: 1,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 4,
-      }}
-      maxWidth="xl"
-    >
-      <Typography variant="h2" textAlign="center">
-        React Chat
-      </Typography>
-      <ToggleButtonGroup
-        size="medium"
-        exclusive
-        value={location.pathname.slice(1)}
-        onChange={handleActionChanger}
-      >
-        <ToggleButton sx={{ width: "100px" }} value={"login"}>
-          Log In
-        </ToggleButton>
-        <ToggleButton sx={{ width: "100px" }} value={"register"}>
-          Register
-        </ToggleButton>
-      </ToggleButtonGroup>
-      <Outlet />
-    </Container>
+    <div className=" flex flex-col items-center justify-center">
+      <header className=" w-screen m-auto mb-8 mt-8 ">
+        <Typography variant="h2" textAlign="center">
+          Fire Chat
+        </Typography>
+      </header>
+
+      <div className="flex flex-col  justify-center pt-0 items-center gap-8 w-screen px-3 h-full 2xl:w-1/4 sm:w-2/3 md:w-1/2 sm:px-10 sm:py-10 sm:pt-0 rounded-lg">
+        <ToggleButtonGroup
+          size="medium"
+          exclusive
+          value={location.pathname.slice(1)}
+          onChange={handleActionChanger}
+        >
+          <ToggleButton sx={{ width: "100px" }} value={"login"}>
+            Log In
+          </ToggleButton>
+          <ToggleButton sx={{ width: "100px" }} value={"register"}>
+            Register
+          </ToggleButton>
+        </ToggleButtonGroup>
+        <div className="w-full">
+          <form className=" flex flex-col w-full gap-7">
+            <Outlet />
+          </form>
+        </div>
+      </div>
+    </div>
   );
 };
 

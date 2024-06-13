@@ -53,7 +53,7 @@ const Message = ({
       })}
       style={{ direction: "ltr" }}
     >
-      <div className="flex items-end w-fit max-w-[40%] gap-2">
+      <div className="flex items-end w-fit max-w-[80%] gap-2">
         {author && (
           <UserAvatar
             alt={author.displayName ?? author.email}

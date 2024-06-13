@@ -8,26 +8,28 @@ import {
   selectActiveChatID,
 } from "../Store/ActiveChat/activeChat";
 import ChatContextContainer from "../Components/Chat/ChatContextContainer";
+import clsx from "clsx";
+import UserMenu from "../Components/Header/UserMenu";
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
   const activeChatID = useAppSelector(selectActiveChatID);
 
-  useEffect(() => {
-    const clearActiveChatFunc = (e: KeyboardEvent) => {
-      if (e.code === "Escape" && activeChatID) {
-        dispatch(clearActiveChat());
-      }
-    };
-    window.addEventListener("keydown", clearActiveChatFunc);
+  const clearActiveChatFunc = (e: KeyboardEvent) => {
+    if (e.code === "Escape" && activeChatID) {
+      dispatch(clearActiveChat());
+    }
+  };
 
+  useEffect(() => {
+    window.addEventListener("keydown", clearActiveChatFunc);
     return () => {
       window.removeEventListener("keydown", clearActiveChatFunc);
     };
   }, [activeChatID]);
 
   return (
-    <div className="grow max-h-screen flex pt-[82px]">
+    <div className="grow h-screen flex w-screen overflow-hidden">
       {
         <button
           onClick={() => {}}
@@ -36,11 +38,22 @@ const MainPage = () => {
           test
         </button>
       }
-      <div className="min-w-[25%] w-[25%] p-3 flex flex-col gap-5 bg-gray-light border-r-2 border-solid  border-gray-very-light ">
-        <SearchUser />
+      <aside
+        className={clsx(
+          "absolute z-10 h-full w-full p-3 pl-0 flex flex-col gap-5 bg-gray-light border-r-2 border-solid ease-in transition-all  border-gray-very-light lg:static lg:translate-x-0 lg:w-96 xl:w-[25%]",
+          {
+            "-translate-x-full": activeChatID,
+          }
+        )}
+      >
+        <div className="flex">
+          <UserMenu />
+          <SearchUser />
+        </div>
+
         <ChatsList />
-      </div>
-      <div className={`bg-gray-dark grow max-h-full bg-cats-svg`}>
+      </aside>
+      <div className={`bg-gray-dark grow max-h-full bg-cats-svg `}>
         {activeChatID && (
           <ChatContextContainer>
             <Chat />

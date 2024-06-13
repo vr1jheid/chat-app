@@ -41,6 +41,8 @@ const chatsSlice = createSlice({
       state,
       { payload }: PayloadAction<CachedMessagesWithChatID>
     ) => {
+      console.log(payload);
+
       state[payload.chatID].cachedMessages = payload.messages;
     },
     clearChats: () => initialState,

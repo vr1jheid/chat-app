@@ -1,19 +1,26 @@
 import { memo, useEffect, useState } from "react";
 import UserAvatar from "../Shared/UserAvatar";
-import { useAppSelector } from "../../Store/hooks";
+import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
 import getUserFromDB from "../../Services/getUserFromDB";
 import { ChatTypes } from "../../Types/chatTypes";
-import { selectActiveChat } from "../../Store/ActiveChat/activeChat";
+import {
+  clearActiveChat,
+  selectActiveChat,
+} from "../../Store/ActiveChat/activeChat";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 const ChatHeader = () => {
+  const dispatch = useAppDispatch();
   const [headerData, setHeaderData] = useState({ chatName: "", avatarURL: "" });
   const activeChat = useAppSelector(selectActiveChat);
   const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
   useEffect(() => {
     const setHeader = async () => {
       if (activeChat.type === ChatTypes.group) {
-        setHeaderData({ ...headerData, chatName: activeChat.id });
+        console.log("here");
+
+        setHeaderData({ avatarURL: "", chatName: activeChat.id });
         return;
       }
 
@@ -32,10 +39,21 @@ const ChatHeader = () => {
   }, [activeChat.id]);
 
   return (
-    <header className="flex w-full items-center justify-center gap-4 text-3xl p-2 bg-gray-light text-white">
-      {headerData.chatName}
-      <UserAvatar alt={headerData.chatName} src={headerData.avatarURL} />
-      <span className=" text-xs">{activeChat.id}</span>
+    <header className="flex w-full items-center text-3xl p-2 bg-gray-light text-white">
+      <button
+        className="p-2 rotate-90 rounded-full block sm:hidden"
+        onClick={() => {
+          dispatch(clearActiveChat());
+        }}
+      >
+        <ArrowDownwardIcon sx={{ width: 35, height: 35 }} />
+      </button>
+      <div className="flex gap-3 items-center ml-7">
+        <UserAvatar alt={headerData.chatName} src={headerData.avatarURL} />
+        <div className="">{headerData.chatName}</div>
+      </div>
+
+      {/* <span className=" text-xs">{activeChat.id}</span> */}
     </header>
   );
 };

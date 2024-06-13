@@ -1,4 +1,4 @@
-import { TextField, Box, Button, Container } from "@mui/material";
+import { TextField, Button } from "@mui/material";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 import React, { useState } from "react";
@@ -18,17 +18,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <Container
-      component="form"
-      maxWidth="lg"
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        flexDirection: "column",
-        gap: 5,
-        width: "500px",
-      }}
-    >
+    <>
       <TextField
         label="Email"
         value={email}
@@ -43,23 +33,18 @@ const RegisterForm = () => {
         ) => setPassword(e.target.value)}
       />
       {/*  <TextField label="Repeat your password"></TextField> */}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          gap: 3,
-        }}
-      >
+
+      <div className=" flex justify-center">
         <Button
+          className="w-20 h-10 inline-flex items-center justify-center"
           sx={{ fontWeight: 600 }}
           variant="outlined"
           onClick={registerNewUser}
         >
           Register
         </Button>
-      </Box>
-    </Container>
+      </div>
+    </>
   );
 };
 

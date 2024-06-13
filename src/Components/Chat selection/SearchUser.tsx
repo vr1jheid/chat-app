@@ -33,7 +33,7 @@ const SearchUser = () => {
   };
 
   return (
-    <div className="flex items-center gap-3 bg-gray-very-light h-fit rounded py-2 focus-within:outline outline-purple-main outline-2">
+    <div className="flex grow items-center gap-3 bg-gray-very-light h-fit rounded py-2 focus-within:outline outline-purple-main outline-2">
       <Autocomplete
         sx={{ flexGrow: 1 }}
         value={selectedUserEmail}
@@ -41,6 +41,7 @@ const SearchUser = () => {
         inputValue={inputValue}
         onInputChange={onInputChange}
         onBlur={() => setSelectedUserEmail(null)}
+        blurOnSelect
         options={inputValue ? usersList : []}
         renderInput={(params) => (
           <div
