@@ -15,6 +15,7 @@ const ChatHeader = () => {
   const [headerData, setHeaderData] = useState({ chatName: "", avatarURL: "" });
   const activeChat = useAppSelector(selectActiveChat);
   const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
+
   useEffect(() => {
     const setHeader = async () => {
       if (activeChat.type === ChatTypes.group) {
