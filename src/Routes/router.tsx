@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 import AuthPage from "./AuthPage";
 import LogInForm from "../Components/Auth/LogInForm";
 import RegisterForm from "../Components/Auth/RegisterForm";
@@ -32,6 +32,10 @@ export const router = createBrowserRouter([
             element: <MainPage />,
           },
         ],
+      },
+      {
+        path: "*",
+        element: <Navigate to={"/"} />,
       },
     ],
   },

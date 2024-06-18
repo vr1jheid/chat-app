@@ -3,8 +3,7 @@ import React, { useRef, useState } from "react";
 import UserAvatar from "../Shared/UserAvatar";
 import { useAppSelector } from "../../Store/hooks";
 import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
-import { signOut } from "firebase/auth";
-import { auth } from "../../main";
+import { logout } from "../../Services/logout";
 
 const UserMenu = () => {
   const contRef = useRef<HTMLDivElement | null>(null);
@@ -18,10 +17,6 @@ const UserMenu = () => {
   };
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const logout = async () => {
-    await signOut(auth);
   };
 
   const userName = displayName ?? email;

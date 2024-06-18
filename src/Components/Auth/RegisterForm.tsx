@@ -1,45 +1,93 @@
 import { TextField, Button } from "@mui/material";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-
-import React, { useState } from "react";
+import { useState } from "react";
 import PasswordInput from "./PasswordInput";
-import { auth } from "../../main";
+import { RegisterDataKeys, RegisterData, FieldData } from "./types/authTypes";
+import { getRegisterInitialState } from "./utils/getRegisterInitialState";
+import { registerNewUser } from "../../Services/registerNewUser";
 
 const RegisterForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const registerFields: RegisterDataKeys[] = ["email", "userName", "password"];
 
-  const registerNewUser = async () => {
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-      console.log(error);
+  const [registerData, setRegisterData] = useState(
+    getRegisterInitialState(registerFields) as RegisterData
+  );
+
+  const setFieldData = <FieldDataType extends keyof FieldData>(
+    fieldName: RegisterDataKeys,
+    fieldDataType: FieldDataType,
+    newValue: FieldData[FieldDataType]
+  ) => {
+    setRegisterData((prev) => {
+      const registerDataCopy = { ...prev };
+      const fieldCopy = (registerDataCopy[fieldName] = {
+        ...registerDataCopy[fieldName],
+      });
+
+      fieldCopy[fieldDataType] = newValue;
+      registerDataCopy[fieldName] = fieldCopy;
+      return registerDataCopy;
+    });
+  };
+
+  const getFieldsDataByType = <
+    FieldDataType extends keyof FieldData,
+    Result extends { [K in RegisterDataKeys]: FieldData[FieldDataType] }
+  >(
+    fieldDataType: FieldDataType
+  ) => {
+    return registerFields.reduce((acc, field) => {
+      acc[field] = registerData[field][fieldDataType];
+      return acc;
+    }, {} as Result);
+  };
+  const validateEmail = (email: string) => {
+    if (!email.includes("@")) {
     }
+  };
+
+  const register = () => {
+    if (!true) return;
+    registerNewUser(getFieldsDataByType("value"));
   };
 
   return (
     <>
       <TextField
         label="Email"
-        value={email}
+        helperText={registerData.email.message}
+        error={!registerData.email.isValid}
+        value={registerData.email.value}
         type="email"
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e) => {
+          setFieldData("email", "value", e.target.value);
+        }}
+      ></TextField>
+      <TextField
+        label="User name"
+        helperText={registerData.userName.message}
+        error={!registerData.userName.isValid}
+        value={registerData.userName.value}
+        type="text"
+        onChange={(e) => {
+          setFieldData("userName", "value", e.target.value);
+        }}
       ></TextField>
 
       <PasswordInput
-        value={password}
-        onChange={(
-          e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        ) => setPassword(e.target.value)}
+        error={!registerData.password.isValid}
+        helperText={registerData.password.message}
+        value={registerData.password.value}
+        onChange={(e) => {
+          setFieldData("password", "value", e.target.value);
+        }}
       />
-      {/*  <TextField label="Repeat your password"></TextField> */}
 
       <div className=" flex justify-center">
         <Button
           className="w-20 h-10 inline-flex items-center justify-center"
           sx={{ fontWeight: 600 }}
           variant="outlined"
-          onClick={registerNewUser}
+          onClick={register}
         >
           Register
         </Button>

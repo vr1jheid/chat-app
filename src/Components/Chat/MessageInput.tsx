@@ -23,6 +23,7 @@ const SendMessageForm = () => {
   return (
     <form className=" flex w-full pl-2 mt-6 lg:w-[65%] lg:gap-2 lg:pl-0">
       <TextField
+        autoFocus
         onKeyDown={(e) => {
           if (e.key !== "Enter") return;
           e.preventDefault();

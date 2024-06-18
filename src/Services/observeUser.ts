@@ -8,14 +8,14 @@ import getUserFromDB from "./getUserFromDB";
 import { clearActiveChat } from "../Store/ActiveChat/activeChat";
 import { clearChats } from "../Store/Chats/chats";
 import { clearSizes } from "../Store/MessagesSizes/messagesSizes";
-import { subOnUserData } from "../Components/Auth/utils/subOnUserData";
+import { subOnUserData } from "./subOnUserData";
 import fetchAllUsersEmailsFromDB from "../Store/AllUsersList/thunks/fetchAllUsersFromDB";
 import { clearAllUsersList } from "../Store/AllUsersList/allUsersList";
 
 export const observeUser = async () => {
   const dispatch = store.dispatch;
-
   let unSubOnUserData: Unsubscribe | null = null;
+
   onAuthStateChanged(auth, async (userFromAuth) => {
     if (!userFromAuth) {
       dispatch(clearUser());
@@ -28,11 +28,8 @@ export const observeUser = async () => {
     }
 
     const validUserData = createUserData(userFromAuth);
-    const userFromDB = await getUserFromDB(userFromAuth.email!);
+    console.log(validUserData);
 
-    if (!userFromDB) {
-      createUserInDB(validUserData);
-    }
     dispatch(setUserEmail(validUserData.email));
     dispatch(fetchAllUsersEmailsFromDB());
     unSubOnUserData = subOnUserData(validUserData.email);

@@ -5,6 +5,7 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
+  FormHelperText,
 } from "@mui/material";
 import { useState } from "react";
 
@@ -13,14 +14,21 @@ interface Props {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   value: string;
+  error?: boolean;
+  helperText?: string;
 }
 
-const PasswordInput = ({ onChange, value }: Props) => {
+const PasswordInput = ({
+  onChange,
+  value,
+  error = false,
+  helperText = "",
+}: Props) => {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
-    <FormControl variant="outlined">
-      <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+    <FormControl error={error} variant="outlined">
+      <InputLabel> Password</InputLabel>
       <OutlinedInput
         value={value}
         onChange={onChange}
@@ -39,6 +47,7 @@ const PasswordInput = ({ onChange, value }: Props) => {
         }
         label="Password"
       />
+      <FormHelperText> {helperText}</FormHelperText>
     </FormControl>
   );
 };
