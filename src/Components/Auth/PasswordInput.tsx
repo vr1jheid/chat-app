@@ -13,23 +13,28 @@ interface Props {
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
+  label: string;
   value: string;
   error?: boolean;
   helperText?: string;
+  required?: boolean;
 }
 
 const PasswordInput = ({
+  label,
   onChange,
   value,
   error = false,
   helperText = "",
+  required = false,
 }: Props) => {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
     <FormControl error={error} variant="outlined">
-      <InputLabel> Password</InputLabel>
+      <InputLabel> {label}</InputLabel>
       <OutlinedInput
+        required={required}
         value={value}
         onChange={onChange}
         id="outlined-adornment-password"

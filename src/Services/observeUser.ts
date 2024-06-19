@@ -30,6 +30,11 @@ export const observeUser = async () => {
     const validUserData = createUserData(userFromAuth);
     console.log(validUserData);
 
+    const userFromDB = await getUserFromDB(userFromAuth.email!);
+
+    if (!userFromDB) {
+      createUserInDB(validUserData);
+    }
     dispatch(setUserEmail(validUserData.email));
     dispatch(fetchAllUsersEmailsFromDB());
     unSubOnUserData = subOnUserData(validUserData.email);

@@ -1,21 +1,7 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useAppDispatch } from "../Store/hooks";
 import { setWindowSize } from "../Store/WindowSize/windowSize";
-
-const throttle = (func: any, delay: number) => {
-  let isThrottle = false;
-
-  return () => {
-    if (!isThrottle) {
-      func();
-      isThrottle = true;
-      setTimeout(() => {
-        isThrottle = false;
-        func();
-      }, delay);
-    }
-  };
-};
+import { throttle } from "../utils/throttle";
 
 export const useWindowResize = () => {
   const dispatch = useAppDispatch();
@@ -27,7 +13,9 @@ export const useWindowResize = () => {
     );
   };
 
-  const throttledResize = throttle(dispatchResize, 150);
+  const throttledResize = useCallback(throttle(dispatchResize, 150), [
+    dispatch,
+  ]);
 
   useEffect(() => {
     window.addEventListener("resize", throttledResize);

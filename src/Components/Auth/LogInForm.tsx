@@ -41,6 +41,7 @@ const LogInForm = () => {
       ></TextField>
 
       <PasswordInput
+        label="Password"
         onChange={(
           e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
         ) => setPassword(e.target.value)}
