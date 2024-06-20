@@ -38,7 +38,6 @@ export const useSubChat = () => {
   };
 
   useEffect(() => {
-    console.log("subOnMessages");
     const unsub = subOnMessages();
     return () => {
       unsub();

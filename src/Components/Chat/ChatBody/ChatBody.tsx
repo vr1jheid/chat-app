@@ -14,13 +14,13 @@ import { selectCurrentUserEmail } from "../../../Store/CurrentUser/currentUser";
 import { useReverseScroll } from "../../../Hooks/useReverseScroll";
 
 export const ChatBody = () => {
+  const dispatch = useAppDispatch();
   const [showToBottomButton, setShowToBottomButton] = useState(false);
+
   const currentUserEmail = useAppSelector(selectCurrentUserEmail);
   const { messages, isLoading, isNextPageLoading, hasNextPage } =
     useAppSelector(selectActiveChat);
   const sizes = useAppSelector(selectMessagesSizes);
-
-  const dispatch = useAppDispatch();
   const { setListRef } = useContext(ChatContext);
   const {
     scrollOffset,
@@ -47,6 +47,7 @@ export const ChatBody = () => {
   };
 
   const getSize = (index: number) => sizes[messages[index]?.id] + 10 || 50;
+
   const isItemLoaded = (index: number) => index < messages.length;
 
   const loadMoreMessages = () => {

@@ -6,8 +6,8 @@ import { useAppSelector } from "../../../Store/hooks";
 import { ChatTypes } from "../../../Types/chatTypes";
 import Message from "./Message";
 import Loader from "../../Shared/Loader";
-import { MessageData } from "../../../Types/messageTypes";
 import getDateFromTimestamp from "../../../utils/getDateFromTimestamp";
+import { isNextDay } from "../../../utils/isNextDay";
 
 const ListItem = ({ index, style }: any) => {
   const {
@@ -22,35 +22,24 @@ const ListItem = ({ index, style }: any) => {
   const container = useRef<HTMLDivElement | null>(null);
   const isItemLoaded = (index: number) => index < messages.length;
 
-  const isNextDay = (
-    message: MessageData,
-    nextMessage: MessageData | undefined
-  ) => {
-    if (!message.serverTime || !nextMessage?.serverTime) {
-      return false;
+  const renderDate = () => {
+    if (
+      isNextDay(message, messages[index + 1]) ||
+      index === messages.length - 1
+    ) {
+      return (
+        <div className="text-white absolute left-1/2 -translate-y-1/2 -translate-x-1/2 z-50 p-2 rounded-full bg-gray-light">
+          {getDateFromTimestamp(message.serverTime?.seconds!)}
+        </div>
+      );
     }
-    console.log(
-      message.serverTime?.nanoseconds,
-      nextMessage.serverTime.nanoseconds
-    );
-
-    const messageDate = new Date(message.serverTime?.seconds * 1000);
-    const nextMessageDate = new Date(nextMessage.serverTime.seconds * 1000);
-    console.log(messageDate, nextMessageDate);
-
-    return nextMessageDate.getDate() - messageDate.getDate() !== 0;
   };
 
   return (
     <div className="rotate-180 relative" ref={container} style={style}>
       {isItemLoaded(index) ? (
         <>
-          {(isNextDay(message, messages[index + 1]) ||
-            index === messages.length - 1) && (
-            <div className="text-white absolute left-1/2 -translate-y-1/2 -translate-x-1/2 z-50 p-2 rounded-full bg-gray-light">
-              {getDateFromTimestamp(message.serverTime?.seconds!)}
-            </div>
-          )}
+          {renderDate()}
           <Message
             id={message.id}
             index={index}
