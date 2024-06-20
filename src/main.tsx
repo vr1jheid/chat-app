@@ -9,14 +9,24 @@ import "./styles/index.css";
 import "./styles/reset.css";
 import { ThemeProvider } from "@emotion/react";
 import { theme } from "./styles/MUITheme.ts";
+import { SnackbarProvider } from "notistack";
 
 export const { app, db, auth } = initializeFirebase();
 observeUser();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <ThemeProvider theme={theme}>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  </ThemeProvider>
+  <Provider store={store}>
+    <ThemeProvider theme={theme}>
+      <SnackbarProvider
+        dense
+        maxSnack={5}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+      >
+        <RouterProvider router={router} />
+      </SnackbarProvider>
+    </ThemeProvider>
+  </Provider>
 );

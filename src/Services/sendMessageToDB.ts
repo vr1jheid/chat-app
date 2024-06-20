@@ -8,6 +8,7 @@ import {
 } from "firebase/firestore";
 import { MessageAuthor, MessageDataDB } from "../Types/messageTypes";
 import { db } from "../main";
+import { enqueueSnackbar } from "notistack";
 
 type SendMessageToDB = (
   messageText: string,
@@ -39,11 +40,16 @@ const sendMessageToDB: SendMessageToDB = async (
     },
     serverTime,
   };
-
-  await updateDoc(messageDocRef, { ...messageWithInfo });
-  await updateDoc(chatDocRef, {
-    lastMessage: messageWithInfo,
-  });
+  try {
+    await updateDoc(messageDocRef, { ...messageWithInfo });
+    await updateDoc(chatDocRef, {
+      lastMessage: messageWithInfo,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      enqueueSnackbar("Error sending message", { variant: "error" });
+    }
+  }
 };
 
 export default sendMessageToDB;

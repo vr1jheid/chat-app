@@ -6,46 +6,53 @@ import { ChatsState } from "../chats";
 import { db } from "../../../main";
 import { subOnLastMessageChange } from "../../../Components/Chat selection/utils/subOnLastMessageChange";
 import { Unsubscribe } from "firebase/auth";
+import { enqueueSnackbar } from "notistack";
 
 const fetchChatsWrapper = () => {
   let unsubOnLastMessage: Unsubscribe | null | undefined = null;
 
-  return createAsyncThunk("chats/fetchChats", async (chatsIDs: string[]) => {
-    const q = query(
-      collection(db, "chats"),
-      or(where("id", "in", ["mainChat", ...chatsIDs]))
-    );
+  return createAsyncThunk(
+    "chats/fetchChats",
+    async (chatsIDs: string[], { rejectWithValue }) => {
+      const q = query(
+        collection(db, "chats"),
+        or(where("id", "in", ["mainChat", ...chatsIDs]))
+      );
 
-    const querySnaphot = await getDocs(q);
-    const chatsFromDB: ChatsState = {};
+      const chatsFromDB: ChatsState = {};
+      try {
+        const querySnaphot = await getDocs(q);
+        querySnaphot.forEach((snapshotDoc) => {
+          const docData = snapshotDoc.data() as ChatDataDB;
+          const { members, lastMessage, type } = docData;
 
-    querySnaphot.forEach((snapshotDoc) => {
-      const docData = snapshotDoc.data() as ChatDataDB;
+          const chatData: ChatData = {
+            id: snapshotDoc.id,
+            members,
+            type,
+            hasNextPage: true,
+            cachedMessages: [],
+          };
 
-      const { members, lastMessage, type } = docData;
-
-      const chatData: ChatData = {
-        id: snapshotDoc.id,
-        members,
-        type,
-        hasNextPage: true,
-        cachedMessages: [],
-      };
-
-      if (lastMessage) {
-        chatData.lastMessage = {
-          ...lastMessage,
-          serverTime: convertServerTime(lastMessage.serverTime),
-        };
+          if (lastMessage) {
+            chatData.lastMessage = {
+              ...lastMessage,
+              serverTime: convertServerTime(lastMessage.serverTime),
+            };
+          }
+          chatsFromDB[snapshotDoc.id] = chatData;
+        });
+      } catch (error) {
+        enqueueSnackbar("Error loading chats", { variant: "error" });
+        rejectWithValue(error);
       }
-      chatsFromDB[snapshotDoc.id] = chatData;
-    });
 
-    unsubOnLastMessage && unsubOnLastMessage();
-    unsubOnLastMessage = subOnLastMessageChange(Object.keys(chatsFromDB));
+      unsubOnLastMessage && unsubOnLastMessage();
+      unsubOnLastMessage = subOnLastMessageChange(Object.keys(chatsFromDB));
 
-    return chatsFromDB;
-  });
+      return chatsFromDB;
+    }
+  );
 };
 
 export const fetchChats = fetchChatsWrapper();

@@ -1,49 +1,19 @@
 import { TextField, Button } from "@mui/material";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import PasswordInput from "./PasswordInput";
-import { RegisterDataKeys, RegisterData, FieldData } from "./types/authTypes";
-import { getRegisterInitialState } from "./utils/getRegisterInitialState";
+import { RegisterDataKeys } from "./types/authTypes";
 import { registerNewUser } from "../../Services/registerNewUser";
 import { throttle } from "../../utils/throttle";
 import { validateEmail } from "./validation/validateEmail";
 import { validateUserName } from "./validation/validateUserName";
 import { validatePassword } from "./validation/validatePassword";
+import { useRegisterState } from "./hooks/useRegisterState";
 
 const RegisterForm = () => {
   const registerFields: RegisterDataKeys[] = ["email", "userName", "password"];
 
-  const [registerData, setRegisterData] = useState(
-    getRegisterInitialState(registerFields) as RegisterData
-  );
-
-  const setFieldData = <FieldDataType extends keyof FieldData>(
-    fieldName: RegisterDataKeys,
-    fieldDataType: FieldDataType,
-    newValue: FieldData[FieldDataType]
-  ) => {
-    setRegisterData((prev) => {
-      const registerDataCopy = { ...prev };
-      const fieldCopy = (registerDataCopy[fieldName] = {
-        ...registerDataCopy[fieldName],
-      });
-
-      fieldCopy[fieldDataType] = newValue;
-      registerDataCopy[fieldName] = fieldCopy;
-      return registerDataCopy;
-    });
-  };
-
-  const getFieldsDataByType = <
-    FieldDataType extends keyof FieldData,
-    Result extends { [K in RegisterDataKeys]: FieldData[FieldDataType] }
-  >(
-    fieldDataType: FieldDataType
-  ) => {
-    return registerFields.reduce((acc, field) => {
-      acc[field] = registerData[field][fieldDataType];
-      return acc;
-    }, {} as Result);
-  };
+  const { registerData, setFieldData, getFieldsDataByType } =
+    useRegisterState(registerFields);
 
   const validateUserNameThrottled = useCallback(
     throttle(validateUserName, 500),
@@ -52,12 +22,18 @@ const RegisterForm = () => {
 
   const register = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+
+    let isAllFilled = true;
+    Object.entries(getFieldsDataByType("value")).forEach(([key, value]) => {
+      if (!value) {
+        setFieldData(key as RegisterDataKeys, "isValid", false);
+        isAllFilled = false;
+      }
+    });
     const isAllValid = Object.values(getFieldsDataByType("isValid")).every(
       (f) => f
     );
-    const isAllFilled = Object.values(getFieldsDataByType("value")).every(
-      (f) => f
-    );
+
     if (!isAllValid || !isAllFilled) return;
     registerNewUser(getFieldsDataByType("value"));
   };

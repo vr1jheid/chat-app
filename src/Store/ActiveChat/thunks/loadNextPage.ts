@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../../main";
 import { convertServerTime } from "../../../utils/convertServerTime";
+import { enqueueSnackbar } from "notistack";
 
 export const loadNextPage = createAsyncThunk(
   "activeChat/loadNextPage",
@@ -48,6 +49,7 @@ export const loadNextPage = createAsyncThunk(
         nextPageMessages.push(validMessage);
       });
     } catch (error) {
+      enqueueSnackbar("Error loading more messages", { variant: "error" });
       return rejectWithValue(error);
     }
 

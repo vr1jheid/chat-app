@@ -28,7 +28,6 @@ export const observeUser = async () => {
     }
 
     const validUserData = createUserData(userFromAuth);
-    console.log(validUserData);
 
     const userFromDB = await getUserFromDB(userFromAuth.email!);
 

@@ -13,6 +13,7 @@ import {
 import { db } from "../../../main";
 import { MessageData, MessageDataDB } from "../../../Types/messageTypes";
 import { convertServerTime } from "../../../utils/convertServerTime";
+import { enqueueSnackbar } from "notistack";
 
 const getQuery = async (chatData: ChatData) => {
   const ref = collection(db, `chats/${chatData.id}/messages`);
@@ -51,6 +52,7 @@ export const setInitialMessages = createAsyncThunk(
         messages.push(validMessage);
       });
     } catch (error) {
+      enqueueSnackbar("Error loading messages", { variant: "error" });
       return rejectWithValue(error);
     }
     return [...messages, ...chatData.cachedMessages];

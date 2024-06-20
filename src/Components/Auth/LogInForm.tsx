@@ -8,6 +8,7 @@ import {
 import { useState } from "react";
 import PasswordInput from "./PasswordInput";
 import { auth } from "../../main";
+import { enqueueSnackbar } from "notistack";
 
 const LogInForm = () => {
   const [email, setEmail] = useState("");
@@ -18,15 +19,27 @@ const LogInForm = () => {
     try {
       await signInWithPopup(auth, provider);
     } catch (error) {
-      console.log("Не удалось залогиньться через гуголь(", error);
+      if (error instanceof Error) {
+        console.error(error);
+        enqueueSnackbar(error.message, {
+          variant: "error",
+          preventDuplicate: true,
+        });
+      }
     }
   };
 
   const signInWithEmailAndPass = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+        enqueueSnackbar(error.message, {
+          variant: "error",
+          preventDuplicate: true,
+        });
+      }
     }
   };
 

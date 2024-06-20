@@ -1,8 +1,14 @@
 import { isUserExist } from "../../../Services/isUserExist";
 
 export const validateUserName = async (userName: string) => {
-  const isUserWithSameNameExist = await isUserExist("displayName", userName);
+  if (userName.length < 4) {
+    return {
+      isValid: false,
+      message: "User name must be at least 4 characterы",
+    };
+  }
 
+  const isUserWithSameNameExist = await isUserExist("displayName", userName);
   if (isUserWithSameNameExist) {
     return {
       isValid: false,
