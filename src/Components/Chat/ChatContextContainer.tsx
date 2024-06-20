@@ -16,7 +16,6 @@ export const ChatContext = createContext<IMessagesListContext>({
 const ChatContextContainer = ({ children }: { children: ReactNode }) => {
   const [listRef, setListRef] =
     useState<React.MutableRefObject<VariableSizeList<any> | null> | null>(null);
-
   return (
     <ChatContext.Provider
       value={{

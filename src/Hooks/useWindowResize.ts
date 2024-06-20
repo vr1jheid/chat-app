@@ -6,8 +6,6 @@ import { throttle } from "../utils/throttle";
 export const useWindowResize = () => {
   const dispatch = useAppDispatch();
   const dispatchResize = () => {
-    console.log({ width: window.innerWidth, height: window.innerHeight });
-
     dispatch(
       setWindowSize({ width: window.innerWidth, height: window.innerHeight })
     );

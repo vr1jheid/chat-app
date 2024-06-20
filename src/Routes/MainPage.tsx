@@ -30,14 +30,6 @@ const MainPage = () => {
 
   return (
     <div className="grow h-dvh flex w-screen overflow-hidden">
-      {
-        <button
-          onClick={() => {}}
-          className=" absolute z-50 left-0 bottom-0 size-10 bg-white"
-        >
-          test
-        </button>
-      }
       <aside
         className={clsx(
           "absolute z-10 h-full w-full p-3 pl-0 flex flex-col gap-5 bg-gray-light border-r-2 border-solid ease-in transition-all  border-gray-very-light lg:static lg:translate-x-0 lg:w-96 xl:w-[25%]",

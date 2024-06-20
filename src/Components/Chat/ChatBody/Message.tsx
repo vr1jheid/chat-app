@@ -46,8 +46,9 @@ const Message = ({
 
   return (
     <div
+      id={id}
       ref={messageRoot}
-      className={clsx("flex grow max-w-full rotate-180", {
+      className={clsx("message flex grow max-w-full", {
         "justify-end": isMyself,
         "justify-start": !isMyself,
       })}

@@ -26,14 +26,12 @@ export const useReverseScroll = () => {
     scrollOffset.current -= deltaY / 2;
     scrollOffset.current = Math.min(
       Math.max(0, scrollOffset.current),
-      listScrollHeight
+      listScrollHeight + 10
     );
     listRef.current.scrollTo(scrollOffset.current);
   };
 
   useEffect(() => {
-    /*  setListRef(listRef); */
-
     listContainerRef.current?.addEventListener("wheel", reverseScroll);
     return () => {
       scrollOffset.current = 0;

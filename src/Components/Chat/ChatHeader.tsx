@@ -19,8 +19,6 @@ const ChatHeader = () => {
   useEffect(() => {
     const setHeader = async () => {
       if (activeChat.type === ChatTypes.group) {
-        console.log("here");
-
         setHeaderData({ avatarURL: "", chatName: activeChat.id });
         return;
       }
