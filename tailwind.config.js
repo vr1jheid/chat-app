@@ -15,6 +15,9 @@ export default {
       backgroundImage: {
         "cats-svg": "url(./src/Assets//bg-cats.svg)",
       },
+      boxShadow: {
+        "3xl": "0px 0px 13px 13px #0f0f0f;",
+      },
     },
   },
   plugins: [],

@@ -3,9 +3,7 @@ import { selectAllChats } from "../../Store/Chats/chats";
 import ChatPreview from "./ChatPreview";
 import { selectActiveChatID } from "../../Store/ActiveChat/activeChat";
 import { ChatData } from "../../Types/chatTypes";
-import { clearSizes } from "../../Store/MessagesSizes/messagesSizes";
-import { setInitialMessages } from "../../Store/ActiveChat/thunks/setInitialMessages";
-import { setActiveAndCacheMessages } from "../../Store/ActiveChat/thunks/setActiveAndCacheMessages";
+import { selectChatFromObserved } from "../../Store/Chats/thunks/selectChat";
 
 const ChatsList = () => {
   const dispatch = useAppDispatch();
@@ -22,10 +20,7 @@ const ChatsList = () => {
 
   const selectAsActive = (chat: ChatData) => {
     if (activeChatID === chat.id) return;
-
-    dispatch(setActiveAndCacheMessages(chat));
-    dispatch(setInitialMessages(chat));
-    dispatch(clearSizes());
+    dispatch(selectChatFromObserved(chat.id));
   };
 
   return (

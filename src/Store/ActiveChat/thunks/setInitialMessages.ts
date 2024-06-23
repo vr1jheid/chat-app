@@ -16,6 +16,8 @@ import { convertServerTime } from "../../../utils/convertServerTime";
 import { enqueueSnackbar } from "notistack";
 
 const getQuery = async (chatData: ChatData) => {
+  console.log(chatData);
+
   const ref = collection(db, `chats/${chatData.id}/messages`);
   if (!chatData.cachedMessages.length) {
     return query(ref, orderBy("serverTime", "desc"), limit(30));

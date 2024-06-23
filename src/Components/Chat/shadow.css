@@ -1,0 +1,15 @@
+.blur-edge-box {
+  background-color: #3498db;
+}
+
+.blur-edge-box::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background-color: inherit;
+  filter: blur(10px);
+  z-index: -1;
+}

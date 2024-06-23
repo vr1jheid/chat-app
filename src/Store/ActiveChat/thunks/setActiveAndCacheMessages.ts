@@ -18,8 +18,6 @@ export const setActiveAndCacheMessages = createAsyncThunk(
       );
     }
 
-    console.log(activeChat);
-
     if (!activeChat.hasNextPage) {
       dispatch(
         setHasNextPage({

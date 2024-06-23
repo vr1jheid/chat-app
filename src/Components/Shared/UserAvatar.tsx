@@ -3,7 +3,7 @@ import { Avatar } from "@mui/material";
 interface Props {
   alt: string | null;
   src?: string | null;
-  size?: number;
+  size?: number | string;
 }
 
 const getTextForAvatar = (alt: string) => {

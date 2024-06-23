@@ -5,11 +5,12 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./Routes/router.tsx";
 import { initializeFirebase } from "./firebase-config.ts";
 import { observeUser } from "./Services/observeUser.ts";
-import "./styles/index.css";
-import "./styles/reset.css";
 import { ThemeProvider } from "@emotion/react";
 import { theme } from "./styles/MUITheme.ts";
 import { SnackbarProvider } from "notistack";
+import { MessageNotification } from "./Components/Chat/MessageNotification.tsx";
+import "./styles/index.css";
+import "./styles/reset.css";
 
 export const { app, db, auth } = initializeFirebase();
 observeUser();
@@ -21,9 +22,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         dense
         maxSnack={5}
         anchorOrigin={{
-          vertical: "bottom",
+          vertical: "top",
           horizontal: "right",
         }}
+        Components={{ messageNotification: MessageNotification }}
       >
         <RouterProvider router={router} />
       </SnackbarProvider>
