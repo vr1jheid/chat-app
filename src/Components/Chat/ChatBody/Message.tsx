@@ -12,25 +12,16 @@ import { selectWindowSize } from "../../../Store/WindowSize/windowSize";
 interface Props {
   id: string;
   isMyself: boolean;
-  author: MessageAuthor | null;
+  author: MessageAuthor;
   text: string;
   timestamp: MessageTime | null;
-  deleteMessage: () => Promise<void>;
   index: number;
 }
 
-const Message = ({
-  id,
-  author,
-  text,
-  timestamp,
-  deleteMessage,
-  isMyself,
-  index,
-}: Props) => {
+const Message = ({ id, author, text, timestamp, isMyself, index }: Props) => {
+  const dispatch = useAppDispatch();
   const messageRoot = useRef<HTMLDivElement | null>(null);
   const { listRef } = useContext(ChatContext);
-  const dispatch = useAppDispatch();
   const screenSize = useAppSelector(selectWindowSize);
 
   useEffect(() => {
@@ -46,16 +37,15 @@ const Message = ({
 
   return (
     <div
-      id={id}
       ref={messageRoot}
-      className={clsx("message flex grow max-w-full", {
+      className={clsx("flex grow max-w-full", {
         "justify-end": isMyself,
         "justify-start": !isMyself,
       })}
       style={{ direction: "ltr" }}
     >
       <div className="flex items-end w-fit max-w-[80%] gap-2">
-        {author && (
+        {!isMyself && (
           <UserAvatar
             alt={author.displayName ?? author.email}
             src={author.avatarURL}
@@ -71,7 +61,7 @@ const Message = ({
           )}
         >
           {!timestamp && <Loader />}
-          {author && (
+          {!isMyself && (
             <div className="text-purple-main text-left">
               {author.displayName ?? author.email}
             </div>
@@ -81,7 +71,6 @@ const Message = ({
             <div className="text-xl break-words w-[80%] grow text-left">
               {text}
               <span
-                onClick={deleteMessage}
                 className={clsx(
                   " inline-block ml-3 text-gray-extra-light text-s float-right ",
                   {

@@ -1,25 +1,22 @@
-import { useRef } from "react";
-import { deleteMessage } from "../../../Services/deleteMessage";
-import { selectActiveChat } from "../../../Store/ActiveChat/activeChat";
-import { selectCurrentUser } from "../../../Store/CurrentUser/currentUser";
+import { selectCurrentUserEmail } from "../../../Store/CurrentUser/currentUser";
 import { useAppSelector } from "../../../Store/hooks";
-import { ChatTypes } from "../../../Types/chatTypes";
 import Message from "./Message";
 import Loader from "../../Shared/Loader";
 import getDateFromTimestamp from "../../../utils/getDateFromTimestamp";
 import { isNextDay } from "../../../utils/isNextDay";
+import { MessageData } from "../../../Types/messageTypes";
+import { ListChildComponentProps } from "react-window";
 
-const ListItem = ({ index, style }: any) => {
-  const {
-    type: activeChatType,
-    messages,
-    id: activeChatID,
-  } = useAppSelector(selectActiveChat);
-  const { email: currentUserEmail } = useAppSelector(selectCurrentUser);
+export const ListItem = ({
+  index,
+  style,
+  data: messages,
+  isScrolling,
+}: ListChildComponentProps<MessageData[]>) => {
+  const currentUserEmail = useAppSelector(selectCurrentUserEmail);
   const message = messages[index];
   const isMyself = currentUserEmail === message?.author.email;
 
-  const container = useRef<HTMLDivElement | null>(null);
   const isItemLoaded = (index: number) => index < messages.length;
 
   const renderDate = () => {
@@ -28,15 +25,16 @@ const ListItem = ({ index, style }: any) => {
       index === messages.length - 1
     ) {
       return (
-        <div className="text-white absolute left-1/2 -translate-y-1/2 -translate-x-1/2 z-[500] p-2 rounded-full">
+        <div className="text-white p-2 py-3 text-center rounded-full m-auto">
           {getDateFromTimestamp(message.serverTime?.seconds!)}
         </div>
       );
     }
   };
+  console.log(isScrolling);
 
   return (
-    <div className="rotate-180" ref={container} style={style}>
+    <div className="rotate-180" style={style}>
       {isItemLoaded(index) ? (
         <>
           {renderDate()}
@@ -44,14 +42,9 @@ const ListItem = ({ index, style }: any) => {
             id={message.id}
             index={index}
             isMyself={isMyself}
-            author={
-              !isMyself && activeChatType === ChatTypes.group
-                ? message.author
-                : null
-            }
+            author={message.author}
             text={message.messageText}
             timestamp={message.serverTime}
-            deleteMessage={() => deleteMessage(activeChatID, message.id)}
           />
         </>
       ) : (
@@ -62,5 +55,3 @@ const ListItem = ({ index, style }: any) => {
     </div>
   );
 };
-
-export default ListItem;

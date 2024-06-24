@@ -5,6 +5,8 @@ import { MessageData } from "../../Types/messageTypes";
 import { setInitialMessages } from "./thunks/setInitialMessages";
 import { loadNextPage } from "./thunks/loadNextPage";
 
+export const ITEMS_PER_PAGE = 30;
+
 const initialState: ActiveChat = {
   id: "",
   members: [],
@@ -79,8 +81,10 @@ const activeChatSlice = createSlice({
       state.isNextPageLoading = true;
     });
     builder.addCase(loadNextPage.fulfilled, (state, action) => {
+      console.log(action.payload.length, action.payload);
+
       state.messages = [...state.messages, ...action.payload];
-      if (action.payload.length < 30) {
+      if (action.payload.length < ITEMS_PER_PAGE) {
         state.hasNextPage = false;
       }
       state.isNextPageLoading = false;

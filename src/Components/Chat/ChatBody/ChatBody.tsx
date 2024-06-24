@@ -9,9 +9,10 @@ import { ListOnScrollProps, VariableSizeList } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
 import { loadNextPage } from "../../../Store/ActiveChat/thunks/loadNextPage";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import ListItem from "./ListItem";
 import { selectCurrentUserEmail } from "../../../Store/CurrentUser/currentUser";
 import { useReverseScroll } from "../../../Hooks/useReverseScroll";
+import { ListItem } from "./ListItem";
+import { isNextDay } from "../../../utils/isNextDay";
 
 export const ChatBody = () => {
   const dispatch = useAppDispatch();
@@ -46,7 +47,15 @@ export const ChatBody = () => {
     setShowToBottomButton(false);
   };
 
-  const getSize = (index: number) => sizes[messages[index]?.id] + 10 || 50;
+  const getSize = (index: number) => {
+    if (
+      isNextDay(messages[index], messages[index + 1]) ||
+      index === messages.length - 1
+    ) {
+      return sizes[messages[index]?.id] + 10 + 40;
+    }
+    return sizes[messages[index]?.id] + 10 || 50;
+  };
 
   const isItemLoaded = (index: number) => index < messages.length;
 
@@ -79,7 +88,7 @@ export const ChatBody = () => {
           />
         </button>
       )}
-      {
+      {messages.length && (
         <AutoSizer>
           {({ height, width }) => (
             <InfiniteLoader
@@ -98,7 +107,8 @@ export const ChatBody = () => {
                   outerRef={outerListRef}
                   height={height}
                   width={width}
-                  initialScrollOffset={scrollOffset.current}
+                  itemData={messages}
+                  initialScrollOffset={0}
                   onItemsRendered={onItemsRendered}
                   itemCount={
                     isNextPageLoading ? messages.length + 1 : messages.length
@@ -107,6 +117,7 @@ export const ChatBody = () => {
                   direction="rtl"
                   itemKey={(index) => messages[index]?.id || "loader"}
                   onScroll={onScroll}
+                  useIsScrolling
                 >
                   {ListItem}
                 </VariableSizeList>
@@ -114,7 +125,7 @@ export const ChatBody = () => {
             </InfiniteLoader>
           )}
         </AutoSizer>
-      }
+      )}
     </div>
   );
 };

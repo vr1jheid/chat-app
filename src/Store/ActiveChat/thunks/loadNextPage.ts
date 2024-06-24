@@ -14,6 +14,7 @@ import {
 import { db } from "../../../main";
 import { convertServerTime } from "../../../utils/convertServerTime";
 import { enqueueSnackbar } from "notistack";
+import { ITEMS_PER_PAGE } from "../activeChat";
 
 export const loadNextPage = createAsyncThunk(
   "activeChat/loadNextPage",
@@ -35,7 +36,7 @@ export const loadNextPage = createAsyncThunk(
         collection(db, `chats/${activeChatID}/messages`),
         where("serverTime", "<", serverTime),
         orderBy("serverTime", "desc"),
-        limit(20)
+        limit(ITEMS_PER_PAGE)
       );
 
       const querySnapshot = await getDocs(nextPageQuery);

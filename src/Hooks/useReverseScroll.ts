@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { VariableSizeList } from "react-window";
 
 export const useReverseScroll = () => {
@@ -8,7 +8,7 @@ export const useReverseScroll = () => {
   const innerListRef = useRef<HTMLDivElement | null>(null);
   const outerListRef = useRef<HTMLDivElement | null>(null);
 
-  const reverseScroll = (e: WheelEvent) => {
+  const reverseScroll = useCallback((e: WheelEvent) => {
     e.preventDefault();
     const deltaY = e.deltaY;
     if (
@@ -29,7 +29,7 @@ export const useReverseScroll = () => {
       listScrollHeight + 10
     );
     listRef.current.scrollTo(scrollOffset.current);
-  };
+  }, []);
 
   useEffect(() => {
     listContainerRef.current?.addEventListener("wheel", reverseScroll);

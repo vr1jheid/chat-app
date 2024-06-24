@@ -52,8 +52,6 @@ const chatsSlice = createSlice({
       state,
       { payload }: PayloadAction<HasNextPageWithChatID>
     ) => {
-      console.log(payload);
-
       state[payload.chatID].hasNextPage = payload.hasNextPage;
     },
     clearChats: () => initialState,
