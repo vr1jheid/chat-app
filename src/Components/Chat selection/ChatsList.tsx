@@ -1,14 +1,12 @@
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 import { selectAllChats } from "../../Store/Chats/chats";
 import ChatPreview from "./ChatPreview";
-import { selectActiveChatID } from "../../Store/ActiveChat/activeChat";
 import { ChatData } from "../../Types/chatTypes";
-import { selectChatFromObserved } from "../../Store/Chats/thunks/selectChat";
+import { selectChatFromObserved } from "../../Store/Chats/thunks/selectChatFromObserved";
 
 const ChatsList = () => {
   const dispatch = useAppDispatch();
   const chatsList = useAppSelector(selectAllChats);
-  const activeChatID = useAppSelector(selectActiveChatID);
 
   const sortedChats = Object.values(chatsList)
     .filter((c) => c.lastMessage)
@@ -19,7 +17,6 @@ const ChatsList = () => {
     );
 
   const selectAsActive = (chat: ChatData) => {
-    if (activeChatID === chat.id) return;
     dispatch(selectChatFromObserved(chat.id));
   };
 

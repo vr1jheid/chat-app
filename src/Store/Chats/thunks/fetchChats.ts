@@ -4,7 +4,7 @@ import { convertServerTime } from "../../../utils/convertServerTime";
 import { ChatData, ChatDataDB } from "../../../Types/chatTypes";
 import { ChatsState } from "../chats";
 import { db } from "../../../main";
-import { subOnLastMessageChange } from "../../../Components/Chat selection/utils/subOnLastMessageChange";
+import { subOnLastMessageChange } from "../../../Services/subOnLastMessageChange";
 import { Unsubscribe } from "firebase/auth";
 import { enqueueSnackbar } from "notistack";
 

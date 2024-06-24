@@ -1,15 +1,16 @@
 import { Autocomplete } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
-import { useAppSelector } from "../../Store/hooks";
-import { setActiveChat } from "../../Hooks/useActiveChat";
+import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 import { selectAllUsersList } from "../../Store/AllUsersList/allUsersList";
+import { searchChatWithUser } from "../../Store/Chats/thunks/searchChatWithUser";
 
 export interface UserWithLabel {
   label: string;
 }
 
 const SearchUser = () => {
+  const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = useState("");
   const [selectedUserEmail, setSelectedUserEmail] = useState<string | null>(
     null
@@ -22,7 +23,8 @@ const SearchUser = () => {
   ) => {
     if (!newValue) return;
     setSelectedUserEmail(newValue);
-    setActiveChat(newValue);
+
+    dispatch(searchChatWithUser(newValue));
   };
 
   const onInputChange = (

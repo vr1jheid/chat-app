@@ -3,9 +3,8 @@ import { forwardRef } from "react";
 import { MessageAuthor } from "../../Types/messageTypes";
 import UserAvatar from "../Shared/UserAvatar";
 import CloseIcon from "@mui/icons-material/Close";
-import "./shadow.css";
 import { useAppDispatch } from "../../Store/hooks";
-import { selectChatFromObserved } from "../../Store/Chats/thunks/selectChat";
+import { selectChatFromObserved } from "../../Store/Chats/thunks/selectChatFromObserved";
 
 interface Props {
   style: {};

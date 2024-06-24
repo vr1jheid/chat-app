@@ -28,7 +28,7 @@ const ListItem = ({ index, style }: any) => {
       index === messages.length - 1
     ) {
       return (
-        <div className="text-white absolute left-1/2 -translate-y-1/2 -translate-x-1/2 z-50 p-2 rounded-full bg-gray-light">
+        <div className="text-white absolute left-1/2 -translate-y-1/2 -translate-x-1/2 z-[500] p-2 rounded-full">
           {getDateFromTimestamp(message.serverTime?.seconds!)}
         </div>
       );
@@ -36,7 +36,7 @@ const ListItem = ({ index, style }: any) => {
   };
 
   return (
-    <div className="rotate-180 relative" ref={container} style={style}>
+    <div className="rotate-180" ref={container} style={style}>
       {isItemLoaded(index) ? (
         <>
           {renderDate()}

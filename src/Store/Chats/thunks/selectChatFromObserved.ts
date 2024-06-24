@@ -7,17 +7,11 @@ import { clearSizes } from "../../MessagesSizes/messagesSizes";
 export const selectChatFromObserved = createAsyncThunk(
   "test",
   (id: string, { getState, dispatch }) => {
-    console.log("thunk");
+    const { chats, activeChat } = getState() as RootState;
+    if (id === activeChat.id) return;
 
-    const { chats } = getState() as RootState;
-    console.log(chats);
-    console.log(id);
-
-    const selectedChat = chats[id];
-    console.log(selectedChat);
-
-    dispatch(setActiveAndCacheMessages(selectedChat));
-    dispatch(setInitialMessages(selectedChat));
+    dispatch(setActiveAndCacheMessages(chats[id]));
+    dispatch(setInitialMessages(chats[id]));
     dispatch(clearSizes());
   }
 );
