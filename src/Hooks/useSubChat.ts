@@ -15,29 +15,28 @@ export const useSubChat = () => {
   const activeChatID = useAppSelector(selectActiveChatID);
   if (!activeChatID) return;
 
-  const subOnMessages = () => {
-    const q = query(collection(db, `chats/${activeChatID}/messages`));
-
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      querySnapshot.docChanges().forEach((change) => {
-        const message = change.doc.data() as MessageDataDB;
-        if (!message.id) return;
-        const validMessage: MessageData = {
-          ...message,
-          serverTime: convertServerTime(message.serverTime),
-        };
-
-        if (change.type === "modified") {
-          dispatch(addMessage(validMessage));
-          return;
-        }
-      });
-    });
-
-    return unsubscribe;
-  };
-
   useEffect(() => {
+    const subOnMessages = () => {
+      const q = query(collection(db, `chats/${activeChatID}/messages`));
+
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        querySnapshot.docChanges().forEach((change) => {
+          const message = change.doc.data() as MessageDataDB;
+          if (!message.id) return;
+          const validMessage: MessageData = {
+            ...message,
+            serverTime: convertServerTime(message.serverTime),
+          };
+
+          if (change.type === "modified") {
+            dispatch(addMessage(validMessage));
+            return;
+          }
+        });
+      });
+
+      return unsubscribe;
+    };
     const unsub = subOnMessages();
     return () => {
       unsub();

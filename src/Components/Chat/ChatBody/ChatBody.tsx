@@ -48,13 +48,18 @@ export const ChatBody = () => {
   };
 
   const getSize = (index: number) => {
+    if (!sizes[messages[index]?.id]) {
+      return 50;
+    }
+    const marginBot = 10;
+    const dateBlockSize = 40;
     if (
       isNextDay(messages[index], messages[index + 1]) ||
       index === messages.length - 1
     ) {
-      return sizes[messages[index]?.id] + 10 + 40;
+      return sizes[messages[index]?.id] + marginBot + dateBlockSize;
     }
-    return sizes[messages[index]?.id] + 10 || 50;
+    return sizes[messages[index]?.id] + marginBot;
   };
 
   const isItemLoaded = (index: number) => index < messages.length;
