@@ -10,6 +10,7 @@ import {
 import ChatContextContainer from "../Components/Chat/ChatContextContainer";
 import clsx from "clsx";
 import UserMenu from "../Components/Header/UserMenu";
+import catsSVG from "../Assets/bg-cats.svg";
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
@@ -45,7 +46,10 @@ const MainPage = () => {
 
         <ChatsList />
       </aside>
-      <div className={`bg-gray-dark grow max-h-full bg-cats-svg `}>
+      <div
+        style={{ backgroundImage: `url(${catsSVG})` }}
+        className={`bg-gray-dark grow max-h-full`}
+      >
         {activeChatID && (
           <ChatContextContainer>
             <Chat />

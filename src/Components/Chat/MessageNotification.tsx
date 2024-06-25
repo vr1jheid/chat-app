@@ -1,21 +1,26 @@
 import { closeSnackbar } from "notistack";
-import { forwardRef } from "react";
-import { MessageAuthor } from "../../Types/messageTypes";
+import { CSSProperties, forwardRef } from "react";
 import UserAvatar from "../Shared/UserAvatar";
 import CloseIcon from "@mui/icons-material/Close";
 import { useAppDispatch } from "../../Store/hooks";
 import { selectChatFromObserved } from "../../Store/Chats/thunks/selectChatFromObserved";
+import { MessageAuthor } from "../../Types/messageTypes";
+import clsx from "clsx";
 
 interface Props {
-  style: {};
+  style: CSSProperties;
   id: number;
-  chatID: string;
   message: string;
   messageAuthor: MessageAuthor;
+  chatID: string;
+  type?: "standard" | "mobile";
 }
 
 export const MessageNotification = forwardRef<HTMLDivElement, Props>(
-  ({ style, message, messageAuthor, id: notiID, chatID }, ref) => {
+  (
+    { style, message, messageAuthor, id: notiID, chatID, type = "standard" },
+    ref
+  ) => {
     const dispatch = useAppDispatch();
     const { avatarURL, displayName, email } = messageAuthor;
 
@@ -27,28 +32,37 @@ export const MessageNotification = forwardRef<HTMLDivElement, Props>(
       closeSnackbar(notiID);
     };
 
+    const mobile = type === "mobile";
+
     return (
       <div
-        className="group flex relative z-[-10] items-center gap-3 bg-gray-dark text-white w-80 h-28 p-2 rounded-lg"
+        className={clsx(
+          "group flex relative z-[-10] items-center gap-3 bg-gray-dark text-white p-2 rounded-lg h-20 lg:w-80 lg:h-28"
+        )}
         style={style}
         ref={ref}
+        onClick={!mobile ? () => {} : toChat}
       >
-        <UserAvatar alt={displayName ?? email} src={avatarURL} size={70} />
-        <div className=" flex flex-col gap-1 h-full w-full max-w-56 ">
-          <div className=" text-xl inline-flex items-center justify-between">
+        <UserAvatar
+          alt={displayName ?? email}
+          src={avatarURL}
+          size={!mobile ? 70 : 40}
+        />
+        <div className="flex flex-col gap-1 h-full w-full grow lg:max-w-56 truncate ">
+          <div className="text-xl inline-flex items-center justify-between">
             {displayName ?? email}
             <button
               onClick={closeNoti}
-              className=" rounded-full p-1 hover:bg-gray-extra-light grid place-self-center"
+              className="rounded-full p-1 hover:bg-gray-extra-light hidden lg:grid place-self-center"
             >
               <CloseIcon className=" text-white" />
             </button>
           </div>
-          <div className="text-[#a0a0a0] break-words overflow-hidden">
+          <div className="text-[#a0a0a0] break-words overflow-hidden truncate max-w-full lg:whitespace-normal">
             {message}
           </div>
           <button
-            className="absolute hidden right-5 bottom-5 rounded-lg bg-gray-dark p-2 shadow-3xl hover:bg-purple-main hover:shadow-purple-main hover:shadow-none group-hover:block"
+            className="absolute hidden right-5 bottom-5 rounded-lg bg-gray-dark p-2 shadow-3xl hover:bg-purple-main hover:shadow-purple-main hover:shadow-none lg:group-hover:block"
             onClick={toChat}
           >
             REPLY

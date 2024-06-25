@@ -40,7 +40,7 @@ const ChatHeader = () => {
   return (
     <header className="flex w-full items-center text-3xl p-2 bg-gray-light text-white">
       <button
-        className="p-2 rotate-90 rounded-full block sm:hidden"
+        className="p-2 rotate-90 rounded-full block lg:hidden"
         onClick={() => {
           dispatch(clearActiveChat());
         }}
