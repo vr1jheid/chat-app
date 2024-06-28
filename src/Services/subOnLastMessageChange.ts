@@ -40,7 +40,8 @@ export const subOnLastMessageChange = (chatsIDs: string[]) => {
       const { activeChat, currentUser } = store.getState();
       if (
         activeChat.id !== changedChatData.id &&
-        currentUser.email !== lastMessage.author.email
+        currentUser.email !== lastMessage.author.email &&
+        !currentUser.chats[changedChatData.id].isMuted
       ) {
         enqueueSnackbar(lastMessage.messageText, {
           variant: "messageNotification",

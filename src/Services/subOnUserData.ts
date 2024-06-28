@@ -13,9 +13,9 @@ export const subOnUserData = (currentUserEmail: string) => {
     userDocRef,
     { includeMetadataChanges: true },
     (doc) => {
-      if (doc.metadata.hasPendingWrites) {
+      /*       if (doc.metadata.hasPendingWrites) {
         return;
-      }
+      } */
       const userDocData = doc.data();
       if (!userDocData) return;
 
