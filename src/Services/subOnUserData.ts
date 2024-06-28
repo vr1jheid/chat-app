@@ -24,8 +24,8 @@ export const subOnUserData = (currentUserEmail: string) => {
 
       const currentChatsCount = Object.keys(store.getState().chats).length;
 
-      if (userData.chats.length !== currentChatsCount) {
-        dispatch(fetchChats(userData.chats));
+      if (Object.keys(userData.chats).length !== currentChatsCount) {
+        dispatch(fetchChats(Object.keys(userData.chats)));
       }
     }
   );

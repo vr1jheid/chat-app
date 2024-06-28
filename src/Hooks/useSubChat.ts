@@ -1,4 +1,10 @@
-import { query, collection, onSnapshot } from "firebase/firestore";
+import {
+  query,
+  collection,
+  onSnapshot,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 import { useEffect } from "react";
 import { MessageData, MessageDataDB } from "../Types/messageTypes";
 import { useAppDispatch, useAppSelector } from "../Store/hooks";
@@ -20,18 +26,18 @@ export const useSubChat = () => {
       const q = query(collection(db, `chats/${activeChatID}/messages`));
 
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        querySnapshot.docChanges().forEach((change) => {
+        querySnapshot.docChanges().forEach(async (change) => {
           const message = change.doc.data() as MessageDataDB;
           if (!message.id) return;
           const validMessage: MessageData = {
             ...message,
             serverTime: convertServerTime(message.serverTime),
           };
+          if (change.type !== "modified") return;
 
-          if (change.type === "modified") {
-            dispatch(addMessage(validMessage));
-            return;
-          }
+          dispatch(addMessage(validMessage));
+
+          /*    await updateDoc(doc(db, )); */
         });
       });
 

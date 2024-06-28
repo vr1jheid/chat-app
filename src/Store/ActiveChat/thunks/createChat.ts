@@ -28,7 +28,9 @@ export const createChat = createAsyncThunk(
       const userDocRef = doc(db, `users/${member}`);
 
       await updateDoc(userDocRef, {
-        "userData.chats": arrayUnion(newChatDoc.id),
+        [`userData.chats.${newChatDoc.id}`]: {
+          isMuted: false,
+        },
       });
     });
 
