@@ -11,7 +11,7 @@ const initialState: currentUserState = {
   displayName: "",
   avatarURL: "",
   emailVerified: false,
-  chats: [],
+  chats: {},
   isLoaded: false,
 };
 

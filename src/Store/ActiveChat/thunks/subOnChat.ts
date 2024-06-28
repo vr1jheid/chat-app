@@ -27,7 +27,8 @@ const subOnChatWrapper = () => {
       const q = query(collection(db, `chats/${props.chatID}/messages`));
 
       unsubscribe = onSnapshot(q, (querySnapshot) => {
-        querySnapshot.docChanges().forEach(async (change) => {
+        const changes = querySnapshot.docChanges();
+        for (let change of changes) {
           const message = change.doc.data() as MessageDataDB;
           if (!message.id) return;
           const validMessage: MessageData = {
@@ -38,9 +39,8 @@ const subOnChatWrapper = () => {
 
           dispatch(addMessage(validMessage));
           console.log(validMessage);
-
           /*    await updateDoc(doc(db, )); */
-        });
+        }
       });
     }
   );

@@ -1,4 +1,4 @@
-import { MessageData, MessageDataDB } from "./messageTypes";
+import { MessageAuthor, MessageData, MessageDataDB } from "./messageTypes";
 
 export enum ChatTypes {
   dialog = "dialog",
@@ -16,6 +16,7 @@ export interface ChatData extends Omit<ChatDataDB, "lastMessage"> {
   lastMessage?: MessageData;
   cachedMessages: MessageData[];
   hasNextPage: boolean;
+  dialogPartner?: MessageAuthor;
 }
 
 export interface ActiveChat

@@ -57,14 +57,27 @@ const chatsSlice = createSlice({
     clearChats: () => initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchChats.fulfilled, (state, { payload }) => {
-      return { ...state, ...payload };
+    builder.addCase(fetchChats.fulfilled, (state, action) => {
+      console.log(action.payload);
+      console.log({ ...action.payload });
+
+      return { ...state, ...action.payload };
     });
   },
 });
 
 export const { selectAllChats, selectChatsNum, selectChatsIDs } =
   chatsSlice.selectors;
+
+export const selectChatByID = createSelector(
+  [
+    // Pass input selectors with typed arguments
+    selectAllChats,
+    (_chats, id: string) => id,
+  ],
+  // Extracted values are passed to the result function for recalculation
+  (chats, id) => chats[id]
+);
 
 export const {
   clearChats,

@@ -4,7 +4,7 @@ import { createChat } from "./thunks/createChat";
 import { MessageData } from "../../Types/messageTypes";
 import { setInitialMessages } from "./thunks/setInitialMessages";
 import { loadNextPage } from "./thunks/loadNextPage";
-import { clearActiveChatWithCache } from "./thunks/clearActiveChat";
+import { clearActiveChatWithCache } from "./thunks/clearActiveChatWithCache";
 
 export const ITEMS_PER_PAGE = 30;
 

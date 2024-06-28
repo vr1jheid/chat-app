@@ -8,7 +8,7 @@ import ChatContextContainer from "../Components/Chat/ChatContextContainer";
 import clsx from "clsx";
 import UserMenu from "../Components/Header/UserMenu";
 import catsSVG from "../Assets/bg-cats.svg";
-import { clearActiveChatWithCache } from "../Store/ActiveChat/thunks/clearActiveChat";
+import { clearActiveChatWithCache } from "../Store/ActiveChat/thunks/clearActiveChatWithCache";
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
