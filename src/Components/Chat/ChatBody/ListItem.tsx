@@ -11,7 +11,6 @@ export const ListItem = ({
   index,
   style,
   data: messages,
-  isScrolling,
 }: ListChildComponentProps<MessageData[]>) => {
   const currentUserEmail = useAppSelector(selectCurrentUserEmail);
   const message = messages[index];
@@ -31,7 +30,6 @@ export const ListItem = ({
       );
     }
   };
-  console.log(isScrolling);
 
   return (
     <div className="rotate-180" style={style}>

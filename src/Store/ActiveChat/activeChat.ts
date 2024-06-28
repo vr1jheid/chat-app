@@ -4,6 +4,7 @@ import { createChat } from "./thunks/createChat";
 import { MessageData } from "../../Types/messageTypes";
 import { setInitialMessages } from "./thunks/setInitialMessages";
 import { loadNextPage } from "./thunks/loadNextPage";
+import { clearActiveChatWithCache } from "./thunks/clearActiveChat";
 
 export const ITEMS_PER_PAGE = 30;
 
@@ -92,6 +93,7 @@ const activeChatSlice = createSlice({
     builder.addCase(loadNextPage.rejected, (state) => {
       state.isNextPageLoading = false;
     });
+    builder.addCase(clearActiveChatWithCache.fulfilled, () => initialState);
   },
 });
 

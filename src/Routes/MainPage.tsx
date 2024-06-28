@@ -3,14 +3,12 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../Store/hooks";
 import SearchUser from "../Components/Chat selection/SearchUser";
 import Chat from "../Components/Chat/Chat";
-import {
-  clearActiveChat,
-  selectActiveChatID,
-} from "../Store/ActiveChat/activeChat";
+import { selectActiveChatID } from "../Store/ActiveChat/activeChat";
 import ChatContextContainer from "../Components/Chat/ChatContextContainer";
 import clsx from "clsx";
 import UserMenu from "../Components/Header/UserMenu";
 import catsSVG from "../Assets/bg-cats.svg";
+import { clearActiveChatWithCache } from "../Store/ActiveChat/thunks/clearActiveChat";
 
 const MainPage = () => {
   const dispatch = useAppDispatch();
@@ -18,7 +16,7 @@ const MainPage = () => {
 
   const clearActiveChatFunc = (e: KeyboardEvent) => {
     if (e.code === "Escape" && activeChatID) {
-      dispatch(clearActiveChat());
+      dispatch(clearActiveChatWithCache());
     }
   };
 

@@ -57,7 +57,9 @@ const chatsSlice = createSlice({
     clearChats: () => initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchChats.fulfilled, (_state, action) => action.payload);
+    builder.addCase(fetchChats.fulfilled, (state, { payload }) => {
+      return { ...state, ...payload };
+    });
   },
 });
 

@@ -1,19 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  addDoc,
-  arrayUnion,
-  collection,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { ChatDataDB, ChatTypes } from "../../../Types/chatTypes";
 import { db } from "../../../main";
+import { subOnChat } from "./subOnChat";
+import { cacheMessages } from "./cacheMessages";
 
 export const createChat = createAsyncThunk(
-  "chats/createChat",
-  async (members: string[]) => {
-    console.log("here");
-
+  "createChat",
+  async (members: string[], { dispatch }) => {
     const newChatDoc = await addDoc(collection(db, "chats"), {});
 
     const chatInitialData: ChatDataDB = {
@@ -33,6 +27,10 @@ export const createChat = createAsyncThunk(
         },
       });
     });
+    console.log("inCreateChat");
+
+    dispatch(cacheMessages());
+    dispatch(subOnChat({ action: "sub", chatID: newChatDoc.id }));
 
     return chatInitialData;
   }

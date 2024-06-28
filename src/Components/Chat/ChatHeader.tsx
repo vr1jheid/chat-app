@@ -4,11 +4,9 @@ import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
 import getUserFromDB from "../../Services/getUserFromDB";
 import { ChatTypes } from "../../Types/chatTypes";
-import {
-  clearActiveChat,
-  selectActiveChat,
-} from "../../Store/ActiveChat/activeChat";
+import { selectActiveChat } from "../../Store/ActiveChat/activeChat";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import { clearActiveChatWithCache } from "../../Store/ActiveChat/thunks/clearActiveChat";
 
 const ChatHeader = () => {
   const dispatch = useAppDispatch();
@@ -42,7 +40,7 @@ const ChatHeader = () => {
       <button
         className="p-2 rotate-90 rounded-full block lg:hidden"
         onClick={() => {
-          dispatch(clearActiveChat());
+          dispatch(clearActiveChatWithCache());
         }}
       >
         <ArrowDownwardIcon sx={{ width: 35, height: 35 }} />
