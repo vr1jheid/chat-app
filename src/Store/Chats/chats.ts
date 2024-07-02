@@ -58,9 +58,6 @@ const chatsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchChats.fulfilled, (state, action) => {
-      console.log(action.payload);
-      console.log({ ...action.payload });
-
       return { ...state, ...action.payload };
     });
   },

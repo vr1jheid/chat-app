@@ -12,10 +12,12 @@ export const selectChatFromObserved = createAsyncThunk(
     const { chats, activeChat } = getState() as RootState;
     if (id === activeChat.id) return;
 
+    dispatch(clearSizes());
     dispatch(cacheMessages());
     dispatch(setActive(chats[id]));
-    dispatch(subOnChat({ action: "sub", chatID: id }));
     dispatch(setInitialMessages(chats[id]));
-    dispatch(clearSizes());
+    console.log(activeChat.messages);
+
+    dispatch(subOnChat({ action: "sub", chatID: id }));
   }
 );

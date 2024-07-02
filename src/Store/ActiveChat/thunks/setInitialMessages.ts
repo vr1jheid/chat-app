@@ -8,12 +8,14 @@ import {
   limit,
   orderBy,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "../../../main";
 import { MessageData, MessageDataDB } from "../../../Types/messageTypes";
 import { convertServerTime } from "../../../utils/convertServerTime";
 import { enqueueSnackbar } from "notistack";
+import { RootState } from "../../store";
 
 const getQuery = async (chatData: ChatData) => {
   const ref = collection(db, `chats/${chatData.id}/messages`);
@@ -37,7 +39,8 @@ const getQuery = async (chatData: ChatData) => {
 
 export const setInitialMessages = createAsyncThunk(
   "activeChat/setInitialMessages",
-  async (chatData: ChatData, { rejectWithValue }) => {
+  async (chatData: ChatData, { getState, rejectWithValue }) => {
+    const { currentUser, activeChat } = getState() as RootState;
     const messages: MessageData[] = [];
 
     try {
@@ -55,6 +58,17 @@ export const setInitialMessages = createAsyncThunk(
       enqueueSnackbar("Error loading messages", { variant: "error" });
       return rejectWithValue(error);
     }
+
+    if (messages.length) {
+      try {
+        await updateDoc(doc(db, `users/${currentUser.email}`), {
+          [`userData.chats.${activeChat.id}.lastSeenMessage`]: messages[0].id,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     return [...messages, ...chatData.cachedMessages];
   }
 );
