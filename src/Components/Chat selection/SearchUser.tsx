@@ -23,7 +23,6 @@ const SearchUser = () => {
   ) => {
     if (!newValue) return;
     setSelectedUserEmail(newValue);
-
     dispatch(searchChatWithUser(newValue));
   };
 

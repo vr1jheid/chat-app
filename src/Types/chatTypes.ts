@@ -16,7 +16,7 @@ export interface ChatData extends Omit<ChatDataDB, "lastMessage"> {
   lastMessage?: MessageData;
   cachedMessages: MessageData[];
   hasNextPage: boolean;
-  dialogPartner?: MessageAuthor;
+  dialogPartner?: MessageAuthor | null;
 }
 
 export interface ActiveChat

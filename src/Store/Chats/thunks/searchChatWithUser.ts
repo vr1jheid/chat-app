@@ -7,7 +7,7 @@ import { selectChatFromObserved } from "./selectChatFromObserved";
 export const searchChatWithUser = createAsyncThunk(
   "searchChatWithUser",
   (dialogPartnerEmail: string, { getState, dispatch }) => {
-    const { chats, currentUser } = getState() as RootState;
+    const { chats } = getState() as RootState;
 
     const entry = Object.entries(chats).find(
       ([_, value]) =>
@@ -23,6 +23,6 @@ export const searchChatWithUser = createAsyncThunk(
     }
 
     /*  Иначе, создаем новый */
-    dispatch(createChat([currentUser.email, dialogPartnerEmail]));
+    dispatch(createChat([dialogPartnerEmail]));
   }
 );

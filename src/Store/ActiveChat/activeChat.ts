@@ -28,6 +28,7 @@ const activeChatSlice = createSlice({
     selectActiveChatMessagesCount: (state) => state.messages.length,
     selectActiveChatNextPageLoading: (state) => state.isNextPageLoading,
     selectActiveChatHasNextPage: (state) => state.hasNextPage,
+    selectActiveChatDialogPartner: (state) => state.dialogPartner,
   },
   reducers: {
     setActive: (_state, action: PayloadAction<ChatData>) => {
@@ -56,13 +57,7 @@ const activeChatSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(createChat.fulfilled, (_state, action) => {
-      return {
-        ...action.payload,
-        messages: [],
-        isLoading: false,
-        isNextPageLoading: false,
-        hasNextPage: false,
-      };
+      return action.payload;
     });
 
     builder.addCase(setInitialMessages.pending, (state) => {
@@ -107,6 +102,7 @@ export const {
   selectActiveChatMessagesCount,
   selectActiveChatHasNextPage,
   selectActiveChatNextPageLoading,
+  selectActiveChatDialogPartner,
 } = activeChatSlice.selectors;
 
 export default activeChatSlice.reducer;
