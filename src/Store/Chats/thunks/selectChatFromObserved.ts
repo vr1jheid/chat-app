@@ -16,8 +16,6 @@ export const selectChatFromObserved = createAsyncThunk(
     dispatch(cacheMessages());
     dispatch(setActive(chats[id]));
     dispatch(setInitialMessages(chats[id]));
-    console.log(activeChat.messages);
-
     dispatch(subOnChat({ action: "sub", chatID: id }));
   }
 );

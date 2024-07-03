@@ -1,9 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ChatData } from "../../../Types/chatTypes";
 import {
+  Timestamp,
   collection,
   doc,
-  getDoc,
   getDocs,
   limit,
   orderBy,
@@ -13,9 +13,9 @@ import {
 } from "firebase/firestore";
 import { db } from "../../../main";
 import { MessageData, MessageDataDB } from "../../../Types/messageTypes";
-import { convertServerTime } from "../../../utils/convertServerTime";
 import { enqueueSnackbar } from "notistack";
 import { RootState } from "../../store";
+import { dbMessageToLocal } from "../../../utils/dbMessageToLocal";
 
 const getQuery = async (chatData: ChatData) => {
   const ref = collection(db, `chats/${chatData.id}/messages`);
@@ -23,16 +23,13 @@ const getQuery = async (chatData: ChatData) => {
     return query(ref, orderBy("serverTime", "desc"), limit(30));
   }
 
-  const lastCachedMessageRef = doc(
-    db,
-    `chats/${chatData.id}/messages/${chatData.cachedMessages[0].id}`
-  );
-  const lastCachedMessageSnap = await getDoc(lastCachedMessageRef);
-  const lastCachedMessageDataDB = lastCachedMessageSnap.data() as MessageDataDB;
-
   return query(
     ref,
-    where("serverTime", ">", lastCachedMessageDataDB.serverTime),
+    where(
+      "serverTime",
+      ">",
+      Timestamp.fromMillis(chatData.cachedMessages[0].serverTime!)
+    ),
     orderBy("serverTime", "desc")
   );
 };
@@ -48,26 +45,29 @@ export const setInitialMessages = createAsyncThunk(
       const querySnapshot = await getDocs(query);
       querySnapshot.forEach((doc) => {
         const message = doc.data() as MessageDataDB;
-        const validMessage: MessageData = {
-          ...message,
-          serverTime: convertServerTime(message.serverTime),
-        };
-        messages.push(validMessage);
+        messages.push(dbMessageToLocal(message));
       });
     } catch (error) {
       enqueueSnackbar("Error loading messages", { variant: "error" });
       return rejectWithValue(error);
     }
 
-    if (messages.length) {
+    if (
+      messages.length &&
+      messages[0].id !== currentUser.chats[chatData.id].lastSeenMessage?.id
+    ) {
       try {
         await updateDoc(doc(db, `users/${currentUser.email}`), {
-          [`userData.chats.${activeChat.id}.lastSeenMessage`]: messages[0].id,
+          [`userData.chats.${activeChat.id}.lastSeenMessage.id`]:
+            messages[0].id,
+          [`userData.chats.${activeChat.id}.lastSeenMessage.timestampMillis`]:
+            messages[0].serverTime,
         });
       } catch (error) {
         console.log(error);
       }
     }
+    console.log(messages);
 
     return [...messages, ...chatData.cachedMessages];
   }

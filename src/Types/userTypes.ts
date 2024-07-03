@@ -1,7 +1,10 @@
 export interface UserChatParaps {
   [key: string]: {
     isMuted: boolean;
-    lastSeenMessage?: string;
+    lastSeenMessage?: {
+      id: string;
+      timestampMillis: number;
+    };
   };
 }
 

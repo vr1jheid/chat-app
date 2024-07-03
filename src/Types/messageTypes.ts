@@ -11,11 +11,6 @@ export interface Timestamp {
   seconds: number;
 }
 
-export interface MessageTime {
-  seconds: number | null;
-  nanoseconds: number | null;
-}
-
 export interface MessageDataDB {
   id: string;
   messageText: string;
@@ -24,5 +19,5 @@ export interface MessageDataDB {
 }
 
 export interface MessageData extends Omit<MessageDataDB, "serverTime"> {
-  serverTime: Timestamp | null;
+  serverTime: number | null;
 }

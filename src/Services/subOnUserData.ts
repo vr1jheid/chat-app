@@ -4,6 +4,7 @@ import { updateUserData } from "../Store/CurrentUser/currentUser";
 import { UserDataDB } from "../Types/userTypes";
 import { db } from "../main";
 import { fetchChats } from "../Store/Chats/thunks/fetchChats";
+import { dbMessageToLocal } from "../utils/dbMessageToLocal";
 
 export const subOnUserData = (currentUserEmail: string) => {
   const dispatch = store.dispatch;
@@ -20,11 +21,12 @@ export const subOnUserData = (currentUserEmail: string) => {
       if (!userDocData) return;
 
       const userData = userDocData.userData as UserDataDB;
+
+      console.log(userData);
+
       dispatch(updateUserData(userData));
 
       const currentChatsCount = Object.keys(store.getState().chats).length;
-
-      console.log(Object.keys(userData.chats).length, currentChatsCount);
 
       if (Object.keys(userData.chats).length !== currentChatsCount) {
         dispatch(fetchChats(Object.keys(userData.chats)));

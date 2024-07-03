@@ -7,8 +7,8 @@ export const isNextDay = (
   if (!message.serverTime || !nextMessage?.serverTime) {
     return false;
   }
-  const messageDate = new Date(message.serverTime?.seconds * 1000);
-  const nextMessageDate = new Date(nextMessage.serverTime.seconds * 1000);
+  const messageDate = new Date(message.serverTime);
+  const nextMessageDate = new Date(nextMessage.serverTime);
 
   return nextMessageDate.getDate() - messageDate.getDate() !== 0;
 };

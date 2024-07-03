@@ -25,7 +25,7 @@ export const ListItem = ({
     ) {
       return (
         <div className="text-white p-2 py-3 text-center rounded-full m-auto">
-          {getDateFromTimestamp(message.serverTime?.seconds!)}
+          {getDateFromTimestamp(message.serverTime!)}
         </div>
       );
     }

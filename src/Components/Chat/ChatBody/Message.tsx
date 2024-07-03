@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useRef, useContext, useEffect } from "react";
 import { setSize } from "../../../Store/MessagesSizes/messagesSizes";
 import { useAppDispatch, useAppSelector } from "../../../Store/hooks";
-import { MessageAuthor, MessageTime } from "../../../Types/messageTypes";
+import { MessageAuthor } from "../../../Types/messageTypes";
 import getTimeFromTimestamp from "../../../utils/getTimeFromTimestamp";
 import Loader from "../../Shared/Loader";
 import UserAvatar from "../../Shared/UserAvatar";
@@ -14,7 +14,7 @@ interface Props {
   isMyself: boolean;
   author: MessageAuthor;
   text: string;
-  timestamp: MessageTime | null;
+  timestamp: number | null;
   index: number;
 }
 
@@ -31,9 +31,9 @@ const Message = ({ id, author, text, timestamp, isMyself, index }: Props) => {
     listRef?.current?.resetAfterIndex(index);
   }, [screenSize]);
 
-  const time = timestamp?.seconds
-    ? getTimeFromTimestamp(timestamp.seconds)
-    : getTimeFromTimestamp(Date.now() / 1000);
+  const time = timestamp
+    ? getTimeFromTimestamp(timestamp)
+    : getTimeFromTimestamp(Date.now());
 
   return (
     <div

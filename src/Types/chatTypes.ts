@@ -17,10 +17,11 @@ export interface ChatData extends Omit<ChatDataDB, "lastMessage"> {
   cachedMessages: MessageData[];
   hasNextPage: boolean;
   dialogPartner?: MessageAuthor | null;
+  unseenMessages: number;
 }
 
 export interface ActiveChat
-  extends Omit<ChatData, "lastMessage" | "cachedMessages"> {
+  extends Omit<ChatData, "lastMessage" | "cachedMessages" | "unseenMessages"> {
   messages: MessageData[];
   isLoading: boolean;
   isNextPageLoading: boolean;

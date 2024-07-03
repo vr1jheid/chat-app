@@ -1,7 +1,5 @@
-/* Timestamp в с */
-
-const getTimeFromTimestamp = (timestamp: number) => {
-  const dateObj = new Date(timestamp * 1000);
+const getTimeFromTimestamp = (millis: number) => {
+  const dateObj = new Date(millis);
   const time = `${
     dateObj.getHours() < 10 ? "0" + dateObj.getHours() : dateObj.getHours()
   }:${

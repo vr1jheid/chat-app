@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { collection, where, getDocs, query, or } from "firebase/firestore";
-import { convertServerTime } from "../../../utils/convertServerTime";
 import { ChatData, ChatDataDB, ChatTypes } from "../../../Types/chatTypes";
 import { ChatsState } from "../chats";
 import { db } from "../../../main";
@@ -9,6 +8,8 @@ import { enqueueSnackbar } from "notistack";
 import { RootState } from "../../store";
 import getUserFromDB from "../../../Services/getUserFromDB";
 import { UserDataDB } from "../../../Types/userTypes";
+
+import { dbMessageToLocal } from "../../../utils/dbMessageToLocal";
 
 export const fetchChats = createAsyncThunk(
   "chats/fetchChats",
@@ -34,13 +35,11 @@ export const fetchChats = createAsyncThunk(
           type,
           hasNextPage: true,
           cachedMessages: [],
+          unseenMessages: 0,
         };
 
         if (lastMessage) {
-          chatData.lastMessage = {
-            ...lastMessage,
-            serverTime: convertServerTime(lastMessage.serverTime),
-          };
+          chatData.lastMessage = dbMessageToLocal(lastMessage);
         }
 
         if (chatData.type === ChatTypes.dialog) {

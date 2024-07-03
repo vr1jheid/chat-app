@@ -7,11 +7,11 @@ import {
   updateDoc,
   doc,
 } from "firebase/firestore";
-import { MessageDataDB, MessageData } from "../../../Types/messageTypes";
+import { MessageDataDB } from "../../../Types/messageTypes";
 import { db } from "../../../main";
-import { convertServerTime } from "../../../utils/convertServerTime";
 import { addMessage } from "../activeChat";
 import { RootState } from "../../store";
+import { dbMessageToLocal } from "../../../utils/dbMessageToLocal";
 
 interface SubProps {
   action: "sub";
@@ -40,16 +40,14 @@ const subOnChatWrapper = () => {
         for (let change of changes) {
           const message = change.doc.data() as MessageDataDB;
           if (change.type !== "modified" || !message.id) return;
+          dispatch(addMessage(dbMessageToLocal(message)));
 
-          const validMessage: MessageData = {
-            ...message,
-            serverTime: convertServerTime(message.serverTime),
-          };
-          dispatch(addMessage(validMessage));
-
+          if (querySnapshot.metadata.hasPendingWrites) return;
           try {
             await updateDoc(doc(db, `users/${currentUser.email}`), {
-              [`userData.chats.${props.chatID}.lastSeenMessage`]: message.id,
+              [`userData.chats.${props.chatID}.lastSeenMessage.id`]: message.id,
+              [`userData.chats.${props.chatID}.lastSeenMessage.timestampMillis`]:
+                message.serverTime.toMillis(),
             });
           } catch (error) {
             console.log(error);

@@ -28,7 +28,6 @@ const sendMessageToDB: SendMessageToDB = async (
     {}
   );
   const chatDocRef = doc(db, `chats/${chatID}`);
-  const serverTime = serverTimestamp() as Timestamp;
 
   const messageWithInfo: MessageDataDB = {
     id: messageDocRef.id,
@@ -38,7 +37,7 @@ const sendMessageToDB: SendMessageToDB = async (
       displayName: author.displayName,
       avatarURL: author.avatarURL,
     },
-    serverTime,
+    serverTime: serverTimestamp() as Timestamp,
   };
   try {
     await updateDoc(messageDocRef, { ...messageWithInfo });

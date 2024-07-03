@@ -1,10 +1,10 @@
 import { query, collection, where, onSnapshot } from "firebase/firestore";
 import { changeLastMessage } from "../Store/Chats/chats";
 import { ChatDataDB } from "../Types/chatTypes";
-import { convertServerTime } from "../utils/convertServerTime";
 import { db } from "../main";
 import store from "../Store/store";
 import { enqueueSnackbar } from "notistack";
+import { dbMessageToLocal } from "../utils/dbMessageToLocal";
 
 export const subOnLastMessageChange = (chatsIDs: string[]) => {
   const dispatch = store.dispatch;
@@ -31,10 +31,7 @@ export const subOnLastMessageChange = (chatsIDs: string[]) => {
       dispatch(
         changeLastMessage({
           chatID: changedChatData.id,
-          message: {
-            ...lastMessage,
-            serverTime: convertServerTime(lastMessage.serverTime),
-          },
+          message: dbMessageToLocal(lastMessage),
         })
       );
       const { activeChat, currentUser } = store.getState();

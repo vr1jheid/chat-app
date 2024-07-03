@@ -7,19 +7,24 @@ export interface ChatsState {
   [key: string]: ChatData;
 }
 
-export interface LastMessageWithChatID {
+export interface LastMessageSetter {
   chatID: string;
   message: MessageData;
 }
 
-export interface CachedMessagesWithChatID {
+export interface CachedMessagesSetter {
   chatID: string;
   messages: MessageData[];
 }
 
-export interface HasNextPageWithChatID {
+export interface HasNextPageSetter {
   chatID: string;
   hasNextPage: boolean;
+}
+
+export interface UnseenMessagesSetter {
+  chatID: string;
+  unseenMessages: number;
 }
 
 const initialState: ChatsState = {};
@@ -38,21 +43,24 @@ const chatsSlice = createSlice({
   reducers: {
     changeLastMessage: (
       state,
-      { payload }: PayloadAction<LastMessageWithChatID>
+      { payload }: PayloadAction<LastMessageSetter>
     ) => {
       state[payload.chatID].lastMessage = payload.message;
     },
     setCachedMessages: (
       state,
-      { payload }: PayloadAction<CachedMessagesWithChatID>
+      { payload }: PayloadAction<CachedMessagesSetter>
     ) => {
       state[payload.chatID].cachedMessages = payload.messages;
     },
-    setHasNextPage: (
-      state,
-      { payload }: PayloadAction<HasNextPageWithChatID>
-    ) => {
+    setHasNextPage: (state, { payload }: PayloadAction<HasNextPageSetter>) => {
       state[payload.chatID].hasNextPage = payload.hasNextPage;
+    },
+    setUnseenMessages: (
+      state,
+      { payload }: PayloadAction<UnseenMessagesSetter>
+    ) => {
+      state[payload.chatID].unseenMessages = payload.unseenMessages;
     },
     clearChats: () => initialState,
   },
@@ -81,6 +89,7 @@ export const {
   changeLastMessage,
   setCachedMessages,
   setHasNextPage,
+  setUnseenMessages,
 } = chatsSlice.actions;
 
 export default chatsSlice.reducer;
