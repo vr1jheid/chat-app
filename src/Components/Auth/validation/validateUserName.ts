@@ -4,7 +4,7 @@ export const validateUserName = async (userName: string) => {
   if (userName.length < 4) {
     return {
       isValid: false,
-      message: "User name must be at least 4 characterы",
+      message: "User name must be at least 4 characters",
     };
   }
 

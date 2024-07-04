@@ -60,6 +60,12 @@ const chatsSlice = createSlice({
     ) => {
       state[payload.chatID].unseenMessages = payload.unseenMessages;
     },
+    increaseUnseenMessages: (state, { payload }: PayloadAction<string>) => {
+      state[payload].unseenMessages = state[payload].unseenMessages + 1;
+    },
+    resetUnseenMessages: (state, { payload }: PayloadAction<string>) => {
+      state[payload].unseenMessages = 0;
+    },
     clearChats: () => initialState,
   },
   extraReducers: (builder) => {
@@ -73,12 +79,7 @@ export const { selectAllChats, selectChatsNum, selectChatsIDs } =
   chatsSlice.selectors;
 
 export const selectChatByID = createSelector(
-  [
-    // Pass input selectors with typed arguments
-    selectAllChats,
-    (_chats, id: string) => id,
-  ],
-  // Extracted values are passed to the result function for recalculation
+  [selectAllChats, (_chats, id: string) => id],
   (chats, id) => chats[id]
 );
 
@@ -88,6 +89,8 @@ export const {
   setCachedMessages,
   setHasNextPage,
   setUnseenMessages,
+  increaseUnseenMessages,
+  resetUnseenMessages,
 } = chatsSlice.actions;
 
 export default chatsSlice.reducer;

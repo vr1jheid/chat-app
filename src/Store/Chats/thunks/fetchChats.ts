@@ -11,6 +11,7 @@ import { UserDataDB } from "../../../Types/userTypes";
 
 import { dbMessageToLocal } from "../../../utils/dbMessageToLocal";
 import { getChatDataFromLS } from "../../../utils/getChatDataFromLS";
+import { getUnseenMessagesCount } from "../../../utils/getUnseenMessagesCount";
 
 export const fetchChats = createAsyncThunk(
   "chats/fetchChats",
@@ -30,13 +31,16 @@ export const fetchChats = createAsyncThunk(
         /* Фетчим только новые чаты */
         if (chats[id]) continue;
 
+        const unseenMessages = await getUnseenMessagesCount(id);
+        console.log(unseenMessages);
+
         const chatData: ChatData = {
           id: id,
           members,
           type,
           hasNextPage: getChatDataFromLS(id)?.hasNextPage ?? true,
           cachedMessages: getChatDataFromLS(id)?.cachedMessages ?? [],
-          unseenMessages: 0,
+          unseenMessages,
         };
 
         if (lastMessage) {
@@ -68,7 +72,6 @@ export const fetchChats = createAsyncThunk(
     }
 
     subOnLastMessageChange(Object.keys(chatsFromDB));
-    console.log(chatsFromDB);
 
     return chatsFromDB;
   }

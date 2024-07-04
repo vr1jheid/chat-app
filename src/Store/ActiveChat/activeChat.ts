@@ -38,7 +38,6 @@ const activeChatSlice = createSlice({
         messages: [],
         isLoading: false,
         isNextPageLoading: false,
-        hasNextPage: true,
       };
     },
     addMessage: (state, action: PayloadAction<MessageData>) => {

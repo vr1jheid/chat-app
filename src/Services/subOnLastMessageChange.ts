@@ -1,5 +1,8 @@
 import { query, collection, where, onSnapshot } from "firebase/firestore";
-import { changeLastMessage } from "../Store/Chats/chats";
+import {
+  changeLastMessage,
+  increaseUnseenMessages,
+} from "../Store/Chats/chats";
 import { ChatDataDB } from "../Types/chatTypes";
 import { db } from "../main";
 import store from "../Store/store";
@@ -46,6 +49,9 @@ export const subOnLastMessageChange = (chatsIDs: string[]) => {
           messageAuthor: lastMessage.author,
           chatID: changedChatData.id,
         });
+      }
+      if (activeChat.id !== changedChatData.id) {
+        dispatch(increaseUnseenMessages(changedChatData.id));
       }
     });
   });

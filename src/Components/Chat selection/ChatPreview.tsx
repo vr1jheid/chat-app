@@ -9,6 +9,7 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import { selectChatParams } from "../../Store/CurrentUser/currentUser";
 import { changeChatVolume } from "../../Store/CurrentUser/thunks/changeChatVolume";
+import { Badge } from "@mui/material";
 
 interface Props {
   chatData: ChatData;
@@ -44,7 +45,15 @@ const ChatPreview = ({ chatData, clickAction }: Props) => {
       )}
       onClick={clickAction}
     >
-      <UserAvatar alt={chatName} src={chatAvatar} size={55} />
+      <Badge
+        badgeContent={chatData.unseenMessages}
+        color="secondary"
+        max={99}
+        overlap="circular"
+      >
+        <UserAvatar alt={chatName} src={chatAvatar} size={55} />
+      </Badge>
+
       <div className="flex flex-col gap-2 grow max-w-[calc(100%-80px)]">
         <div className="flex justify-between gap-4">
           <div className="text-2xl max-w-[80%] truncate">{chatName}</div>

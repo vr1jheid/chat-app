@@ -72,8 +72,8 @@ const LogInForm = () => {
         </Button>
         <div className="flex flex-col mt-5 gap-2">
           <div className=" text-gray-extra-light">or you can sign in with</div>
-          <ul>
-            <li>
+          <ul className="flex justify-center">
+            <li className="w-fit">
               <IconButton onClick={googleAuthenticate}>
                 <GoogleIcon />
               </IconButton>
