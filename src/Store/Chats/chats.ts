@@ -1,6 +1,6 @@
 import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
 import { fetchChats } from "./thunks/fetchChats";
-import { ChatData } from "../../Types/chatTypes";
+import { ActiveChat, ChatData } from "../../Types/chatTypes";
 import { MessageData } from "../../Types/messageTypes";
 
 export interface ChatsState {
@@ -12,14 +12,12 @@ export interface LastMessageSetter {
   message: MessageData;
 }
 
-export interface CachedMessagesSetter {
+export interface CachedMessagesSetter extends Pick<ActiveChat, "messages"> {
   chatID: string;
-  messages: MessageData[];
 }
 
-export interface HasNextPageSetter {
+export interface HasNextPageSetter extends Pick<ActiveChat, "hasNextPage"> {
   chatID: string;
-  hasNextPage: boolean;
 }
 
 export interface UnseenMessagesSetter {

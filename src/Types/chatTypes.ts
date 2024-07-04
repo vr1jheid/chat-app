@@ -26,3 +26,5 @@ export interface ActiveChat
   isLoading: boolean;
   isNextPageLoading: boolean;
 }
+
+export type ChatLocalCache = Pick<ChatData, "cachedMessages" | "hasNextPage">;

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, where, getDocs, query, or } from "firebase/firestore";
+import { collection, where, getDocs, query } from "firebase/firestore";
 import { ChatData, ChatDataDB, ChatTypes } from "../../../Types/chatTypes";
 import { ChatsState } from "../chats";
 import { db } from "../../../main";
@@ -10,6 +10,7 @@ import getUserFromDB from "../../../Services/getUserFromDB";
 import { UserDataDB } from "../../../Types/userTypes";
 
 import { dbMessageToLocal } from "../../../utils/dbMessageToLocal";
+import { getChatDataFromLS } from "../../../utils/getChatDataFromLS";
 
 export const fetchChats = createAsyncThunk(
   "chats/fetchChats",
@@ -17,7 +18,7 @@ export const fetchChats = createAsyncThunk(
     const { chats, currentUser } = getState() as RootState;
     const q = query(
       collection(db, "chats"),
-      or(where("id", "in", ["mainChat", ...chatsIDs]))
+      where("id", "in", ["mainChat", ...chatsIDs])
     );
 
     const chatsFromDB: ChatsState = {};
@@ -27,14 +28,14 @@ export const fetchChats = createAsyncThunk(
         const docData = snapshotDoc.data() as ChatDataDB;
         const { members, lastMessage, type, id } = docData;
         /* Фетчим только новые чаты */
-        if (Object.keys(chats).includes(id)) continue;
+        if (chats[id]) continue;
 
         const chatData: ChatData = {
-          id: snapshotDoc.id,
+          id: id,
           members,
           type,
-          hasNextPage: true,
-          cachedMessages: [],
+          hasNextPage: getChatDataFromLS(id)?.hasNextPage ?? true,
+          cachedMessages: getChatDataFromLS(id)?.cachedMessages ?? [],
           unseenMessages: 0,
         };
 
@@ -67,6 +68,8 @@ export const fetchChats = createAsyncThunk(
     }
 
     subOnLastMessageChange(Object.keys(chatsFromDB));
+    console.log(chatsFromDB);
+
     return chatsFromDB;
   }
 );
