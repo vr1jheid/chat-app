@@ -21,7 +21,7 @@ export const ChatBody = () => {
   const [showToBottomButton, setShowToBottomButton] = useState(false);
 
   const currentUserEmail = useAppSelector(selectCurrentUserEmail);
-  const { messages, isLoading, isNextPageLoading, hasNextPage } =
+  const { messages, type, isLoading, isNextPageLoading, hasNextPage } =
     useAppSelector(selectActiveChat);
   const sizes = useAppSelector(selectMessagesSizes);
   const { setListRef } = useContext(ChatContext);
@@ -125,7 +125,7 @@ export const ChatBody = () => {
                   outerRef={outerListRef}
                   height={height}
                   width={width}
-                  itemData={messages}
+                  itemData={{ messages, type }}
                   initialScrollOffset={0}
                   onItemsRendered={onItemsRendered}
                   itemCount={

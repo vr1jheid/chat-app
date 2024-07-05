@@ -1,12 +1,14 @@
-import { IconButton, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useState } from "react";
 import { selectActiveChatID } from "../../Store/ActiveChat/activeChat";
 import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
 import { useAppSelector } from "../../Store/hooks";
 import sendMessageToDB from "../../Services/sendMessageToDB";
+import { selectWindowSize } from "../../Store/WindowSize/windowSize";
 
 const SendMessageForm = () => {
+  const { width } = useAppSelector(selectWindowSize);
   const [message, setMessage] = useState("");
   const activeChatID = useAppSelector(selectActiveChatID);
   const currentUser = useAppSelector(selectCurrentUser);
@@ -20,21 +22,26 @@ const SendMessageForm = () => {
     }
   };
 
+  const buttonSize = width < 1024 ? 25 : 30;
+
   return (
-    <form className=" flex w-full pl-2 mt-6 lg:w-[65%] lg:gap-2 lg:pl-0">
+    <form className="flex w-full mt-1 pl-1 items-center lg:mt-6 lg:w-[65%] lg:gap-2 pb-2 ">
       <TextField
-        autoFocus
+        className="h-fit "
+        autoFocus={width >= 1024}
+        size={width < 1024 ? "small" : "medium"}
         onKeyDown={(e) => {
           if (e.key !== "Enter") return;
           e.preventDefault();
           sendMessage();
         }}
         sx={{
-          background: "#212121",
-          borderRadius: "0.25rem",
           "& .MuiInputBase-input": {
             color: "white",
             fontSize: 20,
+          },
+          "& .MuiInputBase-root": {
+            backgroundColor: "#212121",
           },
           "& .MuiOutlinedInput-notchedOutline": {
             border: "none",
@@ -47,11 +54,14 @@ const SendMessageForm = () => {
           setMessage(e.target.value);
         }}
       ></TextField>
-      <IconButton onClick={sendMessage} aria-label="send">
-        <div className=" bg-gray-light p-2 h-fit w-fit text-gray-extra-light rounded-full  hover:text-white hover:bg-purple-main">
-          <SendIcon sx={{ width: 30, height: 30 }} />
-        </div>
-      </IconButton>
+      <button
+        type="button"
+        onClick={sendMessage}
+        aria-label="send"
+        className="flex items-center mx-1 bg-gray-light p-1 lg:p-2 h-fit w-fit text-gray-extra-light rounded-full  hover:text-white hover:bg-purple-main"
+      >
+        <SendIcon sx={{ width: buttonSize, height: buttonSize }} />
+      </button>
     </form>
   );
 };

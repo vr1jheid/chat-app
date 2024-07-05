@@ -8,6 +8,7 @@ import Loader from "../../Shared/Loader";
 import UserAvatar from "../../Shared/UserAvatar";
 import { ChatContext } from "../ChatContextContainer";
 import { selectWindowSize } from "../../../Store/WindowSize/windowSize";
+import { ChatTypes } from "../../../Types/chatTypes";
 
 interface Props {
   id: string;
@@ -16,9 +17,18 @@ interface Props {
   text: string;
   timestamp: number | null;
   index: number;
+  chatType: ChatTypes;
 }
 
-const Message = ({ id, author, text, timestamp, isMyself, index }: Props) => {
+const Message = ({
+  id,
+  author,
+  text,
+  timestamp,
+  isMyself,
+  index,
+  chatType,
+}: Props) => {
   const dispatch = useAppDispatch();
   const messageRoot = useRef<HTMLDivElement | null>(null);
   const { listRef } = useContext(ChatContext);
@@ -35,6 +45,8 @@ const Message = ({ id, author, text, timestamp, isMyself, index }: Props) => {
     ? getTimeFromTimestamp(timestamp)
     : getTimeFromTimestamp(Date.now());
 
+  const isGroup = chatType === ChatTypes.group;
+
   return (
     <div
       ref={messageRoot}
@@ -45,7 +57,7 @@ const Message = ({ id, author, text, timestamp, isMyself, index }: Props) => {
       style={{ direction: "ltr" }}
     >
       <div className="flex items-end w-fit max-w-[80%] gap-2">
-        {!isMyself && (
+        {!isMyself && isGroup && (
           <UserAvatar
             alt={author.displayName ?? author.email}
             src={author.avatarURL}
@@ -54,25 +66,25 @@ const Message = ({ id, author, text, timestamp, isMyself, index }: Props) => {
 
         <div
           className={clsx(
-            "rounded-2xl text-white flex flex-col gap-3 max-w-full bg-gray-light p-2 px-4 relative",
+            "rounded-2xl text-white flex flex-col gap-1 lg:gap-3 max-w-full bg-gray-light p-2 lg:px-4 relative",
             {
               "bg-purple-main": isMyself,
             }
           )}
         >
           {!timestamp && <Loader />}
-          {!isMyself && (
+          {!isMyself && isGroup && (
             <div className="text-purple-main text-left">
               {author.displayName ?? author.email}
             </div>
           )}
 
           <div className="flex flex-row-reverse  max-w-full gap-3 justify-between">
-            <div className="text-xl break-words w-[80%] grow text-left">
+            <div className=" text-base lg:text-xl break-words w-[80%] grow text-left">
               {text}
               <span
                 className={clsx(
-                  " inline-block ml-3 text-gray-extra-light text-s float-right ",
+                  " inline-block ml-3 text-gray-extra-light lg:text-sm text-xs  float-right translate-y-1/2",
                   {
                     "text-purple-extra-light": isMyself,
                   }

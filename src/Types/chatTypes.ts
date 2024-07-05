@@ -9,7 +9,7 @@ export interface ChatDataDB {
   id: string;
   members: string[];
   lastMessage?: MessageDataDB;
-  type: ChatTypes | null;
+  type: ChatTypes;
 }
 
 export interface ChatData extends Omit<ChatDataDB, "lastMessage"> {

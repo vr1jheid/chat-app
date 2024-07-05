@@ -6,12 +6,19 @@ import getDateFromTimestamp from "../../../utils/getDateFromTimestamp";
 import { isNextDay } from "../../../utils/isNextDay";
 import { MessageData } from "../../../Types/messageTypes";
 import { ListChildComponentProps } from "react-window";
+import { ChatTypes } from "../../../Types/chatTypes";
+
+interface Props {
+  messages: MessageData[];
+  type: ChatTypes;
+}
 
 export const ListItem = ({
   index,
   style,
-  data: messages,
-}: ListChildComponentProps<MessageData[]>) => {
+  data,
+}: ListChildComponentProps<Props>) => {
+  const { messages, type } = data;
   const currentUserEmail = useAppSelector(selectCurrentUserEmail);
   const message = messages[index];
   const isMyself = currentUserEmail === message?.author.email;
@@ -43,6 +50,7 @@ export const ListItem = ({
             author={message.author}
             text={message.messageText}
             timestamp={message.serverTime}
+            chatType={type}
           />
         </>
       ) : (
