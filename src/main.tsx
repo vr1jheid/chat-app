@@ -20,7 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <ThemeProvider theme={theme}>
       <SnackbarProvider
         dense
-        maxSnack={3}
+        maxSnack={window.innerWidth > 1024 ? 3 : 1}
         anchorOrigin={{
           vertical: "top",
           horizontal: "right",

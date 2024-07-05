@@ -2,10 +2,12 @@ import { closeSnackbar } from "notistack";
 import { CSSProperties, forwardRef } from "react";
 import UserAvatar from "../Shared/UserAvatar";
 import CloseIcon from "@mui/icons-material/Close";
-import { useAppDispatch } from "../../Store/hooks";
+import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 import { selectChatFromObserved } from "../../Store/Chats/thunks/selectChatFromObserved";
 import { MessageAuthor } from "../../Types/messageTypes";
 import clsx from "clsx";
+import { selectWindowSize } from "../../Store/WindowSize/windowSize";
+import { useSwipeable } from "react-swipeable";
 
 interface Props {
   style: CSSProperties;
@@ -17,12 +19,11 @@ interface Props {
 }
 
 export const MessageNotification = forwardRef<HTMLDivElement, Props>(
-  (
-    { style, message, messageAuthor, id: notiID, chatID, type = "standard" },
-    ref
-  ) => {
+  ({ style, message, messageAuthor, id: notiID, chatID }, ref) => {
     const dispatch = useAppDispatch();
+    const { width } = useAppSelector(selectWindowSize);
     const { avatarURL, displayName, email } = messageAuthor;
+    console.log(ref);
 
     const closeNoti = () => {
       closeSnackbar(notiID);
@@ -32,15 +33,22 @@ export const MessageNotification = forwardRef<HTMLDivElement, Props>(
       closeSnackbar(notiID);
     };
 
-    const mobile = type === "mobile";
-
+    const { ref: swipeRef, ...swipeHandler } = useSwipeable({
+      onSwipedUp: closeNoti,
+    });
+    const mobile = width < 1024;
     return (
       <div
         className={clsx(
           "group flex relative z-[-10] items-center gap-3 bg-gray-dark text-white p-2 rounded-lg h-20 lg:w-80 lg:h-28"
         )}
         style={style}
-        ref={ref}
+        {...swipeHandler}
+        ref={(node) => {
+          if (typeof ref !== "function") return;
+          swipeRef(node);
+          ref(node);
+        }}
         onClick={!mobile ? () => {} : toChat}
       >
         <UserAvatar

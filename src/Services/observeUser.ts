@@ -27,7 +27,7 @@ export const observeUser = async () => {
       activeChat && dispatch(subOnChat({ action: "unsub" }));
       dispatch(clearAllUsersList());
       unSubOnUserData && unSubOnUserData();
-
+      localStorage.clear();
       return;
     }
 

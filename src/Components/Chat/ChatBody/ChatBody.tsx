@@ -13,6 +13,8 @@ import { selectCurrentUserEmail } from "../../../Store/CurrentUser/currentUser";
 import { useReverseScroll } from "../../../Hooks/useReverseScroll";
 import { ListItem } from "./ListItem";
 import { isNextDay } from "../../../utils/isNextDay";
+import { useSwipeable } from "react-swipeable";
+import { clearActiveChatWithCache } from "../../../Store/ActiveChat/thunks/clearActiveChatWithCache";
 
 export const ChatBody = () => {
   const dispatch = useAppDispatch();
@@ -76,9 +78,20 @@ export const ChatBody = () => {
       : setShowToBottomButton(false);
   };
 
+  const { ref: swiperRef, ...swipeHandler } = useSwipeable({
+    onSwipedRight: ({ event }) => {
+      event.stopPropagation();
+      dispatch(clearActiveChatWithCache());
+    },
+  });
+
   return (
     <div
-      ref={listContainerRef}
+      {...swipeHandler}
+      ref={(node) => {
+        swiperRef(node);
+        listContainerRef.current = node;
+      }}
       className="w-full h-full pb-3 px-2 rotate-180 relative"
     >
       {isLoading && <Loader color="white" />}

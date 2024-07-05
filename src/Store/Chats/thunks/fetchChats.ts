@@ -32,8 +32,6 @@ export const fetchChats = createAsyncThunk(
         if (chats[id]) continue;
 
         const unseenMessages = await getUnseenMessagesCount(id);
-        console.log(unseenMessages);
-
         const chatData: ChatData = {
           id: id,
           members,

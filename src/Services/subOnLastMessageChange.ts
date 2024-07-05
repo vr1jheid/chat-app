@@ -45,7 +45,10 @@ export const subOnLastMessageChange = (chatsIDs: string[]) => {
       ) {
         enqueueSnackbar(lastMessage.messageText, {
           variant: "messageNotification",
-          anchorOrigin: { vertical: "bottom", horizontal: "left" },
+          anchorOrigin: {
+            vertical: window.innerWidth > 1024 ? "bottom" : "top",
+            horizontal: window.innerWidth > 1024 ? "left" : "center",
+          },
           messageAuthor: lastMessage.author,
           chatID: changedChatData.id,
         });
