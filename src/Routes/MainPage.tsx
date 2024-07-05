@@ -28,7 +28,7 @@ const MainPage = () => {
   }, [activeChatID]);
 
   return (
-    <div className="grow h-dvh flex w-screen overflow-hidden">
+    <div className="grow max-h-dvh h-dvh flex w-screen overflow-hidden">
       <aside
         className={clsx(
           "absolute z-10 h-full w-full p-3 pl-0 flex flex-col gap-5 bg-gray-light border-r-2 border-solid ease-in transition-all  border-gray-very-light lg:static lg:translate-x-0 lg:w-96 xl:w-[25%]",

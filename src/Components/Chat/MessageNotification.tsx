@@ -35,6 +35,7 @@ export const MessageNotification = forwardRef<HTMLDivElement, Props>(
 
     const { ref: swipeRef, ...swipeHandler } = useSwipeable({
       onSwipedUp: closeNoti,
+      preventScrollOnSwipe: true,
     });
     const mobile = width < 1024;
     return (

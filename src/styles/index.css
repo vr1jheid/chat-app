@@ -11,6 +11,11 @@ html {
   font-family: "Roboto", sans-serif !important;
 }
 
+body {
+  --tw-bg-opacity: 1;
+  background-color: rgb(33 33 33 / var(--tw-bg-opacity));
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 7px;
