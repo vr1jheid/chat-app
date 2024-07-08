@@ -21,7 +21,7 @@ export const ChatBody = () => {
   const [showToBottomButton, setShowToBottomButton] = useState(false);
 
   const currentUserEmail = useAppSelector(selectCurrentUserEmail);
-  const { messages, type, isLoading, isNextPageLoading, hasNextPage } =
+  const { id, messages, type, isLoading, isNextPageLoading, hasNextPage } =
     useAppSelector(selectActiveChat);
   const sizes = useAppSelector(selectMessagesSizes);
   const { setListRef } = useContext(ChatContext);
@@ -55,6 +55,9 @@ export const ChatBody = () => {
     }
     const marginBot = 10;
     const dateBlockSize = 40;
+    if (index === 0) {
+      console.log(isNextDay(messages[index], messages[index + 1]));
+    }
     if (
       isNextDay(messages[index], messages[index + 1]) ||
       index === messages.length - 1
@@ -125,7 +128,7 @@ export const ChatBody = () => {
                   outerRef={outerListRef}
                   height={height}
                   width={width}
-                  itemData={{ messages, type }}
+                  itemData={{ messages, type, id }}
                   initialScrollOffset={0}
                   onItemsRendered={onItemsRendered}
                   itemCount={

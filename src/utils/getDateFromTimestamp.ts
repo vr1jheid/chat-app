@@ -1,7 +1,5 @@
-/* Timestamp в с */
-
 const getDateFromTimestamp = (timestamp: number) => {
-  const dateObj = new Date(timestamp * 1000);
+  const dateObj = new Date(timestamp);
   const date =
     dateObj.getDate() < 10 ? "0" + dateObj.getDate() : dateObj.getDate();
   const month =

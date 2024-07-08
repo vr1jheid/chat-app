@@ -11,6 +11,7 @@ import { ChatTypes } from "../../../Types/chatTypes";
 interface Props {
   messages: MessageData[];
   type: ChatTypes;
+  id: string;
 }
 
 export const ListItem = ({
@@ -32,7 +33,7 @@ export const ListItem = ({
     ) {
       return (
         <div className="text-white p-2 py-3 text-center rounded-full m-auto">
-          {getDateFromTimestamp(message.serverTime!)}
+          {getDateFromTimestamp(message.serverTime ?? Date.now())}
         </div>
       );
     }
@@ -51,6 +52,9 @@ export const ListItem = ({
             text={message.messageText}
             timestamp={message.serverTime}
             chatType={type}
+            deleteMessageFunc={() => {
+              /* deleteMessage(id, message.id); */
+            }}
           />
         </>
       ) : (

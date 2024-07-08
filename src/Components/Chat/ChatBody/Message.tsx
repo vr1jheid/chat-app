@@ -18,6 +18,7 @@ interface Props {
   timestamp: number | null;
   index: number;
   chatType: ChatTypes;
+  deleteMessageFunc: () => void;
 }
 
 const Message = ({
@@ -28,6 +29,7 @@ const Message = ({
   isMyself,
   index,
   chatType,
+  deleteMessageFunc,
 }: Props) => {
   const dispatch = useAppDispatch();
   const messageRoot = useRef<HTMLDivElement | null>(null);
@@ -56,7 +58,10 @@ const Message = ({
       })}
       style={{ direction: "ltr" }}
     >
-      <div className="flex items-end w-fit max-w-[80%] gap-2">
+      <div
+        className="flex items-end w-fit max-w-[80%] gap-2"
+        onClick={deleteMessageFunc}
+      >
         {!isMyself && isGroup && (
           <UserAvatar
             alt={author.displayName ?? author.email}
