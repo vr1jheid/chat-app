@@ -16,14 +16,6 @@ const AuthPage = () => {
     }
   }, [uid]);
 
-  if (isLoaded === false) {
-    return (
-      <div>
-        <Loader color="black" />
-      </div>
-    );
-  }
-
   const handleActionChanger = (
     _e: React.MouseEvent<HTMLElement, MouseEvent>,
     newValue: string
@@ -32,10 +24,18 @@ const AuthPage = () => {
     navigate(`${newValue}`);
   };
 
+  if (isLoaded === false) {
+    return (
+      <div>
+        <Loader color="#766ac8" size={70} />
+      </div>
+    );
+  }
+
   return (
     <div className="h-dvh flex lg:block items-center">
-      <div className="mx-auto lg:mt-[8%] flex flex-col items-center justify-center bg-white w-screen h-fit lg:w-3/5 2xl:w-1/3  md:w-2/3 rounded-lg">
-        <header className=" m-auto mb-8 mt-8 w-fit ">
+      <div className="mx-auto py-5 lg:mt-[8%] flex flex-col items-center justify-center bg-white w-screen h-fit lg:w-3/5 2xl:w-1/3  md:w-2/3 rounded-lg">
+        <header className="m-auto mb-8 w-fit">
           <Typography variant="h2" textAlign="center">
             Fire Chat
           </Typography>
@@ -55,11 +55,10 @@ const AuthPage = () => {
               Register
             </ToggleButton>
           </ToggleButtonGroup>
-          <div className="w-full">
-            <form className=" flex flex-col w-full gap-7">
-              <Outlet />
-            </form>
-          </div>
+
+          <form className="flex flex-col w-full gap-7">
+            <Outlet />
+          </form>
         </div>
       </div>
     </div>

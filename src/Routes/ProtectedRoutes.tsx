@@ -11,7 +11,7 @@ const ProtectedRoutes = () => {
     if (!isLoaded) {
       return (
         <div className="relative w-full h-dvh">
-          <Loader color="#0c0206" size={100} />
+          <Loader color="#766ac8" size={70} />
         </div>
       );
     }

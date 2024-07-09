@@ -51,6 +51,7 @@ const Message = ({
 
   return (
     <div
+      id={id}
       ref={messageRoot}
       className={clsx("flex grow max-w-full", {
         "justify-end": isMyself,
@@ -77,7 +78,9 @@ const Message = ({
             }
           )}
         >
-          {!timestamp && <Loader />}
+          <div className="absolute bottom-0 -left-2 h-10 w-10 -translate-x-full">
+            {!timestamp && <Loader />}
+          </div>
           {!isMyself && isGroup && (
             <div className="text-purple-main text-left">
               {author.displayName ?? author.email}

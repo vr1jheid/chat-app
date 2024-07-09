@@ -17,6 +17,9 @@ import { useSwipeable } from "react-swipeable";
 import { clearActiveChatWithCache } from "../../../Store/ActiveChat/thunks/clearActiveChatWithCache";
 
 export const ChatBody = () => {
+  const MARGIN_BOT = 10;
+  const DATE_BLOCK_SIZE = 40;
+
   const dispatch = useAppDispatch();
   const [showToBottomButton, setShowToBottomButton] = useState(false);
 
@@ -53,18 +56,13 @@ export const ChatBody = () => {
     if (!sizes[messages[index]?.id]) {
       return 50;
     }
-    const marginBot = 10;
-    const dateBlockSize = 40;
-    if (index === 0) {
-      console.log(isNextDay(messages[index], messages[index + 1]));
-    }
     if (
       isNextDay(messages[index], messages[index + 1]) ||
       index === messages.length - 1
     ) {
-      return sizes[messages[index]?.id] + marginBot + dateBlockSize;
+      return sizes[messages[index]?.id] + MARGIN_BOT + DATE_BLOCK_SIZE;
     }
-    return sizes[messages[index]?.id] + marginBot;
+    return sizes[messages[index]?.id] + MARGIN_BOT;
   };
 
   const isItemLoaded = (index: number) => index < messages.length;
@@ -97,7 +95,7 @@ export const ChatBody = () => {
       }}
       className="w-full h-full pb-3 px-2 rotate-180 relative"
     >
-      {isLoading && <Loader color="white" />}
+      {isLoading && <Loader color="#766ac8" />}
       {showToBottomButton && (
         <button
           className="p-1 rotate-180 absolute z-10 left-6 top-6 rounded-full bg-gray-extra-light opacity-50 hover:opacity-100"
