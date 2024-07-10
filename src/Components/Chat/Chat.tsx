@@ -1,8 +1,8 @@
-import SendMessageForm from "./MessageInput";
-import ChatHeader from "./ChatHeader";
+import { SendMessageForm } from "./MessageInput";
+import { ChatHeader } from "./ChatHeader";
 import { ChatBody } from "./ChatBody/ChatBody";
 
-const Chat = () => {
+export const Chat = () => {
   return (
     <div className="lg:pb-5 max-h-full h-full relative grow mx-auto bg-transparent flex items-center flex-col overflow-y-auto">
       <ChatHeader />
@@ -11,5 +11,3 @@ const Chat = () => {
     </div>
   );
 };
-
-export default Chat;

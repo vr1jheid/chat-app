@@ -4,8 +4,8 @@ import { setSize } from "../../../Store/MessagesSizes/messagesSizes";
 import { useAppDispatch, useAppSelector } from "../../../Store/hooks";
 import { MessageAuthor } from "../../../Types/messageTypes";
 import getTimeFromTimestamp from "../../../utils/getTimeFromTimestamp";
-import Loader from "../../Shared/Loader";
-import UserAvatar from "../../Shared/UserAvatar";
+import { Loader } from "../../Shared/Loader";
+import { UserAvatar } from "../../Shared/UserAvatar";
 import { ChatContext } from "../ChatContextContainer";
 import { selectWindowSize } from "../../../Store/WindowSize/windowSize";
 import { ChatTypes } from "../../../Types/chatTypes";
@@ -21,7 +21,7 @@ interface Props {
   deleteMessageFunc: () => void;
 }
 
-const Message = ({
+export const Message = ({
   id,
   author,
   text,
@@ -107,5 +107,3 @@ const Message = ({
     </div>
   );
 };
-
-export default Message;

@@ -1,5 +1,5 @@
 import { memo } from "react";
-import UserAvatar from "../Shared/UserAvatar";
+import { UserAvatar } from "../Shared/UserAvatar";
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 import {
   selectActiveChatDialogPartner,
@@ -9,7 +9,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { clearActiveChatWithCache } from "../../Store/ActiveChat/thunks/clearActiveChatWithCache";
 import { selectWindowSize } from "../../Store/WindowSize/windowSize";
 
-const ChatHeader = () => {
+export const ChatHeader = memo(() => {
   const dispatch = useAppDispatch();
   const activeChatID = useAppSelector(selectActiveChatID);
   const dialogPartner = useAppSelector(selectActiveChatDialogPartner);
@@ -36,6 +36,4 @@ const ChatHeader = () => {
       </div>
     </header>
   );
-};
-
-export default memo(ChatHeader);
+});

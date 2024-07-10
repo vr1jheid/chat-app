@@ -1,16 +1,16 @@
-import ChatsList from "../Components/Chat selection/ChatsList";
+import { ChatsList } from "../Components/Chat selection/ChatsList";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../Store/hooks";
-import SearchUser from "../Components/Chat selection/SearchUser";
-import Chat from "../Components/Chat/Chat";
+import { SearchUser } from "../Components/Chat selection/SearchUser";
+import { Chat } from "../Components/Chat/Chat";
 import { selectActiveChatID } from "../Store/ActiveChat/activeChat";
-import ChatContextContainer from "../Components/Chat/ChatContextContainer";
+import { ChatContextContainer } from "../Components/Chat/ChatContextContainer";
 import clsx from "clsx";
 import UserMenu from "../Components/Header/UserMenu";
 import catsSVG from "../Assets/bg-cats.svg";
 import { clearActiveChatWithCache } from "../Store/ActiveChat/thunks/clearActiveChatWithCache";
 
-const MainPage = () => {
+export const MainPage = () => {
   const dispatch = useAppDispatch();
   const activeChatID = useAppSelector(selectActiveChatID);
 
@@ -57,5 +57,3 @@ const MainPage = () => {
     </div>
   );
 };
-
-export default MainPage;

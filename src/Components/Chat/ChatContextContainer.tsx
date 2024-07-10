@@ -13,7 +13,7 @@ export const ChatContext = createContext<IMessagesListContext>({
   setListRef: () => {},
 });
 
-const ChatContextContainer = ({ children }: { children: ReactNode }) => {
+export const ChatContextContainer = ({ children }: { children: ReactNode }) => {
   const [listRef, setListRef] =
     useState<React.MutableRefObject<VariableSizeList<any> | null> | null>(null);
   return (
@@ -27,5 +27,3 @@ const ChatContextContainer = ({ children }: { children: ReactNode }) => {
     </ChatContext.Provider>
   );
 };
-
-export default ChatContextContainer;

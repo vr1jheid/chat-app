@@ -6,11 +6,11 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { useState } from "react";
-import PasswordInput from "./PasswordInput";
+import { PasswordInput } from "./PasswordInput";
 import { auth } from "../../main";
 import { enqueueSnackbar } from "notistack";
 
-const LogInForm = () => {
+export const LogInForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -84,5 +84,3 @@ const LogInForm = () => {
     </>
   );
 };
-
-export default LogInForm;

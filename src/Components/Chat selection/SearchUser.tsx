@@ -9,7 +9,7 @@ export interface UserWithLabel {
   label: string;
 }
 
-const SearchUser = () => {
+export const SearchUser = () => {
   const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = useState("");
   const [selectedUserEmail, setSelectedUserEmail] = useState<string | null>(
@@ -62,5 +62,3 @@ const SearchUser = () => {
     </div>
   );
 };
-
-export default SearchUser;

@@ -2,7 +2,7 @@ import { memo } from "react";
 import { ChatData, ChatTypes } from "../../Types/chatTypes";
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 import getTimeFromTimestamp from "../../utils/getTimeFromTimestamp";
-import UserAvatar from "../Shared/UserAvatar";
+import { UserAvatar } from "../Shared/UserAvatar";
 import clsx from "clsx";
 import { selectActiveChat } from "../../Store/ActiveChat/activeChat";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
@@ -16,7 +16,7 @@ interface Props {
   clickAction: () => void;
 }
 
-const ChatPreview = ({ chatData, clickAction }: Props) => {
+export const ChatPreview = memo(({ chatData, clickAction }: Props) => {
   const dispatch = useAppDispatch();
   const { id: activeChatID } = useAppSelector(selectActiveChat);
   const isActive = chatData.id === activeChatID;
@@ -77,6 +77,4 @@ const ChatPreview = ({ chatData, clickAction }: Props) => {
       </button>
     </div>
   );
-};
-
-export default memo(ChatPreview);
+});

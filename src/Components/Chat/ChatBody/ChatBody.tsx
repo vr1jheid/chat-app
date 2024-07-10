@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../Store/hooks";
 import { selectMessagesSizes } from "../../../Store/MessagesSizes/messagesSizes";
 import { useContext, useEffect, useState } from "react";
 import { ChatContext } from "../ChatContextContainer";
-import Loader from "../../Shared/Loader";
+import { Loader } from "../../Shared/Loader";
 import { ListOnScrollProps, VariableSizeList } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
 import { loadNextPage } from "../../../Store/ActiveChat/thunks/loadNextPage";
@@ -17,7 +17,7 @@ import { useSwipeable } from "react-swipeable";
 import { clearActiveChatWithCache } from "../../../Store/ActiveChat/thunks/clearActiveChatWithCache";
 
 export const ChatBody = () => {
-  const MARGIN_BOT = 10;
+  const MESSAGE_MARGIN_BOT = 10;
   const DATE_BLOCK_SIZE = 40;
 
   const dispatch = useAppDispatch();
@@ -60,9 +60,9 @@ export const ChatBody = () => {
       isNextDay(messages[index], messages[index + 1]) ||
       index === messages.length - 1
     ) {
-      return sizes[messages[index]?.id] + MARGIN_BOT + DATE_BLOCK_SIZE;
+      return sizes[messages[index]?.id] + MESSAGE_MARGIN_BOT + DATE_BLOCK_SIZE;
     }
-    return sizes[messages[index]?.id] + MARGIN_BOT;
+    return sizes[messages[index]?.id] + MESSAGE_MARGIN_BOT;
   };
 
   const isItemLoaded = (index: number) => index < messages.length;

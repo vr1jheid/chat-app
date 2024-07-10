@@ -15,7 +15,7 @@ const getTextForAvatar = (alt: string) => {
   return alt.slice(0, 2);
 };
 
-const UserAvatar = ({ alt, src, size = 50 }: Props) => {
+export const UserAvatar = ({ alt, src, size = 50 }: Props) => {
   /*   console.log(src); */
 
   if (src) {
@@ -28,5 +28,3 @@ const UserAvatar = ({ alt, src, size = 50 }: Props) => {
     </Avatar>
   );
 };
-
-export default UserAvatar;

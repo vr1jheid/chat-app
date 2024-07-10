@@ -5,7 +5,7 @@ interface Props {
   size?: number;
 }
 
-const Loader = ({ color, size }: Props) => {
+export const Loader = ({ color, size }: Props) => {
   return (
     <div
       style={{ color: color ?? "white" }}
@@ -15,5 +15,3 @@ const Loader = ({ color, size }: Props) => {
     </div>
   );
 };
-
-export default Loader;

@@ -1,9 +1,9 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "../Store/hooks";
 import { selectCurrentUser } from "../Store/CurrentUser/currentUser";
-import Loader from "../Components/Shared/Loader";
+import { Loader } from "../Components/Shared/Loader";
 
-const ProtectedRoutes = () => {
+export const ProtectedRoutes = () => {
   const { uid, isLoaded } = useAppSelector(selectCurrentUser);
   const isAuth = Boolean(uid);
 
@@ -21,5 +21,3 @@ const ProtectedRoutes = () => {
 
   return render();
 };
-
-export default ProtectedRoutes;

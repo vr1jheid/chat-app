@@ -1,10 +1,10 @@
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 import { selectAllChats } from "../../Store/Chats/chats";
-import ChatPreview from "./ChatPreview";
+import { ChatPreview } from "./ChatPreview";
 import { ChatData } from "../../Types/chatTypes";
 import { selectChatFromObserved } from "../../Store/Chats/thunks/selectChatFromObserved";
 
-const ChatsList = () => {
+export const ChatsList = () => {
   const dispatch = useAppDispatch();
   const chatsList = useAppSelector(selectAllChats);
 
@@ -33,5 +33,3 @@ const ChatsList = () => {
     </section>
   );
 };
-
-export default ChatsList;

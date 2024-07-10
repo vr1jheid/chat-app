@@ -1,6 +1,6 @@
 import { closeSnackbar } from "notistack";
 import { CSSProperties, forwardRef } from "react";
-import UserAvatar from "../Shared/UserAvatar";
+import { UserAvatar } from "../Shared/UserAvatar";
 import CloseIcon from "@mui/icons-material/Close";
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 import { selectChatFromObserved } from "../../Store/Chats/thunks/selectChatFromObserved";

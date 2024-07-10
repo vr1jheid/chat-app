@@ -2,10 +2,10 @@ import { ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { useAppSelector } from "../Store/hooks";
 import { selectCurrentUser } from "../Store/CurrentUser/currentUser";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import Loader from "../Components/Shared/Loader";
+import { Loader } from "../Components/Shared/Loader";
 import { useEffect } from "react";
 
-const AuthPage = () => {
+export const AuthPage = () => {
   const { isLoaded, uid } = useAppSelector(selectCurrentUser);
   const navigate = useNavigate();
   const location = useLocation();
@@ -64,5 +64,3 @@ const AuthPage = () => {
     </div>
   );
 };
-
-export default AuthPage;

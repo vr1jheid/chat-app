@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import store from "./Store/store";
 import { ChatLocalCache } from "./Types/chatTypes";
 
-function App() {
+export const App = () => {
   useWindowResize();
 
   useEffect(() => {
@@ -33,6 +33,4 @@ function App() {
       </button>
     </>
   );
-}
-
-export default App;
+};

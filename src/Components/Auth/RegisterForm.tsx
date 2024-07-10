@@ -1,6 +1,6 @@
 import { TextField, Button } from "@mui/material";
 import { useCallback } from "react";
-import PasswordInput from "./PasswordInput";
+import { PasswordInput } from "./PasswordInput";
 import { RegisterDataKeys } from "./types/authTypes";
 import { registerNewUser } from "../../Services/registerNewUser";
 import { throttle } from "../../utils/throttle";
@@ -9,7 +9,7 @@ import { validateUserName } from "./validation/validateUserName";
 import { validatePassword } from "./validation/validatePassword";
 import { useRegisterState } from "./hooks/useRegisterState";
 
-const RegisterForm = () => {
+export const RegisterForm = () => {
   const registerFields: RegisterDataKeys[] = ["email", "userName", "password"];
 
   const { registerData, setFieldData, getFieldsDataByType } =
@@ -109,5 +109,3 @@ const RegisterForm = () => {
     </>
   );
 };
-
-export default RegisterForm;

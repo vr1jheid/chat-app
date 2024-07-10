@@ -20,7 +20,7 @@ interface Props {
   required?: boolean;
 }
 
-const PasswordInput = ({
+export const PasswordInput = ({
   label,
   onChange,
   value,
@@ -56,5 +56,3 @@ const PasswordInput = ({
     </FormControl>
   );
 };
-
-export default PasswordInput;

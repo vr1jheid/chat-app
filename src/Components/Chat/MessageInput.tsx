@@ -7,7 +7,7 @@ import { useAppSelector } from "../../Store/hooks";
 import sendMessageToDB from "../../Services/sendMessageToDB";
 import { selectWindowSize } from "../../Store/WindowSize/windowSize";
 
-const SendMessageForm = () => {
+export const SendMessageForm = () => {
   const { width } = useAppSelector(selectWindowSize);
   const [message, setMessage] = useState("");
   const activeChatID = useAppSelector(selectActiveChatID);
@@ -65,5 +65,3 @@ const SendMessageForm = () => {
     </form>
   );
 };
-
-export default SendMessageForm;
