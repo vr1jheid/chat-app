@@ -42,9 +42,11 @@ export const PasswordInput = ({
         endAdornment={
           <InputAdornment position="end">
             <IconButton
+              className="text-purple-main"
               aria-label="toggle password visibility"
               onClick={() => setIsVisible(!isVisible)}
               edge="end"
+              color="primary"
             >
               {isVisible ? <Visibility /> : <VisibilityOff />}
             </IconButton>

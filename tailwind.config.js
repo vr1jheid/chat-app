@@ -10,6 +10,7 @@ export default {
         "gray-extra-light": "#56595d",
         "gray-hover": "#2f2f2f",
         "purple-main": "#766ac8",
+
         "purple-extra-light": "#bab9e5",
       },
       backgroundImage: {

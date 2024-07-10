@@ -75,7 +75,7 @@ export const LogInForm = () => {
           <ul className="flex justify-center">
             <li className="w-fit">
               <IconButton onClick={googleAuthenticate}>
-                <GoogleIcon />
+                <GoogleIcon fontSize="large" />
               </IconButton>
             </li>
           </ul>

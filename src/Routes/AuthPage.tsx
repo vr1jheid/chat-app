@@ -4,6 +4,7 @@ import { selectCurrentUser } from "../Store/CurrentUser/currentUser";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Loader } from "../Components/Shared/Loader";
 import { useEffect } from "react";
+import { Dot } from "../Components/animata/background/dot";
 
 export const AuthPage = () => {
   const { isLoaded, uid } = useAppSelector(selectCurrentUser);
@@ -33,34 +34,41 @@ export const AuthPage = () => {
   }
 
   return (
-    <div className="h-dvh flex lg:block items-center">
-      <div className="mx-auto py-5 lg:mt-[8%] flex flex-col items-center justify-center bg-white w-screen h-fit lg:w-3/5 2xl:w-1/3  md:w-2/3 rounded-lg">
-        <header className="m-auto mb-8 w-fit">
-          <Typography variant="h2" textAlign="center">
-            Fire Chat
-          </Typography>
-        </header>
+    <Dot className="bg-gray-light max-h-screen" size={4} color={"#3d3861"}>
+      <div className="h-dvh flex lg:block items-center lg:pt-[8%]">
+        <div className="mx-auto py-5 flex flex-col items-center justify-center bg-[#ffffff] w-screen h-fit lg:w-3/5 2xl:w-1/3  md:w-2/3 rounded-lg">
+          <header className="m-auto mb-8 w-fit">
+            <Typography
+              variant="h2"
+              textAlign="center"
+              className=" text-purple-950"
+            >
+              Noname Chat
+            </Typography>
+          </header>
 
-        <div className="flex flex-col  justify-center pt-0 items-center gap-8 w-full px-3 h-full  sm:px-10 sm:py-10 sm:pt-0 rounded-lg">
-          <ToggleButtonGroup
-            size="medium"
-            exclusive
-            value={location.pathname.slice(1)}
-            onChange={handleActionChanger}
-          >
-            <ToggleButton sx={{ width: "100px" }} value={"login"}>
-              Log In
-            </ToggleButton>
-            <ToggleButton sx={{ width: "100px" }} value={"register"}>
-              Register
-            </ToggleButton>
-          </ToggleButtonGroup>
+          <div className="flex flex-col  justify-center pt-0 items-center gap-8 w-full px-3 h-full  sm:px-10 sm:py-10 sm:pt-0 rounded-lg">
+            <ToggleButtonGroup
+              color="primary"
+              size="medium"
+              exclusive
+              value={location.pathname.slice(1)}
+              onChange={handleActionChanger}
+            >
+              <ToggleButton sx={{ width: "100px" }} value={"login"}>
+                Log In
+              </ToggleButton>
+              <ToggleButton sx={{ width: "100px" }} value={"register"}>
+                Register
+              </ToggleButton>
+            </ToggleButtonGroup>
 
-          <form className="flex flex-col w-full gap-7">
-            <Outlet />
-          </form>
+            <form className="flex flex-col w-full gap-7">
+              <Outlet />
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </Dot>
   );
 };
