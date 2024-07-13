@@ -18,6 +18,8 @@ interface Props {
   error?: boolean;
   helperText?: string;
   required?: boolean;
+  autoComplete?: string;
+  name?: string;
 }
 
 export const PasswordInput = ({
@@ -27,6 +29,8 @@ export const PasswordInput = ({
   error = false,
   helperText = "",
   required = false,
+  autoComplete = "on",
+  name,
 }: Props) => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -34,6 +38,8 @@ export const PasswordInput = ({
     <FormControl error={error} variant="outlined">
       <InputLabel> {label}</InputLabel>
       <OutlinedInput
+        name={name}
+        autoComplete={autoComplete}
         required={required}
         value={value}
         onChange={onChange}

@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../Store/hooks";
 import { SearchUser } from "../Components/Chat selection/SearchUser";
 import { Chat } from "../Components/Chat/Chat";
 import { selectActiveChatID } from "../Store/ActiveChat/activeChat";
-import { ChatContextContainer } from "../Components/Chat/ChatContextContainer";
+import { ChatContextContainer } from "../Components/Chat/Context/ChatContextContainer";
 import clsx from "clsx";
 import UserMenu from "../Components/Header/UserMenu";
 import catsSVG from "../Assets/bg-cats.svg";

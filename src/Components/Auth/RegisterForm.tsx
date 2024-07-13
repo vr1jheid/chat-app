@@ -1,97 +1,47 @@
 import { TextField, Button } from "@mui/material";
-import { useCallback } from "react";
 import { PasswordInput } from "./PasswordInput";
-import { RegisterDataKeys } from "./types/authTypes";
-import { registerNewUser } from "../../Services/registerNewUser";
-import { throttle } from "../../utils/throttle";
-import { validateEmail } from "./validation/validateEmail";
-import { validateUserName } from "./validation/validateUserName";
-import { validatePassword } from "./validation/validatePassword";
-import { useRegisterState } from "./hooks/useRegisterState";
+import { useRegisterForm } from "./hooks/useRegisterForm";
 
 export const RegisterForm = () => {
-  const registerFields: RegisterDataKeys[] = ["email", "userName", "password"];
-
-  const { registerData, setFieldData, getFieldsDataByType } =
-    useRegisterState(registerFields);
-
-  const validateUserNameThrottled = useCallback(
-    throttle(validateUserName, 500),
-    []
-  );
-
-  const register = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-
-    let isAllFilled = true;
-    Object.entries(getFieldsDataByType("value")).forEach(([key, value]) => {
-      if (!value) {
-        setFieldData(key as RegisterDataKeys, "isValid", false);
-        isAllFilled = false;
-      }
-    });
-    const isAllValid = Object.values(getFieldsDataByType("isValid")).every(
-      (f) => f
-    );
-
-    if (!isAllValid || !isAllFilled) return;
-    registerNewUser(getFieldsDataByType("value"));
-  };
+  const { registerState, onFieldChange, onSubmit } = useRegisterForm();
+  const { email, userName, password } = registerState;
 
   return (
     <>
       <TextField
+        autoComplete="off"
         required
         label="Email"
-        helperText={registerData.email.message}
-        error={!registerData.email.isValid}
-        value={registerData.email.value}
+        helperText={email.message}
+        error={!email.isValid}
+        value={email.value}
         type="email"
         onChange={(e) => {
-          setFieldData("email", "value", e.target.value);
-
-          const validationResult = validateEmail(e.target.value);
-          setFieldData("email", "isValid", validationResult.isValid);
-          setFieldData("email", "message", validationResult.message);
+          onFieldChange(e, "email");
         }}
-      ></TextField>
+      />
       <TextField
+        autoComplete="off"
         required
         label="User name"
-        helperText={registerData.userName.message}
-        error={!registerData.userName.isValid}
-        value={registerData.userName.value}
+        helperText={userName.message}
+        error={!userName.isValid}
+        value={userName.value}
         type="text"
-        onChange={async (e) => {
-          setFieldData("userName", "value", e.target.value);
-          const validationResult = await validateUserNameThrottled(
-            e.target.value
-          );
-          if (!validationResult) return;
-          console.log(validationResult);
-
-          setFieldData("userName", "isValid", validationResult.isValid);
-          setFieldData("userName", "message", validationResult.message);
+        onChange={(e) => {
+          onFieldChange(e, "userName");
         }}
-        onBlur={async (e) => {
-          const validationResult = await validateUserName(e.target.value);
-
-          setFieldData("userName", "isValid", validationResult.isValid);
-          setFieldData("userName", "message", validationResult.message);
-        }}
-      ></TextField>
+      />
 
       <PasswordInput
+        autoComplete="off"
         required
         label="Password *"
-        error={!registerData.password.isValid}
-        helperText={registerData.password.message}
-        value={registerData.password.value}
+        error={!password.isValid}
+        helperText={password.message}
+        value={password.value}
         onChange={(e) => {
-          setFieldData("password", "value", e.target.value);
-          const validationResult = validatePassword(e.target.value);
-          setFieldData("password", "isValid", validationResult.isValid);
-          setFieldData("password", "message", validationResult.message);
+          onFieldChange(e, "password");
         }}
       />
 
@@ -101,7 +51,7 @@ export const RegisterForm = () => {
           sx={{ fontWeight: 600 }}
           variant="outlined"
           type="submit"
-          onClick={register}
+          onClick={onSubmit}
         >
           Register
         </Button>

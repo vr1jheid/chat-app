@@ -5,6 +5,7 @@ import activeChatReducer from "./ActiveChat/activeChat";
 import messagesSizesReducer from "./MessagesSizes/messagesSizes";
 import windowSizeReducer from "./WindowSize/windowSize";
 import allUsersListReducer from "./AllUsersList/allUsersList";
+import registerFormSliceReducer from "./RegisterForm/registerFormSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     messagesSizes: messagesSizesReducer,
     windowSize: windowSizeReducer,
     allUsersList: allUsersListReducer,
+    registerForm: registerFormSliceReducer,
   },
 });
 

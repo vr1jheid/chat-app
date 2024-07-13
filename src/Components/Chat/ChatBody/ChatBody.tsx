@@ -3,7 +3,6 @@ import { selectActiveChat } from "../../../Store/ActiveChat/activeChat";
 import { useAppDispatch, useAppSelector } from "../../../Store/hooks";
 import { selectMessagesSizes } from "../../../Store/MessagesSizes/messagesSizes";
 import { useContext, useEffect, useState } from "react";
-import { ChatContext } from "../ChatContextContainer";
 import { Loader } from "../../Shared/Loader";
 import { ListOnScrollProps, VariableSizeList } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
@@ -15,6 +14,7 @@ import { ListItem } from "./ListItem";
 import { isNextDay } from "../../../utils/isNextDay";
 import { useSwipeable } from "react-swipeable";
 import { clearActiveChatWithCache } from "../../../Store/ActiveChat/thunks/clearActiveChatWithCache";
+import { ChatContext } from "../Context/ChatContext";
 
 export const ChatBody = () => {
   const MESSAGE_MARGIN_BOT = 10;

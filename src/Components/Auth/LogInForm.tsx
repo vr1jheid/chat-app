@@ -51,7 +51,9 @@ export const LogInForm = () => {
         type="email"
         onChange={(e) => setEmail(e.target.value)}
         className=" max-w-full"
-      ></TextField>
+        autoComplete="email"
+        name="email"
+      />
 
       <PasswordInput
         label="Password"
@@ -59,6 +61,8 @@ export const LogInForm = () => {
           e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
         ) => setPassword(e.target.value)}
         value={password}
+        name="current-password"
+        autoComplete="current-password"
       />
 
       <div className="flex flex-col justify-center items-center gap-3">

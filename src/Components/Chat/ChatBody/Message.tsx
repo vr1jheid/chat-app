@@ -6,9 +6,9 @@ import { MessageAuthor } from "../../../Types/messageTypes";
 import getTimeFromTimestamp from "../../../utils/getTimeFromTimestamp";
 import { Loader } from "../../Shared/Loader";
 import { UserAvatar } from "../../Shared/UserAvatar";
-import { ChatContext } from "../ChatContextContainer";
 import { selectWindowSize } from "../../../Store/WindowSize/windowSize";
 import { ChatTypes } from "../../../Types/chatTypes";
+import { ChatContext } from "../Context/ChatContext";
 
 interface Props {
   id: string;

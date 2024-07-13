@@ -1,6 +1,4 @@
-import { isUserExist } from "../../../Services/isUserExist";
-
-export const validateUserName = async (userName: string) => {
+export const validateUserName = (userName: string) => {
   if (userName.length < 4) {
     return {
       isValid: false,
@@ -8,13 +6,13 @@ export const validateUserName = async (userName: string) => {
     };
   }
 
-  const isUserWithSameNameExist = await isUserExist("displayName", userName);
+  /*   const isUserWithSameNameExist = await isUserExist("displayName", userName);
   if (isUserWithSameNameExist) {
     return {
       isValid: false,
       message: "User with same name already exist",
     };
-  }
+  } */
   return {
     isValid: true,
     message: "",

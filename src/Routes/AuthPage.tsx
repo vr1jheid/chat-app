@@ -32,10 +32,12 @@ export const AuthPage = () => {
       </div>
     );
   }
+  const locationPath = location.pathname.slice(1);
+  const autoComplete = locationPath === "login" ? "on" : "off";
 
   return (
-    <Dot className="bg-gray-light max-h-screen" size={4} color={"#3d3861"}>
-      <div className="h-dvh flex lg:block items-center lg:pt-[8%]">
+    <Dot className="bg-gray-light max-h-screen" size={4} color={"#34314c"}>
+      <div className="h-dvh flex lg:block items-center lg:pt-[8%] px-1 lg:px-0">
         <div className="mx-auto py-5 flex flex-col items-center justify-center bg-[#ffffff] w-screen h-fit lg:w-3/5 2xl:w-1/3  md:w-2/3 rounded-lg">
           <header className="m-auto mb-8 w-fit">
             <Typography
@@ -52,7 +54,7 @@ export const AuthPage = () => {
               color="primary"
               size="medium"
               exclusive
-              value={location.pathname.slice(1)}
+              value={locationPath}
               onChange={handleActionChanger}
             >
               <ToggleButton sx={{ width: "100px" }} value={"login"}>
@@ -63,7 +65,10 @@ export const AuthPage = () => {
               </ToggleButton>
             </ToggleButtonGroup>
 
-            <form className="flex flex-col w-full gap-7">
+            <form
+              className="flex flex-col w-full gap-7"
+              autoComplete={autoComplete}
+            >
               <Outlet />
             </form>
           </div>

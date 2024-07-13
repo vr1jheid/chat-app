@@ -1,24 +1,18 @@
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { RegisterDataKeys } from "../Components/Auth/types/authTypes";
 import { auth } from "../main";
 import createUserData from "../utils/createUserData";
 import createUserInDB from "./createUserInDB";
 import { enqueueSnackbar } from "notistack";
-
-type RegisterDataValues = {
-  [K in RegisterDataKeys]: string;
-};
+import { RegisterFormDataKeys } from "../Components/Auth/types/authTypes";
 
 export const registerNewUser = async ({
   email,
   password,
   userName,
-}: RegisterDataValues) => {
+}: Record<RegisterFormDataKeys, string>) => {
   try {
-    const user = await createUserWithEmailAndPassword(auth, email, password);
-    console.log(user);
+    await createUserWithEmailAndPassword(auth, email, password);
   } catch (error) {
-    console.log(error);
     if (error instanceof Error) {
       enqueueSnackbar("Registration failed", { variant: "error" });
     }
@@ -29,7 +23,7 @@ export const registerNewUser = async ({
     createUserInDB(
       createUserData({ ...auth.currentUser, displayName: userName })
     );
-  } catch (error) {
+  } catch {
     enqueueSnackbar("Error updating profile", { variant: "error" });
   }
 };

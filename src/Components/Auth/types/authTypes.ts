@@ -1,13 +1,14 @@
-export interface FieldData {
+export interface FieldParams {
   value: string;
   isValid: boolean;
   message: string;
 }
 
-export interface RegisterData {
-  email: FieldData;
-  password: FieldData;
-  userName: FieldData;
+export interface RegisterFormData {
+  email: FieldParams;
+  password: FieldParams;
+  userName: FieldParams;
 }
 
-export type RegisterDataKeys = keyof RegisterData;
+export type RegisterFormDataKeys = keyof RegisterFormData;
+export type FieldParamsKeys = keyof FieldParams;

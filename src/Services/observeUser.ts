@@ -12,6 +12,7 @@ import fetchAllUsersEmailsFromDB from "../Store/AllUsersList/thunks/fetchAllUser
 import { clearAllUsersList } from "../Store/AllUsersList/allUsersList";
 import { clearActiveChat } from "../Store/ActiveChat/activeChat";
 import { subOnChat } from "../Store/ActiveChat/thunks/subOnChat";
+import { clearRegisterForm } from "../Store/RegisterForm/registerFormSlice";
 
 export const observeUser = async () => {
   const dispatch = store.dispatch;
@@ -30,9 +31,9 @@ export const observeUser = async () => {
       localStorage.clear();
       return;
     }
+    dispatch(clearRegisterForm());
 
     const validUserData = createUserData(userFromAuth);
-
     const userFromDB = await getUserFromDB(userFromAuth.email!);
 
     if (!userFromDB) {
