@@ -5,7 +5,7 @@ import {
 } from "../Store/Chats/chats";
 import { ChatDataDB } from "../Types/chatTypes";
 import { db } from "../main";
-import store from "../Store/store";
+import { store } from "../Store/store";
 import { enqueueSnackbar } from "notistack";
 import { dbMessageToLocal } from "../utils/dbMessageToLocal";
 

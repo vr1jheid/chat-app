@@ -15,7 +15,7 @@ const initialState: currentUserState = {
   isLoaded: false,
 };
 
-const currentUserSlice = createSlice({
+export const currentUserSlice = createSlice({
   name: "currentUser",
   initialState,
   selectors: {
@@ -52,5 +52,3 @@ export const selectChatParams = createSelector(
 
 export const { updateUserData, setUserEmail, clearUser } =
   currentUserSlice.actions;
-
-export default currentUserSlice.reducer;

@@ -4,8 +4,8 @@ import { useState } from "react";
 import { selectActiveChatID } from "../../Store/ActiveChat/activeChat";
 import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
 import { useAppSelector } from "../../Store/hooks";
-import sendMessageToDB from "../../Services/sendMessageToDB";
 import { selectWindowSize } from "../../Store/WindowSize/windowSize";
+import sendMessageToDB from "../../Services/sendMessageToDB";
 
 export const SendMessageForm = () => {
   const { width } = useAppSelector(selectWindowSize);

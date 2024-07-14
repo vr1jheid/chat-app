@@ -6,7 +6,7 @@ export interface MessagesSizesMap {
 
 const initialState: MessagesSizesMap = {};
 
-const messagesSizesSlice = createSlice({
+export const messagesSizesSlice = createSlice({
   name: "messagesSizes",
   initialState,
   selectors: {
@@ -24,5 +24,3 @@ const messagesSizesSlice = createSlice({
 
 export const { setSize, clearSizes } = messagesSizesSlice.actions;
 export const { selectMessagesSizes } = messagesSizesSlice.selectors;
-
-export default messagesSizesSlice.reducer;

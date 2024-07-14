@@ -10,7 +10,7 @@ const initialState = {
   height: window.innerHeight,
 };
 
-const windowSizeSlice = createSlice({
+export const windowSizeSlice = createSlice({
   name: "windowSize",
   initialState,
   selectors: {
@@ -26,5 +26,3 @@ const windowSizeSlice = createSlice({
 export const { setWindowSize } = windowSizeSlice.actions;
 
 export const { selectWindowSize } = windowSizeSlice.selectors;
-
-export default windowSizeSlice.reducer;

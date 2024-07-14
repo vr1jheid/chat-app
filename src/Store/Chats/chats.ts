@@ -27,7 +27,7 @@ export interface UnseenMessagesSetter {
 
 const initialState: ChatsState = {};
 
-const chatsSlice = createSlice({
+export const chatsSlice = createSlice({
   name: "chats",
   initialState,
   selectors: {
@@ -92,5 +92,3 @@ export const {
   increaseUnseenMessages,
   resetUnseenMessages,
 } = chatsSlice.actions;
-
-export default chatsSlice.reducer;

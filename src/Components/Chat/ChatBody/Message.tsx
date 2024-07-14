@@ -8,6 +8,7 @@ import { Loader } from "../../Shared/Loader";
 import { UserAvatar } from "../../Shared/UserAvatar";
 import { selectWindowSize } from "../../../Store/WindowSize/windowSize";
 import { ChatTypes } from "../../../Types/chatTypes";
+import { setModal } from "../../../Store/Modal/modalSlice";
 import { ChatContext } from "../Context/ChatContext";
 
 interface Props {
@@ -64,10 +65,17 @@ export const Message = ({
         onClick={deleteMessageFunc}
       >
         {!isMyself && isGroup && (
-          <UserAvatar
-            alt={author.displayName ?? author.email}
-            src={author.avatarURL}
-          />
+          <button
+            className="cursor-pointer"
+            onClick={() => {
+              dispatch(setModal({ type: "userInfo", data: author }));
+            }}
+          >
+            <UserAvatar
+              alt={author.displayName ?? author.email}
+              src={author.avatarURL}
+            />
+          </button>
         )}
 
         <div
@@ -78,9 +86,11 @@ export const Message = ({
             }
           )}
         >
-          <div className="absolute bottom-0 -left-2 h-10 w-10 -translate-x-full">
-            {!timestamp && <Loader />}
-          </div>
+          {!timestamp && (
+            <div className="absolute bottom-0 -left-2 h-10 w-10 -translate-x-full">
+              <Loader />
+            </div>
+          )}
           {!isMyself && isGroup && (
             <div className="text-purple-main text-left">
               {author.displayName ?? author.email}

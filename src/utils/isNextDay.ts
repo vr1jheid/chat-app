@@ -9,7 +9,6 @@ export const isNextDay = (
   }
   const messageDate = new Date(message.serverTime || Date.now());
   const nextMessageDate = new Date(nextMessage.serverTime);
-  console.log(messageDate, nextMessageDate);
 
   return nextMessageDate.getDate() - messageDate.getDate() !== 0;
 };

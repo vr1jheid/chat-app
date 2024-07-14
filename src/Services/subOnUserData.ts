@@ -1,5 +1,5 @@
 import { doc, onSnapshot } from "firebase/firestore";
-import store from "../Store/store";
+import { store } from "../Store/store";
 import { updateUserData } from "../Store/CurrentUser/currentUser";
 import { UserDataDB } from "../Types/userTypes";
 import { db } from "../main";

@@ -18,7 +18,7 @@ const initialState: ActiveChat = {
   isNextPageLoading: false,
 };
 
-const activeChatSlice = createSlice({
+export const activeChatSlice = createSlice({
   name: "activeChat",
   initialState,
   selectors: {
@@ -103,5 +103,3 @@ export const {
   selectActiveChatNextPageLoading,
   selectActiveChatDialogPartner,
 } = activeChatSlice.selectors;
-
-export default activeChatSlice.reducer;

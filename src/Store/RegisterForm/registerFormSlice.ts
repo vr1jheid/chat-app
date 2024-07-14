@@ -27,7 +27,7 @@ export interface StringSetter extends Pick<BooleanSetter, "field"> {
   value: string;
 }
 
-const registerFormSlice = createSlice({
+export const registerFormSlice = createSlice({
   name: "registerForm",
   initialState,
   selectors: {
@@ -54,5 +54,3 @@ const registerFormSlice = createSlice({
 export const { setFieldParam, clearRegisterForm } = registerFormSlice.actions;
 
 export const { selectRegisterFormState } = registerFormSlice.selectors;
-
-export default registerFormSlice.reducer;

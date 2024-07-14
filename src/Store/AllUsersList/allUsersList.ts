@@ -3,7 +3,7 @@ import getAllUsersEmailsFromDB from "./thunks/fetchAllUsersFromDB";
 
 const initialState: string[] = [];
 
-const allUsersListSlice = createSlice({
+export const allUsersListSlice = createSlice({
   name: "allUsersList",
   initialState,
   selectors: {
@@ -22,5 +22,3 @@ const allUsersListSlice = createSlice({
 export const { clearAllUsersList } = allUsersListSlice.actions;
 
 export const { selectAllUsersList } = allUsersListSlice.selectors;
-
-export default allUsersListSlice.reducer;

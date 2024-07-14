@@ -5,7 +5,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import store from "../Store/store";
+import { store } from "../Store/store";
 import { db } from "../main";
 
 export const getUnseenMessagesCount = async (chatID: string) => {
