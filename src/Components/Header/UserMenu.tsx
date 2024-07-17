@@ -1,9 +1,10 @@
 import { Button, Menu, MenuItem } from "@mui/material";
 import React, { useRef, useState } from "react";
-import { UserAvatar } from "../Shared/UserAvatar";
-import { useAppSelector } from "../../Store/hooks";
-import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
+
 import { logout } from "../../Services/logout";
+import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
+import { useAppSelector } from "../../Store/hooks";
+import { UserAvatar } from "../Shared/UserAvatar";
 
 const UserMenu = () => {
   const contRef = useRef<HTMLDivElement | null>(null);

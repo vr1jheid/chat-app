@@ -1,9 +1,10 @@
-import { Autocomplete } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { Autocomplete } from "@mui/material";
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../Store/hooks";
+
 import { selectAllUsersList } from "../../Store/AllUsersList/allUsersList";
 import { searchChatWithUser } from "../../Store/Chats/thunks/searchChatWithUser";
+import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 
 export interface UserWithLabel {
   label: string;

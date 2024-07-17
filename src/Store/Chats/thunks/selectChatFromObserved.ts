@@ -1,10 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { RootState } from "../../store";
+
+import { setActive } from "../../ActiveChat/activeChat";
 import { cacheMessages } from "../../ActiveChat/thunks/cacheMessages";
 import { setInitialMessages } from "../../ActiveChat/thunks/setInitialMessages";
-import { clearSizes } from "../../MessagesSizes/messagesSizes";
 import { subOnChat } from "../../ActiveChat/thunks/subOnChat";
-import { setActive } from "../../ActiveChat/activeChat";
+import { clearSizes } from "../../MessagesSizes/messagesSizes";
+import { RootState } from "../../store";
 import { resetUnseenMessages } from "../chats";
 
 export const selectChatFromObserved = createAsyncThunk(

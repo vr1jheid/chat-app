@@ -1,6 +1,7 @@
-import { TextField, Button } from "@mui/material";
-import { PasswordInput } from "./PasswordInput";
+import { Button, TextField } from "@mui/material";
+
 import { useRegisterForm } from "./hooks/useRegisterForm";
+import { PasswordInput } from "./PasswordInput";
 
 export const RegisterForm = () => {
   const { registerState, onFieldChange, onSubmit } = useRegisterForm();

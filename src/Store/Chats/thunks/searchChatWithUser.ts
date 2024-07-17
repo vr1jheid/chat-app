@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { RootState } from "../../store";
+
 import { ChatTypes } from "../../../Types/chatTypes";
 import { createChat } from "../../ActiveChat/thunks/createChat";
+import { RootState } from "../../store";
 import { selectChatFromObserved } from "./selectChatFromObserved";
 
 export const searchChatWithUser = createAsyncThunk(

@@ -1,15 +1,16 @@
-import { memo } from "react";
-import { ChatData, ChatTypes } from "../../Types/chatTypes";
-import { useAppDispatch, useAppSelector } from "../../Store/hooks";
-import getTimeFromTimestamp from "../../utils/getTimeFromTimestamp";
-import { UserAvatar } from "../Shared/UserAvatar";
-import clsx from "clsx";
-import { selectActiveChat } from "../../Store/ActiveChat/activeChat";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import { Badge } from "@mui/material";
+import clsx from "clsx";
+import { memo } from "react";
+
+import { selectActiveChat } from "../../Store/ActiveChat/activeChat";
 import { selectChatParams } from "../../Store/CurrentUser/currentUser";
 import { changeChatVolume } from "../../Store/CurrentUser/thunks/changeChatVolume";
-import { Badge } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../../Store/hooks";
+import { ChatData, ChatTypes } from "../../Types/chatTypes";
+import getTimeFromTimestamp from "../../utils/getTimeFromTimestamp";
+import { UserAvatar } from "../Shared/UserAvatar";
 
 interface Props {
   chatData: ChatData;

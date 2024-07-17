@@ -1,8 +1,8 @@
-import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 import { selectAllChats } from "../../Store/Chats/chats";
-import { ChatPreview } from "./ChatPreview";
-import { ChatData } from "../../Types/chatTypes";
 import { selectChatFromObserved } from "../../Store/Chats/thunks/selectChatFromObserved";
+import { useAppDispatch, useAppSelector } from "../../Store/hooks";
+import { ChatData } from "../../Types/chatTypes";
+import { ChatPreview } from "./ChatPreview";
 
 export const ChatsList = () => {
   const dispatch = useAppDispatch();

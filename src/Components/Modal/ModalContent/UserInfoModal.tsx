@@ -1,6 +1,7 @@
-import { MessageAuthor } from "../../../Types/messageTypes";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import PersonIcon from "@mui/icons-material/Person";
+
+import { MessageAuthor } from "../../../Types/messageTypes";
 import { UserInfoListItem } from "./UserInfoListItem";
 
 interface Props {

@@ -1,7 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAppSelector } from "../Store/hooks";
-import { selectCurrentUser } from "../Store/CurrentUser/currentUser";
+
 import { Loader } from "../Components/Shared/Loader";
+import { selectCurrentUser } from "../Store/CurrentUser/currentUser";
+import { useAppSelector } from "../Store/hooks";
 
 export const ProtectedRoutes = () => {
   const { uid, isLoaded } = useAppSelector(selectCurrentUser);

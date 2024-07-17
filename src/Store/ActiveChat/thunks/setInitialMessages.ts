@@ -1,21 +1,22 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ChatData } from "../../../Types/chatTypes";
 import {
-  Timestamp,
   collection,
   doc,
   getDocs,
   limit,
   orderBy,
   query,
+  Timestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
-import { db } from "../../../main";
-import { MessageData, MessageDataDB } from "../../../Types/messageTypes";
 import { enqueueSnackbar } from "notistack";
-import { RootState } from "../../store";
+
+import { db } from "../../../main";
+import { ChatData } from "../../../Types/chatTypes";
+import { MessageData, MessageDataDB } from "../../../Types/messageTypes";
 import { dbMessageToLocal } from "../../../utils/dbMessageToLocal";
+import { RootState } from "../../store";
 
 const getQuery = async (chatData: ChatData) => {
   const ref = collection(db, `chats/${chatData.id}/messages`);

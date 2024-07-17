@@ -1,14 +1,15 @@
 import {
-  serverTimestamp,
-  updateDoc,
   addDoc,
   collection,
   doc,
+  serverTimestamp,
   Timestamp,
+  updateDoc,
 } from "firebase/firestore";
-import { MessageAuthor, MessageDataDB } from "../Types/messageTypes";
-import { db } from "../main";
 import { enqueueSnackbar } from "notistack";
+
+import { db } from "../main";
+import { MessageAuthor, MessageDataDB } from "../Types/messageTypes";
 
 type SendMessageToDB = (
   messageText: string,

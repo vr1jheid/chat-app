@@ -1,11 +1,12 @@
-import { Outlet } from "react-router-dom";
 import { useEffect } from "react";
-import { store } from "./Store/store";
-import { ChatLocalCache } from "./Types/chatTypes";
+import { Outlet } from "react-router-dom";
+
+import { ModalManager } from "./Components/Modal/ModalManager/ModalManager";
 import { useWindowResize } from "./Hooks/useWindowResize";
 import { useAppDispatch } from "./Store/hooks";
 import { setModal } from "./Store/Modal/modalSlice";
-import { ModalManager } from "./Components/Modal/ModalManager/ModalManager";
+import { store } from "./Store/store";
+import { ChatLocalCache } from "./Types/chatTypes";
 
 export const App = () => {
   useWindowResize();

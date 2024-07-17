@@ -1,11 +1,12 @@
-import { TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import { TextField } from "@mui/material";
 import { useState } from "react";
+
+import sendMessageToDB from "../../Services/sendMessageToDB";
 import { selectActiveChatID } from "../../Store/ActiveChat/activeChat";
 import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
 import { useAppSelector } from "../../Store/hooks";
 import { selectWindowSize } from "../../Store/WindowSize/windowSize";
-import sendMessageToDB from "../../Services/sendMessageToDB";
 
 export const SendMessageForm = () => {
   const { width } = useAppSelector(selectWindowSize);

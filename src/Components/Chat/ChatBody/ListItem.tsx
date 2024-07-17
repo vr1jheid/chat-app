@@ -1,12 +1,13 @@
+import { ListChildComponentProps } from "react-window";
+
 import { selectCurrentUserEmail } from "../../../Store/CurrentUser/currentUser";
 import { useAppSelector } from "../../../Store/hooks";
-import { Message } from "./Message";
-import { Loader } from "../../Shared/Loader";
+import { ChatTypes } from "../../../Types/chatTypes";
+import { MessageData } from "../../../Types/messageTypes";
 import getDateFromTimestamp from "../../../utils/getDateFromTimestamp";
 import { isNextDay } from "../../../utils/isNextDay";
-import { MessageData } from "../../../Types/messageTypes";
-import { ListChildComponentProps } from "react-window";
-import { ChatTypes } from "../../../Types/chatTypes";
+import { Loader } from "../../Shared/Loader";
+import { Message } from "./Message";
 
 interface Props {
   messages: MessageData[];

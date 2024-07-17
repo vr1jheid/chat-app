@@ -1,9 +1,10 @@
 import { doc, onSnapshot } from "firebase/firestore";
-import { store } from "../Store/store";
-import { updateUserData } from "../Store/CurrentUser/currentUser";
-import { UserDataDB } from "../Types/userTypes";
+
 import { db } from "../main";
 import { fetchChats } from "../Store/Chats/thunks/fetchChats";
+import { updateUserData } from "../Store/CurrentUser/currentUser";
+import { store } from "../Store/store";
+import { UserDataDB } from "../Types/userTypes";
 
 export const subOnUserData = (currentUserEmail: string) => {
   const dispatch = store.dispatch;

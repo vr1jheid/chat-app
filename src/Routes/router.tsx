@@ -1,7 +1,8 @@
-import { Navigate, createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter,Navigate } from "react-router-dom";
+
+import { App } from "../App";
 import { LogInForm } from "../Components/Auth/LogInForm";
 import { RegisterForm } from "../Components/Auth/RegisterForm";
-import { App } from "../App";
 import { AuthPage } from "./AuthPage";
 import { MainPage } from "./MainPage";
 import { ProtectedRoutes } from "./ProtectedRoutes";

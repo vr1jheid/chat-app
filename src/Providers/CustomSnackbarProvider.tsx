@@ -1,5 +1,6 @@
 import { SnackbarProvider } from "notistack";
 import { ReactNode } from "react";
+
 import { MessageNotification } from "../Components/Chat/MessageNotification";
 
 interface Props {

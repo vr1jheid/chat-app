@@ -1,4 +1,5 @@
 import { User } from "firebase/auth";
+
 import { UserDataDB } from "../Types/userTypes";
 
 type UserDataCreator = (user: User) => UserDataDB;

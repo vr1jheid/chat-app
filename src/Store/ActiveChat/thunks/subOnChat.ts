@@ -1,17 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
-  query,
   collection,
+  doc,
   onSnapshot,
+  query,
   Unsubscribe,
   updateDoc,
-  doc,
 } from "firebase/firestore";
-import { MessageDataDB } from "../../../Types/messageTypes";
+
 import { db } from "../../../main";
-import { addMessage } from "../activeChat";
-import { RootState } from "../../store";
+import { MessageDataDB } from "../../../Types/messageTypes";
 import { dbMessageToLocal } from "../../../utils/dbMessageToLocal";
+import { RootState } from "../../store";
+import { addMessage } from "../activeChat";
 
 interface SubProps {
   action: "sub";
@@ -37,7 +38,7 @@ const subOnChatWrapper = () => {
 
       unsubscribe = onSnapshot(q, async (querySnapshot) => {
         const changes = querySnapshot.docChanges();
-        for (let change of changes) {
+        for (const change of changes) {
           const message = change.doc.data() as MessageDataDB;
           if (change.type !== "modified" || !message.id) return;
           dispatch(addMessage(dbMessageToLocal(message)));

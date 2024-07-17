@@ -1,10 +1,11 @@
 import { ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
-import { useAppSelector } from "../Store/hooks";
-import { selectCurrentUser } from "../Store/CurrentUser/currentUser";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Loader } from "../Components/Shared/Loader";
 import { useEffect } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+
 import { Dot } from "../Components/animata/background/dot";
+import { Loader } from "../Components/Shared/Loader";
+import { selectCurrentUser } from "../Store/CurrentUser/currentUser";
+import { useAppSelector } from "../Store/hooks";
 
 export const AuthPage = () => {
   const { isLoaded, uid } = useAppSelector(selectCurrentUser);

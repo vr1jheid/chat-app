@@ -1,6 +1,7 @@
 import { Modal } from "@mui/material";
+
 import { useAppDispatch, useAppSelector } from "../../../Store/hooks";
-import { selectModalState, closeModal } from "../../../Store/Modal/modalSlice";
+import { closeModal, selectModalState } from "../../../Store/Modal/modalSlice";
 import { UserInfoModal } from "../ModalContent/UserInfoModal";
 
 export const ModalManager = () => {

@@ -1,14 +1,15 @@
-import { Button, IconButton, TextField } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
+import { Button, IconButton, TextField } from "@mui/material";
 import {
-  signInWithPopup,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
+  signInWithPopup,
 } from "firebase/auth";
-import { useState } from "react";
-import { PasswordInput } from "./PasswordInput";
-import { auth } from "../../main";
 import { enqueueSnackbar } from "notistack";
+import { useState } from "react";
+
+import { auth } from "../../main";
+import { PasswordInput } from "./PasswordInput";
 
 export const LogInForm = () => {
   const [email, setEmail] = useState("");

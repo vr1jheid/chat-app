@@ -1,7 +1,8 @@
-import { getDocs, collection } from "firebase/firestore";
-import { UserDataDB } from "../../../Types/userTypes";
-import { db } from "../../../main";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { collection, getDocs } from "firebase/firestore";
+
+import { db } from "../../../main";
+import { UserDataDB } from "../../../Types/userTypes";
 import { RootState } from "../../store";
 
 const fetchAllUsersEmailsFromDB = createAsyncThunk(

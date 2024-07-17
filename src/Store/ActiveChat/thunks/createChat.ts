@@ -1,11 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
-import { ActiveChat, ChatDataDB, ChatTypes } from "../../../Types/chatTypes";
+
 import { db } from "../../../main";
-import { subOnChat } from "./subOnChat";
-import { cacheMessages } from "./cacheMessages";
-import { RootState } from "../../store";
 import getUserFromDB from "../../../Services/getUserFromDB";
+import { ActiveChat, ChatDataDB, ChatTypes } from "../../../Types/chatTypes";
+import { RootState } from "../../store";
+import { cacheMessages } from "./cacheMessages";
+import { subOnChat } from "./subOnChat";
 
 export const createChat = createAsyncThunk(
   "createChat",

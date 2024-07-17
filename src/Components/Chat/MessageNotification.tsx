@@ -1,13 +1,14 @@
+import CloseIcon from "@mui/icons-material/Close";
+import clsx from "clsx";
 import { closeSnackbar } from "notistack";
 import { CSSProperties, forwardRef } from "react";
-import { UserAvatar } from "../Shared/UserAvatar";
-import CloseIcon from "@mui/icons-material/Close";
-import { useAppDispatch, useAppSelector } from "../../Store/hooks";
-import { selectChatFromObserved } from "../../Store/Chats/thunks/selectChatFromObserved";
-import { MessageAuthor } from "../../Types/messageTypes";
-import clsx from "clsx";
-import { selectWindowSize } from "../../Store/WindowSize/windowSize";
 import { useSwipeable } from "react-swipeable";
+
+import { selectChatFromObserved } from "../../Store/Chats/thunks/selectChatFromObserved";
+import { useAppDispatch, useAppSelector } from "../../Store/hooks";
+import { selectWindowSize } from "../../Store/WindowSize/windowSize";
+import { MessageAuthor } from "../../Types/messageTypes";
+import { UserAvatar } from "../Shared/UserAvatar";
 
 interface Props {
   style: CSSProperties;

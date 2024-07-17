@@ -1,20 +1,21 @@
-import AutoSizer from "react-virtualized-auto-sizer";
-import { selectActiveChat } from "../../../Store/ActiveChat/activeChat";
-import { useAppDispatch, useAppSelector } from "../../../Store/hooks";
-import { selectMessagesSizes } from "../../../Store/MessagesSizes/messagesSizes";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { useContext, useEffect, useState } from "react";
-import { Loader } from "../../Shared/Loader";
+import { useSwipeable } from "react-swipeable";
+import AutoSizer from "react-virtualized-auto-sizer";
 import { ListOnScrollProps, VariableSizeList } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
-import { loadNextPage } from "../../../Store/ActiveChat/thunks/loadNextPage";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import { selectCurrentUserEmail } from "../../../Store/CurrentUser/currentUser";
-import { ListItem } from "./ListItem";
-import { isNextDay } from "../../../utils/isNextDay";
-import { useSwipeable } from "react-swipeable";
-import { clearActiveChatWithCache } from "../../../Store/ActiveChat/thunks/clearActiveChatWithCache";
-import { ChatContext } from "../Context/ChatContext";
+
 import { useReverseScroll } from "../../../Hooks/useReverseScroll";
+import { selectActiveChat } from "../../../Store/ActiveChat/activeChat";
+import { clearActiveChatWithCache } from "../../../Store/ActiveChat/thunks/clearActiveChatWithCache";
+import { loadNextPage } from "../../../Store/ActiveChat/thunks/loadNextPage";
+import { selectCurrentUserEmail } from "../../../Store/CurrentUser/currentUser";
+import { useAppDispatch, useAppSelector } from "../../../Store/hooks";
+import { selectMessagesSizes } from "../../../Store/MessagesSizes/messagesSizes";
+import { isNextDay } from "../../../utils/isNextDay";
+import { Loader } from "../../Shared/Loader";
+import { ChatContext } from "../Context/ChatContext";
+import { ListItem } from "./ListItem";
 
 export const ChatBody = () => {
   const MESSAGE_MARGIN_BOT = 10;

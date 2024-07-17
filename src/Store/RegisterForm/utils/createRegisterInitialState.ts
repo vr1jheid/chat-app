@@ -1,6 +1,6 @@
 import {
-  RegisterFormDataKeys,
   RegisterFormData,
+  RegisterFormDataKeys,
 } from "../../../Components/Auth/types/authTypes";
 
 export const createRegisterInitialState = (fields: RegisterFormDataKeys[]) => {

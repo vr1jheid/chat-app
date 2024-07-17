@@ -1,12 +1,13 @@
 import {
-  Timestamp,
   collection,
   getDocs,
   query,
+  Timestamp,
   where,
 } from "firebase/firestore";
-import { store } from "../Store/store";
+
 import { db } from "../main";
+import { store } from "../Store/store";
 
 export const getUnseenMessagesCount = async (chatID: string) => {
   const { currentUser } = store.getState();

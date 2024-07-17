@@ -1,14 +1,15 @@
 import clsx from "clsx";
-import { useRef, useContext, useEffect } from "react";
-import { setSize } from "../../../Store/MessagesSizes/messagesSizes";
+import { useContext, useEffect, useRef } from "react";
+
 import { useAppDispatch, useAppSelector } from "../../../Store/hooks";
+import { setSize } from "../../../Store/MessagesSizes/messagesSizes";
+import { setModal } from "../../../Store/Modal/modalSlice";
+import { selectWindowSize } from "../../../Store/WindowSize/windowSize";
+import { ChatTypes } from "../../../Types/chatTypes";
 import { MessageAuthor } from "../../../Types/messageTypes";
 import getTimeFromTimestamp from "../../../utils/getTimeFromTimestamp";
 import { Loader } from "../../Shared/Loader";
 import { UserAvatar } from "../../Shared/UserAvatar";
-import { selectWindowSize } from "../../../Store/WindowSize/windowSize";
-import { ChatTypes } from "../../../Types/chatTypes";
-import { setModal } from "../../../Store/Modal/modalSlice";
 import { ChatContext } from "../Context/ChatContext";
 
 interface Props {

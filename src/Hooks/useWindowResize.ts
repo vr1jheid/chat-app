@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from "react";
+
 import { useAppDispatch } from "../Store/hooks";
 import { setWindowSize } from "../Store/WindowSize/windowSize";
 import { throttle } from "../utils/throttle";

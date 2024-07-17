@@ -1,12 +1,13 @@
-import { query, collection, where, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { enqueueSnackbar } from "notistack";
+
+import { db } from "../main";
 import {
   changeLastMessage,
   increaseUnseenMessages,
 } from "../Store/Chats/chats";
-import { ChatDataDB } from "../Types/chatTypes";
-import { db } from "../main";
 import { store } from "../Store/store";
-import { enqueueSnackbar } from "notistack";
+import { ChatDataDB } from "../Types/chatTypes";
 import { dbMessageToLocal } from "../utils/dbMessageToLocal";
 
 export const subOnLastMessageChange = (chatsIDs: string[]) => {

@@ -1,6 +1,7 @@
 import { doc, getDoc } from "firebase/firestore";
-import { UserDataDB } from "../Types/userTypes";
+
 import { db } from "../main";
+import { UserDataDB } from "../Types/userTypes";
 
 type GetUserFunc = (email: string) => Promise<UserDataDB | null>;
 

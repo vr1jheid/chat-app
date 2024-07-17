@@ -1,6 +1,7 @@
-import { query, collection, where, getDocs } from "firebase/firestore";
-import { UserDataDB } from "../Types/userTypes";
+import { collection, getDocs, query, where } from "firebase/firestore";
+
 import { db } from "../main";
+import { UserDataDB } from "../Types/userTypes";
 
 export const isUserExist = async (
   param: keyof Pick<UserDataDB, "email" | "uid" | "displayName">,

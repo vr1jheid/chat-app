@@ -1,17 +1,17 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, where, getDocs, query } from "firebase/firestore";
-import { ChatData, ChatDataDB, ChatTypes } from "../../../Types/chatTypes";
-import { ChatsState } from "../chats";
-import { db } from "../../../main";
-import { subOnLastMessageChange } from "../../../Services/subOnLastMessageChange";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { enqueueSnackbar } from "notistack";
-import { RootState } from "../../store";
-import getUserFromDB from "../../../Services/getUserFromDB";
-import { UserDataDB } from "../../../Types/userTypes";
 
+import { db } from "../../../main";
+import getUserFromDB from "../../../Services/getUserFromDB";
+import { subOnLastMessageChange } from "../../../Services/subOnLastMessageChange";
+import { ChatData, ChatDataDB, ChatTypes } from "../../../Types/chatTypes";
+import { UserDataDB } from "../../../Types/userTypes";
 import { dbMessageToLocal } from "../../../utils/dbMessageToLocal";
 import { getChatDataFromLS } from "../../../utils/getChatDataFromLS";
 import { getUnseenMessagesCount } from "../../../utils/getUnseenMessagesCount";
+import { RootState } from "../../store";
+import { ChatsState } from "../chats";
 
 export const fetchChats = createAsyncThunk(
   "chats/fetchChats",

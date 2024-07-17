@@ -1,10 +1,11 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice,PayloadAction } from "@reduxjs/toolkit";
+
 import { ActiveChat, ChatData, ChatTypes } from "../../Types/chatTypes";
-import { createChat } from "./thunks/createChat";
 import { MessageData } from "../../Types/messageTypes";
-import { setInitialMessages } from "./thunks/setInitialMessages";
-import { loadNextPage } from "./thunks/loadNextPage";
 import { clearActiveChatWithCache } from "./thunks/clearActiveChatWithCache";
+import { createChat } from "./thunks/createChat";
+import { loadNextPage } from "./thunks/loadNextPage";
+import { setInitialMessages } from "./thunks/setInitialMessages";
 
 export const ITEMS_PER_PAGE = 30;
 

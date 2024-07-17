@@ -1,7 +1,8 @@
-import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
-import { fetchChats } from "./thunks/fetchChats";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import { ActiveChat, ChatData } from "../../Types/chatTypes";
 import { MessageData } from "../../Types/messageTypes";
+import { fetchChats } from "./thunks/fetchChats";
 
 export interface ChatsState {
   [key: string]: ChatData;

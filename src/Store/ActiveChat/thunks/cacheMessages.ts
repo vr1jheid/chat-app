@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { RootState } from "../../store";
-import { setCachedMessages, setHasNextPage } from "../../Chats/chats";
+
 import { ChatLocalCache } from "../../../Types/chatTypes";
+import { setCachedMessages, setHasNextPage } from "../../Chats/chats";
+import { RootState } from "../../store";
 
 export const cacheMessages = createAsyncThunk(
   "activeChat/cacheMessages",

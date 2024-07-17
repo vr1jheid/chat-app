@@ -1,6 +1,6 @@
-import { SendMessageForm } from "./MessageInput";
-import { ChatHeader } from "./ChatHeader";
 import { ChatBody } from "./ChatBody/ChatBody";
+import { ChatHeader } from "./ChatHeader";
+import { SendMessageForm } from "./MessageInput";
 
 export const Chat = () => {
   return (

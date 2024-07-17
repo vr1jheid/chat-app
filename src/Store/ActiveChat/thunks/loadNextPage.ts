@@ -1,19 +1,20 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { MessageData, MessageDataDB } from "../../../Types/messageTypes";
-import { RootState } from "../../store";
 import {
-  Timestamp,
   collection,
   getDocs,
   limit,
   orderBy,
   query,
+  Timestamp,
   where,
 } from "firebase/firestore";
-import { db } from "../../../main";
 import { enqueueSnackbar } from "notistack";
-import { ITEMS_PER_PAGE } from "../activeChat";
+
+import { db } from "../../../main";
+import { MessageData, MessageDataDB } from "../../../Types/messageTypes";
 import { dbMessageToLocal } from "../../../utils/dbMessageToLocal";
+import { RootState } from "../../store";
+import { ITEMS_PER_PAGE } from "../activeChat";
 
 export const loadNextPage = createAsyncThunk(
   "activeChat/loadNextPage",

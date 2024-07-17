@@ -1,18 +1,19 @@
-import { store } from "../Store/store";
-import { Unsubscribe, onAuthStateChanged } from "firebase/auth";
-import { clearUser, setUserEmail } from "../Store/CurrentUser/currentUser";
+import { onAuthStateChanged,Unsubscribe } from "firebase/auth";
+
 import { auth } from "../main";
-import createUserData from "../utils/createUserData";
-import { clearChats } from "../Store/Chats/chats";
-import { clearSizes } from "../Store/MessagesSizes/messagesSizes";
-import fetchAllUsersEmailsFromDB from "../Store/AllUsersList/thunks/fetchAllUsersFromDB";
-import { clearAllUsersList } from "../Store/AllUsersList/allUsersList";
 import { clearActiveChat } from "../Store/ActiveChat/activeChat";
 import { subOnChat } from "../Store/ActiveChat/thunks/subOnChat";
+import { clearAllUsersList } from "../Store/AllUsersList/allUsersList";
+import fetchAllUsersEmailsFromDB from "../Store/AllUsersList/thunks/fetchAllUsersFromDB";
+import { clearChats } from "../Store/Chats/chats";
+import { clearUser, setUserEmail } from "../Store/CurrentUser/currentUser";
+import { clearSizes } from "../Store/MessagesSizes/messagesSizes";
 import { clearRegisterForm } from "../Store/RegisterForm/registerFormSlice";
-import { subOnUserData } from "./subOnUserData";
-import getUserFromDB from "./getUserFromDB";
+import { store } from "../Store/store";
+import createUserData from "../utils/createUserData";
 import createUserInDB from "./createUserInDB";
+import getUserFromDB from "./getUserFromDB";
+import { subOnUserData } from "./subOnUserData";
 
 export const observeUser = async () => {
   const dispatch = store.dispatch;

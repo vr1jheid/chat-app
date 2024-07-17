@@ -1,4 +1,5 @@
-import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice,PayloadAction } from "@reduxjs/toolkit";
+
 import { UserDataDB } from "../../Types/userTypes";
 
 export interface currentUserState extends UserDataDB {

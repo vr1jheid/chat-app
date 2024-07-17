@@ -1,13 +1,14 @@
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { memo } from "react";
-import { UserAvatar } from "../Shared/UserAvatar";
-import { useAppDispatch, useAppSelector } from "../../Store/hooks";
+
 import {
   selectActiveChatDialogPartner,
   selectActiveChatID,
 } from "../../Store/ActiveChat/activeChat";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { clearActiveChatWithCache } from "../../Store/ActiveChat/thunks/clearActiveChatWithCache";
+import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 import { selectWindowSize } from "../../Store/WindowSize/windowSize";
+import { UserAvatar } from "../Shared/UserAvatar";
 
 export const ChatHeader = memo(() => {
   const dispatch = useAppDispatch();
