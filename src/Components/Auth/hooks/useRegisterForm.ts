@@ -1,10 +1,10 @@
 import { isUserExist } from "../../../Services/isUserExist";
-import { registerNewUser } from "../../../Services/registerNewUser";
 import { useAppDispatch, useAppSelector } from "../../../Store/hooks";
 import {
   selectRegisterFormState,
   setFieldParam,
 } from "../../../Store/RegisterForm/registerFormSlice";
+import { registerNewUser } from "../services/registerNewUser";
 import { FieldParams, RegisterFormDataKeys } from "../types/authTypes";
 import { validateByField } from "../validation/validateByField";
 

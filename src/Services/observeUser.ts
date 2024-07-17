@@ -1,5 +1,6 @@
-import { onAuthStateChanged,Unsubscribe } from "firebase/auth";
+import { onAuthStateChanged, Unsubscribe } from "firebase/auth";
 
+import { createUserInDB } from "../Components/Auth/services/createUserInDB";
 import { auth } from "../main";
 import { clearActiveChat } from "../Store/ActiveChat/activeChat";
 import { subOnChat } from "../Store/ActiveChat/thunks/subOnChat";
@@ -11,7 +12,6 @@ import { clearSizes } from "../Store/MessagesSizes/messagesSizes";
 import { clearRegisterForm } from "../Store/RegisterForm/registerFormSlice";
 import { store } from "../Store/store";
 import createUserData from "../utils/createUserData";
-import createUserInDB from "./createUserInDB";
 import getUserFromDB from "./getUserFromDB";
 import { subOnUserData } from "./subOnUserData";
 

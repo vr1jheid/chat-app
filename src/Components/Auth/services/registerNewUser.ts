@@ -1,10 +1,10 @@
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { enqueueSnackbar } from "notistack";
 
-import { RegisterFormDataKeys } from "../Components/Auth/types/authTypes";
-import { auth } from "../main";
-import createUserData from "../utils/createUserData";
-import createUserInDB from "./createUserInDB";
+import { auth } from "../../../main";
+import createUserData from "../../../utils/createUserData";
+import { RegisterFormDataKeys } from "../types/authTypes";
+import { createUserInDB } from "./createUserInDB";
 
 export const registerNewUser = async ({
   email,
