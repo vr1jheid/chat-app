@@ -4,7 +4,7 @@ import {
 } from "../../../Components/Auth/types/authTypes";
 
 export const createRegisterInitialState = (fields: RegisterFormDataKeys[]) => {
-  return fields.reduce((acc: RegisterFormData | {}, field) => {
+  return fields.reduce((acc: RegisterFormData | object, field) => {
     return {
       ...acc,
       [field]: {

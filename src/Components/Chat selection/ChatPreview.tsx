@@ -60,7 +60,7 @@ export const ChatPreview = memo(({ chatData, clickAction }: Props) => {
         <div className="flex justify-between gap-4">
           <div className="text-2xl max-w-[80%] truncate">{chatName}</div>
           <div className="text-xl text-[#a0a0a0]">
-            {getTimeFromTimestamp(chatData.lastMessage?.serverTime!)}
+            {getTimeFromTimestamp(chatData.lastMessage?.serverTime ?? 0)}
           </div>
         </div>
 

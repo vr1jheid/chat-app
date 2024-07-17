@@ -10,7 +10,10 @@ export const ChatsList = () => {
 
   const sortedChats = Object.values(chatsList)
     .filter((c) => c.lastMessage)
-    .sort((a, b) => b.lastMessage?.serverTime! - a.lastMessage?.serverTime!);
+    .sort(
+      (a, b) =>
+        (b.lastMessage?.serverTime ?? 0) - (a.lastMessage?.serverTime ?? 0)
+    );
 
   const selectAsActive = (chat: ChatData) => {
     dispatch(selectChatFromObserved(chat.id));
