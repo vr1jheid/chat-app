@@ -76,8 +76,6 @@ export const activeChatSlice = createSlice({
       state.isNextPageLoading = true;
     });
     builder.addCase(loadNextPage.fulfilled, (state, action) => {
-      console.log(action.payload.length, action.payload);
-
       state.messages = [...state.messages, ...action.payload];
       if (action.payload.length < ITEMS_PER_PAGE) {
         state.hasNextPage = false;

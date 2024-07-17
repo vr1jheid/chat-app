@@ -3,9 +3,9 @@ import { useEffect } from "react";
 import { store } from "./Store/store";
 import { ChatLocalCache } from "./Types/chatTypes";
 import { useWindowResize } from "./Hooks/useWindowResize";
-import { ModalManager } from "./Components/ModalManager/ModalManager";
 import { useAppDispatch } from "./Store/hooks";
 import { setModal } from "./Store/Modal/modalSlice";
+import { ModalManager } from "./Components/Modal/ModalManager/ModalManager";
 
 export const App = () => {
   useWindowResize();

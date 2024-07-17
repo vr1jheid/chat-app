@@ -9,6 +9,7 @@ export default {
         "gray-very-light": "#2c2c2c",
         "gray-extra-light": "#56595d",
         "gray-hover": "#2f2f2f",
+        "icon-modal": "#aaaaaa",
         "purple-main": "#766ac8",
 
         "purple-extra-light": "#bab9e5",

@@ -1,10 +1,18 @@
 import { Modal } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../Store/hooks";
-import { closeModal, selectModalState } from "../../Store/Modal/modalSlice";
+import { useAppDispatch, useAppSelector } from "../../../Store/hooks";
+import { selectModalState, closeModal } from "../../../Store/Modal/modalSlice";
+import { UserInfoModal } from "../ModalContent/UserInfoModal";
 
 export const ModalManager = () => {
   const dispatch = useAppDispatch();
   const { type } = useAppSelector(selectModalState);
+
+  const mockAuthor = {
+    displayName: "ZerO",
+    email: "terekhovt@gmail.com",
+    avatarURL:
+      "https://lh3.googleusercontent.com/a/ACg8ocIuQiTtEM0db5ezW8Tu3QqOxeUgGEQTq3VlMDCPPm6j-63jZ7Lg=s96-c",
+  };
 
   const onClose = () => {
     dispatch(closeModal());
@@ -15,7 +23,7 @@ export const ModalManager = () => {
   const modalContent = () => {
     switch (type) {
       case "userInfo":
-        break;
+        return <UserInfoModal userInfo={mockAuthor} />;
 
       default:
         return null;
