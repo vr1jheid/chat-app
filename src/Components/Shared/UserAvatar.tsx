@@ -16,8 +16,6 @@ const getTextForAvatar = (alt: string) => {
 };
 
 export const UserAvatar = ({ alt, src, size = 50 }: Props) => {
-  /*   console.log(src); */
-
   if (src) {
     return <Avatar sx={{ width: size, height: size }} src={src}></Avatar>;
   }

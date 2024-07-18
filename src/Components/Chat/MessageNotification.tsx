@@ -4,33 +4,33 @@ import { closeSnackbar } from "notistack";
 import { CSSProperties, forwardRef } from "react";
 import { useSwipeable } from "react-swipeable";
 
-import { selectChatFromObserved } from "../../Store/Chats/thunks/selectChatFromObserved";
-import { useAppDispatch, useAppSelector } from "../../Store/hooks";
-import { selectWindowSize } from "../../Store/WindowSize/windowSize";
-import { MessageAuthor } from "../../Types/messageTypes";
+import { IMessageNotification } from "../../Types/notistack";
 import { UserAvatar } from "../Shared/UserAvatar";
 
-interface Props {
+interface Props extends IMessageNotification {
   style: CSSProperties;
   id: number;
   message: string;
-  messageAuthor: MessageAuthor;
-  chatID: string;
-  type?: "standard" | "mobile";
 }
 
 export const MessageNotification = forwardRef<HTMLDivElement, Props>(
-  ({ style, message, messageAuthor, id: notiID, chatID }, ref) => {
-    const dispatch = useAppDispatch();
-    const { width } = useAppSelector(selectWindowSize);
-    const { avatarURL, displayName, email } = messageAuthor;
-    console.log(ref);
-
+  (
+    {
+      id: notiID,
+      style,
+      message,
+      messageAuthor,
+      mobile = false,
+      avatarURL,
+      onClose,
+    },
+    ref
+  ) => {
     const closeNoti = () => {
       closeSnackbar(notiID);
     };
     const toChat = () => {
-      dispatch(selectChatFromObserved(chatID));
+      onClose && onClose();
       closeSnackbar(notiID);
     };
 
@@ -38,7 +38,6 @@ export const MessageNotification = forwardRef<HTMLDivElement, Props>(
       onSwipedUp: closeNoti,
       preventScrollOnSwipe: true,
     });
-    const mobile = width < 1024;
     return (
       <div
         className={clsx(
@@ -54,13 +53,13 @@ export const MessageNotification = forwardRef<HTMLDivElement, Props>(
         onClick={!mobile ? () => {} : toChat}
       >
         <UserAvatar
-          alt={displayName ?? email}
+          alt={messageAuthor}
           src={avatarURL}
           size={!mobile ? 70 : 40}
         />
         <div className="flex flex-col gap-1 h-full w-full grow lg:max-w-56 truncate ">
           <div className="text-xl inline-flex items-center justify-between">
-            {displayName ?? email}
+            {messageAuthor}
             <button
               onClick={closeNoti}
               className="rounded-full p-1 hover:bg-gray-extra-light hidden lg:grid place-self-center"

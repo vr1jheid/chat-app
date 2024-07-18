@@ -1,7 +1,6 @@
 // eslint-disable-next-line simple-import-sort/imports
 import "./styles/index.css";
 import "./styles/reset.css";
-import { store } from "./Store/store.ts";
 
 import { ThemeProvider } from "@emotion/react";
 import ReactDOM from "react-dom/client";
@@ -10,6 +9,7 @@ import { RouterProvider } from "react-router-dom";
 
 import { initializeFirebase } from "./firebase-config.ts";
 import { CustomSnackbarProvider } from "./Providers/CustomSnackbarProvider.tsx";
+import { store } from "./Store/store.ts";
 import { router } from "./Routes/router.tsx";
 import { observeUser } from "./Services/observeUser.ts";
 import { theme } from "./styles/MUITheme.ts";

@@ -1,8 +1,8 @@
 import { Timestamp as TimestampDB } from "firebase/firestore";
 
 export interface MessageAuthor {
-  email: string | null;
-  displayName: string | null;
+  email: string;
+  displayName: string;
   avatarURL: string | null;
 }
 

@@ -6,6 +6,7 @@ import {
   changeLastMessage,
   increaseUnseenMessages,
 } from "../Store/Chats/chats";
+import { selectChatFromObserved } from "../Store/Chats/thunks/selectChatFromObserved";
 import { store } from "../Store/store";
 import { ChatDataDB } from "../Types/chatTypes";
 import { dbMessageToLocal } from "../utils/dbMessageToLocal";
@@ -39,19 +40,25 @@ export const subOnLastMessageChange = (chatsIDs: string[]) => {
         })
       );
       const { activeChat, currentUser } = store.getState();
+
       if (
         activeChat.id !== changedChatData.id &&
         currentUser.email !== lastMessage.author.email &&
         !currentUser.chats[changedChatData.id].isMuted
       ) {
+        const isMobile = window.innerWidth <= 1024;
         enqueueSnackbar(lastMessage.messageText, {
           variant: "messageNotification",
           anchorOrigin: {
-            vertical: window.innerWidth > 1024 ? "bottom" : "top",
-            horizontal: window.innerWidth > 1024 ? "left" : "center",
+            vertical: !isMobile ? "bottom" : "top",
+            horizontal: !isMobile ? "left" : "center",
           },
-          messageAuthor: lastMessage.author,
-          chatID: changedChatData.id,
+          mobile: isMobile,
+          messageAuthor: lastMessage.author.displayName,
+          avatarURL: lastMessage.author.avatarURL,
+          onClose: () => {
+            dispatch(selectChatFromObserved(changedChatData.id));
+          },
         });
       }
       if (activeChat.id !== changedChatData.id) {
