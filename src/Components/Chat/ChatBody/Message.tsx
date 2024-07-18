@@ -1,81 +1,41 @@
 import clsx from "clsx";
-import { useContext, useEffect, useRef } from "react";
+import { memo } from "react";
 
-import { useAppDispatch, useAppSelector } from "../../../Store/hooks";
-import { setSize } from "../../../Store/MessagesSizes/messagesSizes";
-import { setModal } from "../../../Store/Modal/modalSlice";
-import { selectWindowSize } from "../../../Store/WindowSize/windowSize";
-import { ChatTypes } from "../../../Types/chatTypes";
-import { MessageAuthor } from "../../../Types/messageTypes";
 import getTimeFromTimestamp from "../../../utils/getTimeFromTimestamp";
 import { Loader } from "../../Shared/Loader";
 import { UserAvatar } from "../../Shared/UserAvatar";
-import { ChatContext } from "../Context/ChatContext";
 
 interface Props {
   id: string;
-  isMyself: boolean;
-  author: MessageAuthor;
+  isMyself?: boolean;
   text: string;
   timestamp: number | null;
-  index: number;
-  chatType: ChatTypes;
-  deleteMessageFunc: () => void;
+  deleteMessageFunc?: () => void;
+  author?: { name: string; avatarURL?: string | null } | null;
+  onAuthorClick?: () => void;
 }
 
-export const Message = ({
-  id,
-  author,
-  text,
-  timestamp,
-  isMyself,
-  index,
-  chatType,
-  deleteMessageFunc,
-}: Props) => {
-  const dispatch = useAppDispatch();
-  const messageRoot = useRef<HTMLDivElement | null>(null);
-  const { listRef } = useContext(ChatContext);
-  const screenSize = useAppSelector(selectWindowSize);
+export const Message = memo(
+  ({
+    author,
+    text,
+    timestamp,
+    isMyself = !author,
+    deleteMessageFunc,
+    onAuthorClick,
+  }: Props) => {
+    const time = timestamp
+      ? getTimeFromTimestamp(timestamp)
+      : getTimeFromTimestamp(Date.now());
 
-  useEffect(() => {
-    const size = messageRoot.current?.getBoundingClientRect().height;
-    if (!size) return;
-    dispatch(setSize({ id, size }));
-    listRef?.current?.resetAfterIndex(index);
-  }, [screenSize]);
-
-  const time = timestamp
-    ? getTimeFromTimestamp(timestamp)
-    : getTimeFromTimestamp(Date.now());
-
-  const isGroup = chatType === ChatTypes.group;
-
-  return (
-    <div
-      id={id}
-      ref={messageRoot}
-      className={clsx("flex grow max-w-full", {
-        "justify-end": isMyself,
-        "justify-start": !isMyself,
-      })}
-      style={{ direction: "ltr" }}
-    >
+    return (
       <div
         className="flex items-end w-fit max-w-[80%] gap-2"
         onClick={deleteMessageFunc}
       >
-        {!isMyself && isGroup && (
-          <button
-            className="cursor-pointer"
-            onClick={() => {
-              dispatch(setModal({ type: "userInfo", data: author }));
-            }}
-          >
-            <UserAvatar
-              alt={author.displayName ?? author.email}
-              src={author.avatarURL}
-            />
+        {author && (
+          <button className="cursor-pointer" onClick={onAuthorClick}>
+            <UserAvatar alt={author.name} src={author.avatarURL} />
           </button>
         )}
 
@@ -92,10 +52,8 @@ export const Message = ({
               <Loader />
             </div>
           )}
-          {!isMyself && isGroup && (
-            <div className="text-purple-main text-left">
-              {author.displayName ?? author.email}
-            </div>
+          {author && (
+            <div className="text-purple-main text-left">{author.name}</div>
           )}
 
           <div className="flex flex-row-reverse  max-w-full gap-3 justify-between">
@@ -109,12 +67,12 @@ export const Message = ({
                   }
                 )}
               >
-                {time || "??:??"}
+                {time}
               </span>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+);

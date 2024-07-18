@@ -11,23 +11,18 @@ import { clearActiveChatWithCache } from "../../../Store/ActiveChat/thunks/clear
 import { loadNextPage } from "../../../Store/ActiveChat/thunks/loadNextPage";
 import { selectCurrentUserEmail } from "../../../Store/CurrentUser/currentUser";
 import { useAppDispatch, useAppSelector } from "../../../Store/hooks";
-import { selectMessagesSizes } from "../../../Store/MessagesSizes/messagesSizes";
-import { isNextDay } from "../../../utils/isNextDay";
 import { Loader } from "../../Shared/Loader";
 import { ChatContext } from "../Context/ChatContext";
-import { ListItem } from "./ListItem";
+import { getChatItemSize } from "../utils/getChatItemSize";
+import { ChatItem } from "./ChatItem";
 
 export const ChatBody = () => {
-  const MESSAGE_MARGIN_BOT = 10;
-  const DATE_BLOCK_SIZE = 40;
-
   const dispatch = useAppDispatch();
   const [showToBottomButton, setShowToBottomButton] = useState(false);
 
   const currentUserEmail = useAppSelector(selectCurrentUserEmail);
   const { id, messages, type, isLoading, isNextPageLoading, hasNextPage } =
     useAppSelector(selectActiveChat);
-  const sizes = useAppSelector(selectMessagesSizes);
   const { setListRef } = useContext(ChatContext);
   const {
     scrollOffset,
@@ -41,11 +36,12 @@ export const ChatBody = () => {
     setListRef(listRef);
   }, []);
 
-  useEffect(() => {
-    if (messages[0]?.author.email === currentUserEmail) {
-      toBottom();
-    }
-  }, [messages[0]]);
+  const { ref: swiperRef, ...swipeHandler } = useSwipeable({
+    onSwipedRight: ({ event }) => {
+      event.stopPropagation();
+      dispatch(clearActiveChatWithCache());
+    },
+  });
 
   const toBottom = () => {
     scrollOffset.current = 0;
@@ -53,17 +49,14 @@ export const ChatBody = () => {
     setShowToBottomButton(false);
   };
 
+  useEffect(() => {
+    if (messages[0]?.author.email === currentUserEmail) {
+      toBottom();
+    }
+  }, [messages[0]]);
+
   const getSize = (index: number) => {
-    if (!sizes[messages[index]?.id]) {
-      return 50;
-    }
-    if (
-      isNextDay(messages[index], messages[index + 1]) ||
-      index === messages.length - 1
-    ) {
-      return sizes[messages[index]?.id] + MESSAGE_MARGIN_BOT + DATE_BLOCK_SIZE;
-    }
-    return sizes[messages[index]?.id] + MESSAGE_MARGIN_BOT;
+    return getChatItemSize(index);
   };
 
   const isItemLoaded = (index: number) => index < messages.length;
@@ -79,13 +72,6 @@ export const ChatBody = () => {
       ? setShowToBottomButton(true)
       : setShowToBottomButton(false);
   };
-
-  const { ref: swiperRef, ...swipeHandler } = useSwipeable({
-    onSwipedRight: ({ event }) => {
-      event.stopPropagation();
-      dispatch(clearActiveChatWithCache());
-    },
-  });
 
   return (
     <div
@@ -139,7 +125,7 @@ export const ChatBody = () => {
                   onScroll={onScroll}
                   useIsScrolling
                 >
-                  {ListItem}
+                  {ChatItem}
                 </VariableSizeList>
               )}
             </InfiniteLoader>
