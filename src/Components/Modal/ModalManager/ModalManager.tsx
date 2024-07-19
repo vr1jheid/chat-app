@@ -8,13 +8,6 @@ export const ModalManager = () => {
   const dispatch = useAppDispatch();
   const { type, data } = useAppSelector(selectModalState);
 
-  const mockAuthor = {
-    displayName: "ZerO",
-    email: "terekhovt@gmail.com",
-    avatarURL:
-      "https://lh3.googleusercontent.com/a/ACg8ocIuQiTtEM0db5ezW8Tu3QqOxeUgGEQTq3VlMDCPPm6j-63jZ7Lg=s96-c",
-  };
-
   const onClose = () => {
     dispatch(closeModal());
   };

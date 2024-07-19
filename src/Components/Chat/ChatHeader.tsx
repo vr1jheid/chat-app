@@ -7,12 +7,14 @@ import {
 } from "../../Store/ActiveChat/activeChat";
 import { clearActiveChatWithCache } from "../../Store/ActiveChat/thunks/clearActiveChatWithCache";
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
+import { setModal } from "../../Store/Modal/modalSlice";
 import { selectWindowSize } from "../../Store/WindowSize/windowSize";
 import { UserAvatar } from "../Shared/UserAvatar";
 
 export const ChatHeader = memo(() => {
   const dispatch = useAppDispatch();
   const activeChatID = useAppSelector(selectActiveChatID);
+
   const dialogPartner = useAppSelector(selectActiveChatDialogPartner);
   const { width } = useAppSelector(selectWindowSize);
 
@@ -31,7 +33,12 @@ export const ChatHeader = memo(() => {
       >
         <ArrowDownwardIcon sx={{ width: iconSize, height: iconSize }} />
       </button>
-      <div className="flex gap-3 items-center ml-7">
+      <div
+        className="flex gap-3 items-center ml-7 cursor-pointer"
+        onClick={() =>
+          dispatch(setModal({ type: "userInfo", data: dialogPartner }))
+        }
+      >
         <UserAvatar alt={chatName} src={chatAvatar} size={avatarSize} />
         <div className="">{chatName}</div>
       </div>

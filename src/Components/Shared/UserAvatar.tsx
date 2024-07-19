@@ -24,7 +24,7 @@ export const UserAvatar = ({ alt, src, size, variant = "circular" }: Props) => {
       sx={{ width: sizeSize, height: sizeSize }}
       src={src ?? undefined}
     >
-      {!src ? getTextForAvatar(alt) : "?"}
+      {!src && alt ? getTextForAvatar(alt) : "?"}
     </Avatar>
   );
 };

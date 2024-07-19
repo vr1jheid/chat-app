@@ -30,9 +30,9 @@ export const ChatItem = ({
   const messageRoot = useRef<HTMLDivElement | null>(null);
   const { listRef } = useContext(ChatContext);
   const screenSize = useAppSelector(selectWindowSize);
+  const currentUserEmail = useAppSelector(selectCurrentUserEmail);
 
   const { messages, type } = data;
-  const currentUserEmail = useAppSelector(selectCurrentUserEmail);
   const message = messages[index];
   const isMyself = currentUserEmail === message?.author.email;
 
@@ -80,6 +80,7 @@ export const ChatItem = ({
               id={message.id}
               author={message.author}
               isMyself={isMyself}
+              showAuthor={!isMyself && type !== ChatTypes.dialog}
               text={message.messageText}
               timestamp={message.serverTime}
               onAuthorClick={onAuthorClick}

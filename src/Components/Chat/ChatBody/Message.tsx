@@ -13,6 +13,7 @@ interface Props {
   timestamp: number | null;
   deleteMessageFunc?: () => void;
   author?: MessageAuthor | null;
+  showAuthor?: boolean;
   onAuthorClick?: () => void;
 }
 
@@ -24,6 +25,7 @@ export const Message = memo(
     isMyself = !author,
     deleteMessageFunc,
     onAuthorClick,
+    showAuthor,
   }: Props) => {
     const time = timestamp
       ? getTimeFromTimestamp(timestamp)
@@ -34,7 +36,7 @@ export const Message = memo(
         className="flex items-end w-fit max-w-[80%] gap-2"
         onClick={deleteMessageFunc}
       >
-        {author && !isMyself && (
+        {author && showAuthor && (
           <button
             className="cursor-pointer h-10 w-10 min-w-10 -translate-y-1"
             onClick={onAuthorClick}
@@ -56,7 +58,7 @@ export const Message = memo(
               <Loader />
             </div>
           )}
-          {author && !isMyself && (
+          {author && showAuthor && (
             <div
               onClick={onAuthorClick}
               className="text-purple-main text-left cursor-pointer"

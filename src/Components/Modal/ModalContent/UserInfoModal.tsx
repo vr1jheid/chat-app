@@ -33,7 +33,7 @@ export const UserInfoModal = ({ userInfo }: Props) => {
       </ul>
       <button
         onClick={() => dispatch(closeModal())}
-        className="absolute top-3 right-3 hidden sm:block  opacity-50 hover:bg-gray-hover  rounded-full    hover:opacity-100"
+        className="absolute top-3 right-3 hidden sm:block  opacity-50 hover:bg-[#00000042]  rounded-full    hover:opacity-100"
       >
         <CloseIcon fontSize="large" />
       </button>
