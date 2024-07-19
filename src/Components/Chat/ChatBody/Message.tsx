@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { memo } from "react";
 
+import { MessageAuthor } from "../../../Types/messageTypes";
 import getTimeFromTimestamp from "../../../utils/getTimeFromTimestamp";
 import { Loader } from "../../Shared/Loader";
 import { UserAvatar } from "../../Shared/UserAvatar";
@@ -11,7 +12,7 @@ interface Props {
   text: string;
   timestamp: number | null;
   deleteMessageFunc?: () => void;
-  author?: { name: string; avatarURL?: string | null } | null;
+  author?: MessageAuthor | null;
   onAuthorClick?: () => void;
 }
 
@@ -33,12 +34,12 @@ export const Message = memo(
         className="flex items-end w-fit max-w-[80%] gap-2"
         onClick={deleteMessageFunc}
       >
-        {author && (
+        {author && !isMyself && (
           <button
             className="cursor-pointer h-10 w-10 min-w-10 -translate-y-1"
             onClick={onAuthorClick}
           >
-            <UserAvatar alt={author.name} src={author.avatarURL} />
+            <UserAvatar alt={author.displayName} src={author.avatarURL} />
           </button>
         )}
 
@@ -55,8 +56,13 @@ export const Message = memo(
               <Loader />
             </div>
           )}
-          {author && (
-            <div className="text-purple-main text-left">{author.name}</div>
+          {author && !isMyself && (
+            <div
+              onClick={onAuthorClick}
+              className="text-purple-main text-left cursor-pointer"
+            >
+              {author.displayName}
+            </div>
           )}
 
           <div className="flex flex-row-reverse  max-w-full gap-3 justify-between">

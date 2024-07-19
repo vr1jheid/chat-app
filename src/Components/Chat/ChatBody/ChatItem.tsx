@@ -31,7 +31,7 @@ export const ChatItem = ({
   const { listRef } = useContext(ChatContext);
   const screenSize = useAppSelector(selectWindowSize);
 
-  const { messages } = data;
+  const { messages, type } = data;
   const currentUserEmail = useAppSelector(selectCurrentUserEmail);
   const message = messages[index];
   const isMyself = currentUserEmail === message?.author.email;
@@ -59,14 +59,8 @@ export const ChatItem = ({
   };
 
   const isItemLoaded = (index: number) => index < messages.length;
-  const author = !isMyself
-    ? {
-        name: message.author.displayName,
-        avatarURL: message.author.avatarURL,
-      }
-    : null;
   const onAuthorClick = useCallback(() => {
-    dispatch(setModal({ type: "userInfo", data: author }));
+    dispatch(setModal({ type: "userInfo", data: message.author }));
   }, []);
   return (
     <div className="rotate-180" style={style}>
@@ -84,7 +78,8 @@ export const ChatItem = ({
           >
             <Message
               id={message.id}
-              author={author}
+              author={message.author}
+              isMyself={isMyself}
               text={message.messageText}
               timestamp={message.serverTime}
               onAuthorClick={onAuthorClick}

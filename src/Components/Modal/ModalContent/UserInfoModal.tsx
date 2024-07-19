@@ -1,6 +1,9 @@
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
+import CloseIcon from "@mui/icons-material/Close";
 import PersonIcon from "@mui/icons-material/Person";
 
+import { useAppDispatch } from "../../../Store/hooks";
+import { closeModal } from "../../../Store/Modal/modalSlice";
 import { MessageAuthor } from "../../../Types/messageTypes";
 import { UserAvatar } from "../../Shared/UserAvatar";
 import { UserInfoListItem } from "./UserInfoListItem";
@@ -10,13 +13,14 @@ interface Props {
 }
 
 export const UserInfoModal = ({ userInfo }: Props) => {
+  const dispatch = useAppDispatch();
   return (
-    <div className="w-[95vw] h-[80dvh] p-2 bg-gray-light rounded-xl text-white">
-      <div className="h-[45%] relative mb-7">
+    <div className="w-[95vw] h-[60dvh] max-w-[420px] p-2 bg-gray-light rounded-xl text-white relative">
+      <div className="h-[70%] relative mb-7">
         <UserAvatar
           src={userInfo.avatarURL}
           alt={userInfo.displayName}
-          variant="square"
+          variant="rounded"
         />
       </div>
       <ul className="flex flex-col justify-center text-xl">
@@ -27,6 +31,12 @@ export const UserInfoModal = ({ userInfo }: Props) => {
           <>{userInfo.email}</>
         </UserInfoListItem>
       </ul>
+      <button
+        onClick={() => dispatch(closeModal())}
+        className="absolute top-3 right-3 hidden sm:block  opacity-50 hover:bg-gray-hover  rounded-full    hover:opacity-100"
+      >
+        <CloseIcon fontSize="large" />
+      </button>
     </div>
   );
 };

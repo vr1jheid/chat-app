@@ -6,7 +6,7 @@ import { UserInfoModal } from "../ModalContent/UserInfoModal";
 
 export const ModalManager = () => {
   const dispatch = useAppDispatch();
-  const { type } = useAppSelector(selectModalState);
+  const { type, data } = useAppSelector(selectModalState);
 
   const mockAuthor = {
     displayName: "ZerO",
@@ -24,7 +24,7 @@ export const ModalManager = () => {
   const modalContent = () => {
     switch (type) {
       case "userInfo":
-        return <UserInfoModal userInfo={mockAuthor} />;
+        return <UserInfoModal userInfo={data} />;
 
       default:
         return null;

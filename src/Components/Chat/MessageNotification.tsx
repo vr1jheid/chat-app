@@ -41,7 +41,7 @@ export const MessageNotification = forwardRef<HTMLDivElement, Props>(
     return (
       <div
         className={clsx(
-          "group flex relative z-[-10] items-center gap-3 bg-gray-dark text-white p-2 rounded-lg h-20 lg:w-80 lg:h-28"
+          "group flex relative z-[-10] items-center gap-4 bg-gray-dark text-white p-2 rounded-lg h-20 lg:w-80 lg:h-28"
         )}
         style={style}
         {...swipeHandler}
@@ -55,7 +55,7 @@ export const MessageNotification = forwardRef<HTMLDivElement, Props>(
         <UserAvatar
           alt={messageAuthor}
           src={avatarURL}
-          size={!mobile ? 70 : 40}
+          size={!mobile ? 70 : 50}
         />
         <div className="flex flex-col gap-1 h-full w-full grow lg:max-w-56 truncate ">
           <div className="text-xl inline-flex items-center justify-between">

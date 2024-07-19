@@ -1,7 +1,7 @@
 import { Avatar } from "@mui/material";
 
 interface Props {
-  alt: string | null;
+  alt: string;
   src?: string | null;
   size?: number | string;
   variant?: "circular" | "rounded" | "square";
@@ -13,7 +13,7 @@ const getTextForAvatar = (alt: string) => {
   if (words.length > 1) {
     return words.map((w) => w[0]).join("");
   }
-  return alt.slice(0, 2);
+  return alt.slice(0, 1);
 };
 
 export const UserAvatar = ({ alt, src, size, variant = "circular" }: Props) => {
@@ -24,7 +24,7 @@ export const UserAvatar = ({ alt, src, size, variant = "circular" }: Props) => {
       sx={{ width: sizeSize, height: sizeSize }}
       src={src ?? undefined}
     >
-      {!src && alt ? getTextForAvatar(alt) : "?"}
+      {!src ? getTextForAvatar(alt) : "?"}
     </Avatar>
   );
 };
