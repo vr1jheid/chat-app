@@ -6,7 +6,7 @@ import { ModalManager } from "./Components/Modal/ModalManager/ModalManager";
 import { useWindowResize } from "./Hooks/useWindowResize";
 import { selectChatFromObserved } from "./Store/Chats/thunks/selectChatFromObserved";
 import { useAppDispatch } from "./Store/hooks";
-import { setModal } from "./Store/Modal/modalSlice";
+/* import { setModal } from "./Store/Modal/modalSlice"; */
 import { store } from "./Store/store";
 import { ChatLocalCache } from "./Types/chatTypes";
 
@@ -34,9 +34,9 @@ export const App = () => {
     });
   }, []);
 
-  const setModalFunc = () => {
+  /*   const setModalFunc = () => {
     dispatch(setModal({ type: "userInfo", data: null }));
-  };
+  }; */
 
   const showNoti = () => {
     enqueueSnackbar("some text", {

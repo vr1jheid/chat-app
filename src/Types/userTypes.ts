@@ -11,7 +11,7 @@ export interface UserChatParaps {
 export interface UserDataDB {
   uid: string;
   email: string;
-  displayName: string | null;
+  displayName: string;
   avatarURL: string | null;
   emailVerified: boolean;
   chats: UserChatParaps;
