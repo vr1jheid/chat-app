@@ -34,7 +34,10 @@ export const Message = memo(
         onClick={deleteMessageFunc}
       >
         {author && (
-          <button className="cursor-pointer" onClick={onAuthorClick}>
+          <button
+            className="cursor-pointer h-10 w-10 min-w-10 -translate-y-1"
+            onClick={onAuthorClick}
+          >
             <UserAvatar alt={author.name} src={author.avatarURL} />
           </button>
         )}

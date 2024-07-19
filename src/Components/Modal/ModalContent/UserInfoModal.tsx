@@ -2,6 +2,7 @@ import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import PersonIcon from "@mui/icons-material/Person";
 
 import { MessageAuthor } from "../../../Types/messageTypes";
+import { UserAvatar } from "../../Shared/UserAvatar";
 import { UserInfoListItem } from "./UserInfoListItem";
 
 interface Props {
@@ -9,15 +10,13 @@ interface Props {
 }
 
 export const UserInfoModal = ({ userInfo }: Props) => {
-  console.log(userInfo);
-
   return (
     <div className="w-[95vw] h-[80dvh] p-2 bg-gray-light rounded-xl text-white">
       <div className="h-[45%] relative mb-7">
-        <img
-          className="block w-full rounded-xl h-full object-cover"
+        <UserAvatar
           src={userInfo.avatarURL}
-          alt="avatar"
+          alt={userInfo.displayName}
+          variant="square"
         />
       </div>
       <ul className="flex flex-col justify-center text-xl">

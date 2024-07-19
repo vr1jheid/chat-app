@@ -4,6 +4,7 @@ interface Props {
   alt: string | null;
   src?: string | null;
   size?: number | string;
+  variant?: "circular" | "rounded" | "square";
 }
 
 const getTextForAvatar = (alt: string) => {
@@ -15,14 +16,15 @@ const getTextForAvatar = (alt: string) => {
   return alt.slice(0, 2);
 };
 
-export const UserAvatar = ({ alt, src, size = 50 }: Props) => {
-  if (src) {
-    return <Avatar sx={{ width: size, height: size }} src={src}></Avatar>;
-  }
-
+export const UserAvatar = ({ alt, src, size, variant = "circular" }: Props) => {
+  const sizeSize = size ?? "100%";
   return (
-    <Avatar sx={{ width: size, height: size }}>
-      {alt ? getTextForAvatar(alt) : "?"}
+    <Avatar
+      variant={variant}
+      sx={{ width: sizeSize, height: sizeSize }}
+      src={src ?? undefined}
+    >
+      {!src && alt ? getTextForAvatar(alt) : "?"}
     </Avatar>
   );
 };
