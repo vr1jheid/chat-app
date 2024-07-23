@@ -37,6 +37,8 @@ const UserMenu = () => {
       </Button>
       <Menu
         id="basic-menu"
+        className="py-0"
+        sx={{ "& .MuiList-root": { padding: 0 } }}
         anchorEl={anchorEl}
         open={isOpen}
         onClose={handleClose}
@@ -44,7 +46,9 @@ const UserMenu = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={logout}>Logout</MenuItem>
+        <MenuItem className="h-12" onClick={logout}>
+          Logout
+        </MenuItem>
       </Menu>
     </div>
   );
