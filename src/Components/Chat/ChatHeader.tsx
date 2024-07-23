@@ -1,19 +1,23 @@
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import clsx from "clsx";
 import { memo } from "react";
 
 import {
   selectActiveChatDialogPartner,
   selectActiveChatID,
+  selectActiveChatType,
 } from "../../Store/ActiveChat/activeChat";
 import { clearActiveChatWithCache } from "../../Store/ActiveChat/thunks/clearActiveChatWithCache";
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 import { setModal } from "../../Store/Modal/modalSlice";
 import { selectWindowSize } from "../../Store/WindowSize/windowSize";
+import { ChatTypes } from "../../Types/chatTypes";
 import { UserAvatar } from "../Shared/UserAvatar";
 
 export const ChatHeader = memo(() => {
   const dispatch = useAppDispatch();
   const activeChatID = useAppSelector(selectActiveChatID);
+  const chatType = useAppSelector(selectActiveChatType);
 
   const dialogPartner = useAppSelector(selectActiveChatDialogPartner);
   const { width } = useAppSelector(selectWindowSize);
@@ -34,10 +38,13 @@ export const ChatHeader = memo(() => {
         <ArrowDownwardIcon sx={{ width: iconSize, height: iconSize }} />
       </button>
       <div
-        className="flex gap-3 items-center ml-7 cursor-pointer"
-        onClick={() =>
-          dispatch(setModal({ type: "userInfo", data: dialogPartner }))
-        }
+        className={clsx("flex gap-3 items-center ml-7", {
+          "cursor-pointer": chatType === ChatTypes.dialog,
+        })}
+        onClick={() => {
+          if (chatType !== ChatTypes.dialog) return;
+          dispatch(setModal({ type: "userInfo", data: dialogPartner }));
+        }}
       >
         <UserAvatar alt={chatName} src={chatAvatar} size={avatarSize} />
         <div className="">{chatName}</div>

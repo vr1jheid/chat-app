@@ -26,6 +26,7 @@ export const activeChatSlice = createSlice({
     selectActiveChat: (state) => state,
     selectActiveChatLoading: (state) => state.isLoading,
     selectActiveChatID: (state) => state.id,
+    selectActiveChatType: (state) => state.type,
     selectActiveChatMessagesCount: (state) => state.messages.length,
     selectActiveChatNextPageLoading: (state) => state.isNextPageLoading,
     selectActiveChatHasNextPage: (state) => state.hasNextPage,
@@ -101,4 +102,5 @@ export const {
   selectActiveChatHasNextPage,
   selectActiveChatNextPageLoading,
   selectActiveChatDialogPartner,
+  selectActiveChatType,
 } = activeChatSlice.selectors;
