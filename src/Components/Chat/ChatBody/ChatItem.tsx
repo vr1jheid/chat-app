@@ -4,7 +4,6 @@ import { ListChildComponentProps } from "react-window";
 
 import { selectCurrentUserEmail } from "../../../Store/CurrentUser/currentUser";
 import { useAppDispatch, useAppSelector } from "../../../Store/hooks";
-import { setSize } from "../../../Store/MessagesSizes/messagesSizes";
 import { setModal } from "../../../Store/Modal/modalSlice";
 import { selectWindowSize } from "../../../Store/WindowSize/windowSize";
 import { ChatTypes } from "../../../Types/chatTypes";
@@ -28,7 +27,7 @@ export const ChatItem = ({
 }: ListChildComponentProps<Props>) => {
   const dispatch = useAppDispatch();
   const messageRoot = useRef<HTMLDivElement | null>(null);
-  const { listRef } = useContext(ChatContext);
+  const { listRef, messagesSizes } = useContext(ChatContext);
   const screenSize = useAppSelector(selectWindowSize);
   const currentUserEmail = useAppSelector(selectCurrentUserEmail);
 
@@ -38,8 +37,9 @@ export const ChatItem = ({
 
   useEffect(() => {
     const size = messageRoot.current?.getBoundingClientRect().height;
-    if (!size) return;
-    dispatch(setSize({ id: message.id, size }));
+    if (!size || !messagesSizes?.current) return;
+    /*     dispatch(setSize({ id: message.id, size })); */
+    messagesSizes.current[message.id] = size;
     listRef?.current?.resetAfterIndex(index);
   }, [screenSize]);
 

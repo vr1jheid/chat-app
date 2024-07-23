@@ -23,18 +23,9 @@ export const ChatBody = () => {
   const currentUserEmail = useAppSelector(selectCurrentUserEmail);
   const { id, messages, type, isLoading, isNextPageLoading, hasNextPage } =
     useAppSelector(selectActiveChat);
-  const { setListRef } = useContext(ChatContext);
-  const {
-    scrollOffset,
-    listRef,
-    innerListRef,
-    outerListRef,
-    listContainerRef,
-  } = useReverseScroll();
-
-  useEffect(() => {
-    setListRef(listRef);
-  }, []);
+  const { listRef, messagesSizes } = useContext(ChatContext);
+  const { scrollOffset, innerListRef, outerListRef, listContainerRef } =
+    useReverseScroll();
 
   const { ref: swiperRef, ...swipeHandler } = useSwipeable({
     onSwipedRight: ({ event }) => {
@@ -45,7 +36,7 @@ export const ChatBody = () => {
 
   const toBottom = () => {
     scrollOffset.current = 0;
-    listRef.current?.scrollTo(scrollOffset.current);
+    listRef?.current?.scrollTo(scrollOffset.current);
     setShowToBottomButton(false);
   };
 
@@ -53,10 +44,10 @@ export const ChatBody = () => {
     if (messages[0]?.author.email === currentUserEmail) {
       toBottom();
     }
-  }, [messages[0]]);
+  }, [messages]);
 
   const getSize = (index: number) => {
-    return getChatItemSize(index);
+    return getChatItemSize(index, messagesSizes?.current ?? {});
   };
 
   const isItemLoaded = (index: number) => index < messages.length;
@@ -78,6 +69,7 @@ export const ChatBody = () => {
       {...swipeHandler}
       ref={(node) => {
         swiperRef(node);
+
         listContainerRef.current = node;
       }}
       className="w-full h-full pb-3 px-2 rotate-180 relative"
@@ -107,6 +99,7 @@ export const ChatBody = () => {
                 <VariableSizeList
                   ref={(node) => {
                     loaderRef(node);
+                    if (!listRef) return;
                     listRef.current = node;
                   }}
                   innerRef={innerListRef}

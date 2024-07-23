@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useRef } from "react";
-import { VariableSizeList } from "react-window";
+import { useCallback, useContext, useEffect, useRef } from "react";
+
+import { ChatContext } from "../Components/Chat/Context/ChatContext";
 
 export const useReverseScroll = () => {
+  const { listRef } = useContext(ChatContext);
   const scrollOffset = useRef(0);
   const listContainerRef = useRef<HTMLDivElement | null>(null);
-  const listRef = useRef<VariableSizeList<any> | null>(null);
   const innerListRef = useRef<HTMLDivElement | null>(null);
   const outerListRef = useRef<HTMLDivElement | null>(null);
 
@@ -14,7 +15,7 @@ export const useReverseScroll = () => {
     if (
       !outerListRef.current?.style.height ||
       !innerListRef.current ||
-      !listRef.current
+      !listRef?.current
     ) {
       return;
     }
@@ -41,7 +42,6 @@ export const useReverseScroll = () => {
 
   return {
     scrollOffset,
-    listRef,
     innerListRef,
     outerListRef,
     listContainerRef,

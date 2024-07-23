@@ -1,24 +1,13 @@
-import { enqueueSnackbar } from "notistack";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 
 import { ModalManager } from "./Components/Modal/ModalManager/ModalManager";
 import { useWindowResize } from "./Hooks/useWindowResize";
-import { selectChatFromObserved } from "./Store/Chats/thunks/selectChatFromObserved";
-import { useAppDispatch } from "./Store/hooks";
 import { store } from "./Store/store";
 import { ChatLocalCache } from "./Types/chatTypes";
 
-const mockAuthor = {
-  displayName: "ZerO",
-  email: "terekhovt@gmail.com",
-  avatarURL:
-    "https://lh3.googleusercontent.com/a/ACg8ocIuQiTtEM0db5ezW8Tu3QqOxeUgGEQTq3VlMDCPPm6j-63jZ7Lg=s96-c",
-};
-
 export const App = () => {
   useWindowResize();
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     window.addEventListener("unload", () => {
@@ -33,33 +22,17 @@ export const App = () => {
     });
   }, []);
 
-  const showNoti = () => {
-    enqueueSnackbar("some text", {
-      variant: "messageNotification",
-      anchorOrigin: {
-        vertical: window.innerWidth > 1024 ? "bottom" : "top",
-        horizontal: window.innerWidth > 1024 ? "left" : "center",
-      },
-      mobile: true,
-      messageAuthor: mockAuthor.displayName,
-      avatarURL: mockAuthor.avatarURL,
-      onClose: () => {
-        dispatch(selectChatFromObserved("mainChat"));
-      },
-    });
-  };
-
   return (
     <>
       <Outlet />
       <ModalManager />
 
-      <button
+      {/*       <button
         onClick={showNoti}
         className="absolute z-50 bg-white p-5 top-0 right-0"
       >
         TEST
-      </button>
+      </button> */}
     </>
   );
 };

@@ -7,12 +7,11 @@ import { UserInfoModal } from "../ModalContent/UserInfoModal";
 export const ModalManager = () => {
   const dispatch = useAppDispatch();
   const { type, data } = useAppSelector(selectModalState);
+  const isOpen = Boolean(type);
 
   const onClose = () => {
     dispatch(closeModal());
   };
-
-  const isOpen = Boolean(type);
 
   const modalContent = () => {
     switch (type) {

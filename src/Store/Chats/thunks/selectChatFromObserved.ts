@@ -4,7 +4,6 @@ import { setActive } from "../../ActiveChat/activeChat";
 import { cacheMessages } from "../../ActiveChat/thunks/cacheMessages";
 import { setInitialMessages } from "../../ActiveChat/thunks/setInitialMessages";
 import { subOnChat } from "../../ActiveChat/thunks/subOnChat";
-import { clearSizes } from "../../MessagesSizes/messagesSizes";
 import { RootState } from "../../store";
 import { resetUnseenMessages } from "../chats";
 
@@ -15,7 +14,6 @@ export const selectChatFromObserved = createAsyncThunk(
     if (id === activeChat.id) return;
 
     dispatch(resetUnseenMessages(id));
-    dispatch(clearSizes());
     dispatch(cacheMessages());
     dispatch(setActive(chats[id]));
     dispatch(setInitialMessages(chats[id]));

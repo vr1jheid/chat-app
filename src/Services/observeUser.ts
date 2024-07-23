@@ -8,7 +8,6 @@ import { clearAllUsersList } from "../Store/AllUsersList/allUsersList";
 import fetchAllUsersEmailsFromDB from "../Store/AllUsersList/thunks/fetchAllUsersFromDB";
 import { clearChats } from "../Store/Chats/chats";
 import { clearUser, setUserEmail } from "../Store/CurrentUser/currentUser";
-import { clearSizes } from "../Store/MessagesSizes/messagesSizes";
 import { clearRegisterForm } from "../Store/RegisterForm/registerFormSlice";
 import { store } from "../Store/store";
 import createUserData from "../utils/createUserData";
@@ -24,7 +23,6 @@ export const observeUser = async () => {
     if (!userFromAuth) {
       dispatch(clearUser());
       dispatch(clearChats());
-      dispatch(clearSizes());
       dispatch(clearActiveChat());
       activeChat && dispatch(subOnChat({ action: "unsub" }));
       dispatch(clearAllUsersList());

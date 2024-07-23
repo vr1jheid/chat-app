@@ -1,16 +1,15 @@
-import { ReactNode, useState } from "react";
-import { VariableSizeList } from "react-window";
+import { ReactNode, useRef } from "react";
 
-import { ChatContext } from "./ChatContext";
+import { ChatContext, MessagesSizes } from "./ChatContext";
 
 export const ChatContextContainer = ({ children }: { children: ReactNode }) => {
-  const [listRef, setListRef] =
-    useState<React.MutableRefObject<VariableSizeList<any> | null> | null>(null);
+  const listRef = useRef(null);
+  const messagesSizes = useRef<MessagesSizes>({});
   return (
     <ChatContext.Provider
       value={{
         listRef,
-        setListRef,
+        messagesSizes,
       }}
     >
       {children}
