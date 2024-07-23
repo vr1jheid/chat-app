@@ -64,7 +64,7 @@ export const ChatPreview = memo(({ chatData, clickAction }: Props) => {
           </div>
         </div>
 
-        <div className="text-[#a0a0a0] truncate">
+        <div className="text-[#a0a0a0] truncate pr-10">
           {chatData.lastMessage?.messageText}
         </div>
       </div>

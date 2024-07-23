@@ -13,8 +13,6 @@ export const getChatItemSize = (
   const { activeChat } = store.getState();
   const message = activeChat.messages[index];
   const prevMessage = activeChat.messages[index + 1];
-  console.log(message.id, messagesSizes[message.id]);
-
   const messageSize = messagesSizes[message.id];
 
   if (!messageSize) {

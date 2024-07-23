@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { useCallback, useContext, useEffect, useRef } from "react";
 import { ListChildComponentProps } from "react-window";
 
+import { deleteMessage } from "../../../Services/deleteMessage";
 import { selectCurrentUserEmail } from "../../../Store/CurrentUser/currentUser";
 import { useAppDispatch, useAppSelector } from "../../../Store/hooks";
 import { setModal } from "../../../Store/Modal/modalSlice";
@@ -31,24 +32,25 @@ export const ChatItem = ({
   const screenSize = useAppSelector(selectWindowSize);
   const currentUserEmail = useAppSelector(selectCurrentUserEmail);
 
-  const { messages, type } = data;
-  const message = messages[index];
+  const chatData = data;
+  const message = chatData.messages[index];
   const isMyself = currentUserEmail === message?.author.email;
 
   useEffect(() => {
     const size = messageRoot.current?.getBoundingClientRect().height;
     if (!size || !messagesSizes?.current) return;
-    /*     dispatch(setSize({ id: message.id, size })); */
     messagesSizes.current[message.id] = size;
     listRef?.current?.resetAfterIndex(index);
   }, [screenSize]);
 
   const renderDate = () => {
-    const prevMessage = messages[index + 1];
-    if (!message.serverTime || !prevMessage?.serverTime) return;
+    const prevMessage = chatData.messages[index + 1];
+    if (!message.serverTime) return;
+
     if (
-      !isSameDate(message.serverTime, prevMessage.serverTime) ||
-      index === messages.length - 1
+      index === chatData.messages.length - 1 ||
+      (prevMessage.serverTime &&
+        !isSameDate(message.serverTime, prevMessage.serverTime))
     ) {
       return (
         <div className="text-white p-2 py-3 text-center rounded-full m-auto">
@@ -58,7 +60,7 @@ export const ChatItem = ({
     }
   };
 
-  const isItemLoaded = (index: number) => index < messages.length;
+  const isItemLoaded = (index: number) => index < chatData.messages.length;
   const onAuthorClick = useCallback(() => {
     dispatch(setModal({ type: "userInfo", data: message.author }));
   }, []);
@@ -80,10 +82,14 @@ export const ChatItem = ({
               id={message.id}
               author={message.author}
               isMyself={isMyself}
-              showAuthor={!isMyself && type !== ChatTypes.dialog}
+              showAuthor={!isMyself && chatData.type !== ChatTypes.dialog}
               text={message.messageText}
               timestamp={message.serverTime}
               onAuthorClick={onAuthorClick}
+              deleteMessageFunc={() => {
+                return;
+                deleteMessage(chatData.id, message.id);
+              }}
             />
           </div>
         </>

@@ -21,8 +21,8 @@ export const ChatBody = () => {
   const [showToBottomButton, setShowToBottomButton] = useState(false);
 
   const currentUserEmail = useAppSelector(selectCurrentUserEmail);
-  const { id, messages, type, isLoading, isNextPageLoading, hasNextPage } =
-    useAppSelector(selectActiveChat);
+  const activeChat = useAppSelector(selectActiveChat);
+  const { messages, isLoading, isNextPageLoading, hasNextPage } = activeChat;
   const { listRef, messagesSizes } = useContext(ChatContext);
   const { scrollOffset, innerListRef, outerListRef, listContainerRef } =
     useReverseScroll();
@@ -106,7 +106,7 @@ export const ChatBody = () => {
                   outerRef={outerListRef}
                   height={height}
                   width={width}
-                  itemData={{ messages, type, id }}
+                  itemData={activeChat}
                   initialScrollOffset={0}
                   onItemsRendered={onItemsRendered}
                   itemCount={
