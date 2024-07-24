@@ -14,10 +14,9 @@ import { UserAvatar } from "../Shared/UserAvatar";
 
 interface Props {
   chatData: ChatData;
-  clickAction: () => void;
 }
 
-export const ChatPreview = memo(({ chatData, clickAction }: Props) => {
+export const ChatPreview = memo(({ chatData }: Props) => {
   const dispatch = useAppDispatch();
   const { id: activeChatID } = useAppSelector(selectActiveChat);
   const isActive = chatData.id === activeChatID;
@@ -40,12 +39,10 @@ export const ChatPreview = memo(({ chatData, clickAction }: Props) => {
 
   return (
     <div
-      id={chatData.id}
       className={clsx(
         "max-w-full h-fit min-h-20 text-xl text-white rounded p-2 flex items-center justify-between truncate cursor-pointer relative",
         { " bg-purple-main": isActive, "hover:bg-gray-hover": !isActive }
       )}
-      onClick={clickAction}
     >
       <Badge
         badgeContent={chatData.unseenMessages}
