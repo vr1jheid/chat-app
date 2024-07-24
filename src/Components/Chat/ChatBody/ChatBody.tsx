@@ -45,7 +45,7 @@ export const ChatBody = () => {
     if (messages[0]?.author.email === currentUserEmail) {
       toBottom();
     }
-  }, [messages]);
+  }, [messages[0]]);
 
   const getSize = (index: number) => {
     return getChatItemSize(index, messagesSizes?.current ?? {});

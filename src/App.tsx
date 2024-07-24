@@ -3,23 +3,13 @@ import { Outlet } from "react-router-dom";
 
 import { ModalManager } from "./Components/Modal/ModalManager/ModalManager";
 import { useWindowResize } from "./Hooks/useWindowResize";
-import { store } from "./Store/store";
-import { ChatLocalCache } from "./Types/chatTypes";
+import { cacheChatsToLS } from "./utils/cacheChatsToLS";
 
 export const App = () => {
   useWindowResize();
 
   useEffect(() => {
-    window.addEventListener("unload", () => {
-      const { activeChat } = store.getState();
-      if (activeChat.messages.length && activeChat.id) {
-        const localCache: ChatLocalCache = {
-          cachedMessages: activeChat.messages,
-          hasNextPage: activeChat.hasNextPage,
-        };
-        localStorage.setItem(activeChat.id, JSON.stringify(localCache));
-      }
-    });
+    window.addEventListener("unload", cacheChatsToLS);
   }, []);
 
   return (

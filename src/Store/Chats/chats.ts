@@ -84,6 +84,9 @@ export const chatsSlice = createSlice({
       state.chats = { ...state.chats, ...payload };
       state.isLoading = false;
     });
+    builder.addCase(fetchChats.rejected, (state) => {
+      state.isLoading = false;
+    });
   },
 });
 

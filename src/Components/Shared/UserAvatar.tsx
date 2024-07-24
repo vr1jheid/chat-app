@@ -18,11 +18,19 @@ const getTextForAvatar = (alt: string) => {
 
 export const UserAvatar = ({ alt, src, size, variant = "circular" }: Props) => {
   const sizeSize = size ?? "100%";
+
+  if (!src) {
+    return (
+      <Avatar variant={variant} sx={{ width: sizeSize, height: sizeSize }}>
+        {alt ? getTextForAvatar(alt) : "?"}
+      </Avatar>
+    );
+  }
   return (
     <Avatar
       variant={variant}
       sx={{ width: sizeSize, height: sizeSize }}
-      src={src ?? undefined}
+      src={src}
     >
       {!src && alt ? getTextForAvatar(alt) : "?"}
     </Avatar>
