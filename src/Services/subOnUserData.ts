@@ -21,7 +21,9 @@ export const subOnUserData = (currentUserEmail: string) => {
       dispatch(updateUserData(userData));
 
       if (doc.metadata.hasPendingWrites) return;
-      const currentChatsCount = Object.keys(store.getState().chats).length;
+      const currentChatsCount = Object.keys(
+        store.getState().chatsList.chats
+      ).length;
       if (Object.keys(userData.chats).length !== currentChatsCount) {
         dispatch(fetchChats(Object.keys(userData.chats)));
       }

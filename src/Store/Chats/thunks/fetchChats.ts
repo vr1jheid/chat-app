@@ -16,7 +16,7 @@ import { ChatsState } from "../chats";
 export const fetchChats = createAsyncThunk(
   "chats/fetchChats",
   async (chatsIDs: string[], { rejectWithValue, getState }) => {
-    const { chats, currentUser } = getState() as RootState;
+    const { chatsList, currentUser } = getState() as RootState;
     const q = query(
       collection(db, "chats"),
       where("id", "in", ["mainChat", ...chatsIDs])
@@ -29,7 +29,7 @@ export const fetchChats = createAsyncThunk(
         const docData = snapshotDoc.data() as ChatDataDB;
         const { members, lastMessage, type, id } = docData;
         /* Фетчим только новые чаты */
-        if (chats[id]) continue;
+        if (chatsList.chats[id]) continue;
 
         const unseenMessages = await getUnseenMessagesCount(id);
         const chatData: ChatData = {

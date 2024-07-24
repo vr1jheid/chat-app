@@ -10,7 +10,8 @@ import { resetUnseenMessages } from "../chats";
 export const selectChatFromObserved = createAsyncThunk(
   "test",
   (id: string, { getState, dispatch }) => {
-    const { chats, activeChat } = getState() as RootState;
+    const { chatsList, activeChat } = getState() as RootState;
+    const { chats } = chatsList;
     if (id === activeChat.id) return;
 
     dispatch(resetUnseenMessages(id));

@@ -1,8 +1,13 @@
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { ActiveChat, ChatData } from "../../Types/chatTypes";
 import { MessageData } from "../../Types/messageTypes";
 import { fetchChats } from "./thunks/fetchChats";
+
+interface ChatsSlice {
+  chats: { [key: string]: ChatData };
+  isLoading: boolean;
+}
 
 export interface ChatsState {
   [key: string]: ChatData;
@@ -26,63 +31,63 @@ export interface UnseenMessagesSetter {
   unseenMessages: number;
 }
 
-const initialState: ChatsState = {};
+const initialState: ChatsSlice = {
+  chats: {},
+  isLoading: false,
+};
 
 export const chatsSlice = createSlice({
-  name: "chats",
+  name: "chatsList",
   initialState,
   selectors: {
-    selectAllChats: (state) => state,
-    selectChatsIDs: createSelector(
-      (state) => state,
-      (state) => Object.keys(state)
-    ),
-    selectChatsNum: (state) => Object.keys(state).length,
+    selectChatsSlice: (state) => state,
+    selectAllChats: (state) => state.chats,
   },
   reducers: {
     changeLastMessage: (
-      state,
+      { chats },
       { payload }: PayloadAction<LastMessageSetter>
     ) => {
-      state[payload.chatID].lastMessage = payload.message;
+      chats[payload.chatID].lastMessage = payload.message;
     },
     setCachedMessages: (
-      state,
+      { chats },
       { payload }: PayloadAction<CachedMessagesSetter>
     ) => {
-      state[payload.chatID].cachedMessages = payload.messages;
+      chats[payload.chatID].cachedMessages = payload.messages;
     },
-    setHasNextPage: (state, { payload }: PayloadAction<HasNextPageSetter>) => {
-      state[payload.chatID].hasNextPage = payload.hasNextPage;
+    setHasNextPage: (
+      { chats },
+      { payload }: PayloadAction<HasNextPageSetter>
+    ) => {
+      chats[payload.chatID].hasNextPage = payload.hasNextPage;
     },
     setUnseenMessages: (
-      state,
+      { chats },
       { payload }: PayloadAction<UnseenMessagesSetter>
     ) => {
-      state[payload.chatID].unseenMessages = payload.unseenMessages;
+      chats[payload.chatID].unseenMessages = payload.unseenMessages;
     },
-    increaseUnseenMessages: (state, { payload }: PayloadAction<string>) => {
-      state[payload].unseenMessages = state[payload].unseenMessages + 1;
+    increaseUnseenMessages: ({ chats }, { payload }: PayloadAction<string>) => {
+      chats[payload].unseenMessages = chats[payload].unseenMessages + 1;
     },
-    resetUnseenMessages: (state, { payload }: PayloadAction<string>) => {
-      state[payload].unseenMessages = 0;
+    resetUnseenMessages: ({ chats }, { payload }: PayloadAction<string>) => {
+      chats[payload].unseenMessages = 0;
     },
     clearChats: () => initialState,
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchChats.fulfilled, (state, action) => {
-      return { ...state, ...action.payload };
+    builder.addCase(fetchChats.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchChats.fulfilled, (state, { payload }) => {
+      state.chats = { ...state.chats, ...payload };
+      state.isLoading = false;
     });
   },
 });
 
-export const { selectAllChats, selectChatsNum, selectChatsIDs } =
-  chatsSlice.selectors;
-
-export const selectChatByID = createSelector(
-  [selectAllChats, (_chats, id: string) => id],
-  (chats, id) => chats[id]
-);
+export const { selectAllChats, selectChatsSlice } = chatsSlice.selectors;
 
 export const {
   clearChats,
