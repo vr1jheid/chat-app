@@ -28,8 +28,9 @@ export const ChatBody = () => {
     useReverseScroll();
 
   const { ref: swiperRef, ...swipeHandler } = useSwipeable({
-    onSwipedRight: ({ event }) => {
+    onSwipedRight: ({ event, deltaX }) => {
       event.stopPropagation();
+      if (deltaX < window.innerWidth / 3) return;
       dispatch(clearActiveChatWithCache());
     },
   });
