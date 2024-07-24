@@ -60,6 +60,7 @@ export const subOnLastMessageChange = (chatsIDs: string[]) => {
             dispatch(selectChatFromObserved(changedChatData.id));
           },
         });
+        navigator.vibrate && navigator.vibrate(500);
       }
       if (activeChat.id !== changedChatData.id) {
         dispatch(increaseUnseenMessages(changedChatData.id));
