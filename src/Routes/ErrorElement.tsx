@@ -3,7 +3,6 @@ import { useRouteError } from "react-router-dom";
 
 export const ErrorElement = () => {
   const error = useRouteError();
-  console.log("HIIHI", error);
   const errorMessage = error instanceof Error ? error.message : "Unknown Error";
 
   return (

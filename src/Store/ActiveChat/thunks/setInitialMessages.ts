@@ -68,8 +68,6 @@ export const setInitialMessages = createAsyncThunk(
         console.log(error);
       }
     }
-    console.log(messages);
-
     return [...messages, ...chatData.cachedMessages];
   }
 );
