@@ -16,7 +16,7 @@ export const UserInfoModal = ({ userInfo }: Props) => {
   const dispatch = useAppDispatch();
   return (
     <div className="w-[95vw] h-[60dvh] max-w-[420px] p-2 bg-gray-light rounded-xl text-white relative">
-      <div className="h-[70%] relative mb-7">
+      <div className="h-[85%] relative mb-2">
         <UserAvatar
           src={userInfo.avatarURL}
           alt={userInfo.displayName}
@@ -26,9 +26,6 @@ export const UserInfoModal = ({ userInfo }: Props) => {
       <ul className="flex flex-col justify-center text-xl">
         <UserInfoListItem icon={<PersonIcon />}>
           <>{userInfo.displayName}</>
-        </UserInfoListItem>
-        <UserInfoListItem icon={<AlternateEmailIcon />}>
-          <>{userInfo.email}</>
         </UserInfoListItem>
       </ul>
       <button

@@ -1,17 +1,17 @@
 import { Button, Menu, MenuItem } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { memo, useRef, useState } from "react";
 
 import { logout } from "../../Services/logout";
-import { selectCurrentUser } from "../../Store/CurrentUser/currentUser";
+import { selectUserData } from "../../Store/CurrentUser/currentUser";
 import { useAppSelector } from "../../Store/hooks";
 import { UserAvatar } from "../Shared/UserAvatar";
 
-const UserMenu = () => {
+const UserMenu = memo(() => {
   const contRef = useRef<HTMLDivElement | null>(null);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isOpen = Boolean(anchorEl);
-  const { displayName, email, avatarURL } = useAppSelector(selectCurrentUser);
+  const { displayName, email, avatarURL } = useAppSelector(selectUserData);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -52,6 +52,6 @@ const UserMenu = () => {
       </Menu>
     </div>
   );
-};
+});
 
 export default UserMenu;

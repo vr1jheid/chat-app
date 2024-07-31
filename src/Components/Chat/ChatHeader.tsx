@@ -15,6 +15,8 @@ import { ChatTypes } from "../../Types/chatTypes";
 import { UserAvatar } from "../Shared/UserAvatar";
 
 export const ChatHeader = memo(() => {
+  console.log("headre");
+
   const dispatch = useAppDispatch();
   const activeChatID = useAppSelector(selectActiveChatID);
   const chatType = useAppSelector(selectActiveChatType);

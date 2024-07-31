@@ -1,4 +1,5 @@
 import { Avatar } from "@mui/material";
+import { memo } from "react";
 
 interface Props {
   alt: string;
@@ -16,23 +17,25 @@ const getTextForAvatar = (alt: string) => {
   return alt.slice(0, 1);
 };
 
-export const UserAvatar = ({ alt, src, size, variant = "circular" }: Props) => {
-  const sizeSize = size ?? "100%";
+export const UserAvatar = memo(
+  ({ alt, src, size, variant = "circular" }: Props) => {
+    const sizeSize = size ?? "100%";
 
-  if (!src) {
+    if (!src) {
+      return (
+        <Avatar variant={variant} sx={{ width: sizeSize, height: sizeSize }}>
+          {alt ? getTextForAvatar(alt) : "?"}
+        </Avatar>
+      );
+    }
     return (
-      <Avatar variant={variant} sx={{ width: sizeSize, height: sizeSize }}>
-        {alt ? getTextForAvatar(alt) : "?"}
+      <Avatar
+        variant={variant}
+        sx={{ width: sizeSize, height: sizeSize }}
+        src={src}
+      >
+        {!src && alt ? getTextForAvatar(alt) : "?"}
       </Avatar>
     );
   }
-  return (
-    <Avatar
-      variant={variant}
-      sx={{ width: sizeSize, height: sizeSize }}
-      src={src}
-    >
-      {!src && alt ? getTextForAvatar(alt) : "?"}
-    </Avatar>
-  );
-};
+);

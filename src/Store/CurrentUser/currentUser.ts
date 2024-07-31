@@ -1,4 +1,4 @@
-import { createSelector, createSlice,PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { UserDataDB } from "../../Types/userTypes";
 
@@ -22,6 +22,8 @@ export const currentUserSlice = createSlice({
   selectors: {
     selectCurrentUser: (state) => state,
     selectCurrentUserEmail: (state) => state.email,
+    selectCurrentUserAvatar: (state) => state.avatarURL,
+    selectCurrentUserName: (state) => state.displayName,
     selectUserChatsCount: (state) => state.chats.length,
   },
   reducers: {
@@ -44,7 +46,16 @@ export const {
   selectCurrentUser,
   selectCurrentUserEmail,
   selectUserChatsCount,
+  selectCurrentUserAvatar,
+  selectCurrentUserName,
 } = currentUserSlice.selectors;
+
+export const selectUserData = createSelector(
+  [selectCurrentUserEmail, selectCurrentUserName, selectCurrentUserAvatar],
+  (email, displayName, avatarURL) => {
+    return { email, displayName, avatarURL };
+  }
+);
 
 export const selectChatParams = createSelector(
   [selectCurrentUser, (_user, id) => id],

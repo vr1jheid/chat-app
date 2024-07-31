@@ -1,6 +1,6 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { Autocomplete } from "@mui/material";
-import { useState } from "react";
+import { memo, useState } from "react";
 
 import { selectAllUsersList } from "../../Store/AllUsersList/allUsersList";
 import { searchChatWithUser } from "../../Store/Chats/thunks/searchChatWithUser";
@@ -10,7 +10,7 @@ export interface UserWithLabel {
   label: string;
 }
 
-export const SearchUser = () => {
+export const SearchUser = memo(() => {
   const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = useState("");
   const [selectedUserEmail, setSelectedUserEmail] = useState<string | null>(
@@ -62,4 +62,4 @@ export const SearchUser = () => {
       ></Autocomplete>
     </div>
   );
-};
+});

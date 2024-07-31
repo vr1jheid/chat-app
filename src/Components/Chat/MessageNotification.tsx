@@ -22,7 +22,7 @@ export const MessageNotification = forwardRef<HTMLDivElement, Props>(
       messageAuthor,
       mobile = false,
       avatarURL,
-      onClose,
+      onManualClose,
     },
     ref
   ) => {
@@ -30,7 +30,7 @@ export const MessageNotification = forwardRef<HTMLDivElement, Props>(
       closeSnackbar(notiID);
     };
     const toChat = () => {
-      onClose && onClose();
+      onManualClose && onManualClose();
       closeSnackbar(notiID);
     };
 

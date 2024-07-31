@@ -3,7 +3,7 @@ import { MessageAuthor } from "./messageTypes";
 export interface IMessageNotification {
   messageAuthor: string;
   avatarURL?: string | null;
-  onClose?: () => void;
+  onManualClose?: () => void;
   mobile?: boolean;
 }
 
@@ -12,7 +12,7 @@ export declare module "notistack" {
     messageNotification: {
       messageAuthor: string;
       avatarURL?: string | null;
-      onClose?: () => void;
+      onManualClose?: () => void;
       mobile?: boolean;
     };
   }

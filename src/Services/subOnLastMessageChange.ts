@@ -56,7 +56,7 @@ export const subOnLastMessageChange = (chatsIDs: string[]) => {
           mobile: isMobile,
           messageAuthor: lastMessage.author.displayName,
           avatarURL: lastMessage.author.avatarURL,
-          onClose: () => {
+          onManualClose: () => {
             dispatch(selectChatFromObserved(changedChatData.id));
           },
         });
