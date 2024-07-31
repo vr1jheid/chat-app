@@ -42,14 +42,14 @@ Simple chat app built with React. Used Firebase for data storage
 * Fully adaptive design
 * Swipe support
 
-<br/>
+<!-- <br/>
 <div>
     <img src="https://s10.gifyu.com/images/S5CKJ.png" alt="Logo" width="700" height="auto">
 </div>
 <br/>
 <div>
   <img src="https://s12.gifyu.com/images/S5CKG.png" alt="Logo" width="700" height="auto">
-</div>
+</div> -->
 
 
 <!-- LINKS & IMAGES -->
