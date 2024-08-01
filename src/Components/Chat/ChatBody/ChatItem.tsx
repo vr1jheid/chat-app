@@ -41,7 +41,7 @@ export const ChatItem = ({
     if (!size || !messagesSizes?.current) return;
     messagesSizes.current[message.id] = size;
     listRef?.current?.resetAfterIndex(index);
-  }, [screenSize /* , message.serverTime */]);
+  }, [screenSize, message?.serverTime]);
 
   const renderDate = () => {
     const prevMessage = chatData.messages[index + 1];
